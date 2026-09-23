@@ -11,13 +11,10 @@ Fonctionnalités de bases :
 - Création d'événements (admin)
   - nom, date, lieux, descriptions, NB inscrit
 
-- Création de comptes /login
+- Création de comptes/login
 - Connexion au compte
 
 - Inscription à un événement par courriel : pas besoin de se connecter
-- Réception de mail automatique d'inscription
-- Voir la liste des évents et le détail
-
-Bonus :
-
+- Réception de mail automatique de confirmation d'inscription 
+- Voir la liste des événements et le détail
 - Rappel par email
