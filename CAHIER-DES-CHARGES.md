@@ -30,16 +30,19 @@ dans une optique de reporting.
 ## Liste des pages
 
 Public :
-
 - Page d'accueil (liste des évents)
 - Détail d'un évent + inscription
   - Voir la liste des inscrits (admin)
 - Inscription (user et admin)
 - Connexion (user et admin)
 
-Privée :
+Privée (accès uniquement permis admin) :
+- Ajout d'un event
+- Modification d'un event
+- Détail du compte (admin)
+- Modification du compte ( admin)
 
-- Ajout d'un event (admin)
-- Modification d'un event (admin)
-- Détail du compte (user et admin)
-- Modification du compte (user et admin)
+Privée (accès uniquement une fois connecté au compte) :
+- Liste de tous les éléments auxquels l'user est inscrit
+- Détail du compte (user)
+- Modification du compte (user)
