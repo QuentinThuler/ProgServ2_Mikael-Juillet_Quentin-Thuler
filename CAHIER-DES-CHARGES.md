@@ -6,7 +6,7 @@ Gestionnaire d’événements pour des associations, où la liste des événemen
 l’année est affichée. Les visiteurs peuvent s’inscrire en renseignant uniquement
 leur email.
 
-L'objectif est de permettre un moyen simple aux associations de déterminer le
+L'objectif est d'offrir un moyen simple aux associations de déterminer le
 nombre d'inscrits à un événement, afin de faciliter son organisation. Également, 
 le but est qu'après avoir fait de la promotion de l'évènement  sur plusieurs 
 canaux de communication, on puisse centraliser le point de conversion des inscrits 
