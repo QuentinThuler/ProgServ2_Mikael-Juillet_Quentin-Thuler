@@ -6,11 +6,13 @@ Gestionnaire d’événements pour des associations, où la liste des événemen
 l’année est affichée. Les visiteurs peuvent s’inscrire en renseignant uniquement
 leur email.
 
-L'objectif est de permettre un moyen simple aux associations de déterminer, le
-nombre d'inscrit pour un événement (pour faciliter l'organisation), mais aussi
-pour centraliser le point de conversion des inscrits (qui se ferait par
-plusieurs canaux) et finalement pouvoir analyser le fonctionnement des campagnes
-ou l'engouement pour chaque événement pour en tirer des tendances.
+L'objectif est de permettre un moyen simple aux associations de déterminer le
+nombre d'inscrits à un événement, afin de faciliter son organisation. Également, 
+le but est qu'après avoir fait de la promotion de l'évènement  sur plusieurs 
+canaux de communication, on puisse centraliser le point de conversion des inscrits 
+sur une plateforme unique. Finalement, l'objectif est de pouvoir analyser et 
+mesurer l'efficacité des campagnes ainsi que l'engouement pour chaque événement,
+dans une optique de reporting.
 
 ## Fonctionnalités de bases
 
@@ -32,11 +34,11 @@ Public :
 - Page d'accueil (liste des évents)
 - Détail d'un évent + inscription
   - Voir la liste des inscrits (admin)
+- Inscription (user et admin)
+- Connexion (user et admin)
 
 Privée :
 
-- Inscription (user et admin)
-- Connexion
 - Ajout d'un event (admin)
 - Modification d'un event (admin)
 - Détail du compte (user et admin)
