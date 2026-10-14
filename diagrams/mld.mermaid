@@ -6,6 +6,8 @@ erDiagram
     participants {
         int id PK
         varchar email "UNIQUE, NOT NULL"
+        boolean statut_validation
+        varchar jeton_validation
     }
     utilisateurs {
         int id PK
@@ -36,8 +38,6 @@ erDiagram
         int participant_id FK "NOT NULL"
         int evenement_id FK "NOT NULL"
         datetime date_inscription
-        boolean statut_validation
-        varchar jeton_validation
         boolean rappel_envoye
         varchar canal_origine
     }

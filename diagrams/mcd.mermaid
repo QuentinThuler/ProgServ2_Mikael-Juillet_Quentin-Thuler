@@ -24,7 +24,7 @@ erDiagram
         texte date_et_heure
         texte adresse
         texte ville
-        textesalle
+        texte salle
         image image
         date date_creation
     }
@@ -32,4 +32,4 @@ erDiagram
     PARTICIPANT |o--|| UTILISATEUR : "avoir"
     UTILISATEUR }|--|| ROLE : "posseder"
     UTILISATEUR ||--o{ EVENEMENT : "creer"
-    PARTICIPANT }|--|{ EVENEMENT : "inscrire"
+    PARTICIPANT }o--o{ EVENEMENT : "inscrire"
