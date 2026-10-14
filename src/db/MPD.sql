@@ -1,4 +1,4 @@
-USE my_database;
+USE gatherly;
 
 -- 1. Table of Roles
 CREATE TABLE IF NOT EXISTS roles (

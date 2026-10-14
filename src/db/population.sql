@@ -1,4 +1,4 @@
-USE my_database;
+USE gatherly;
 INSERT INTO roles (
     name
 ) VALUES ('Administrator'), ('User');

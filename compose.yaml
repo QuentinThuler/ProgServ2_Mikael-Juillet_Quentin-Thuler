@@ -44,7 +44,7 @@ services:
       - MARIADB_RANDOM_ROOT_PASSWORD=yes
       - MARIADB_USER=username
       - MARIADB_PASSWORD=password
-      - MARIADB_DATABASE=my_database
+      - MARIADB_DATABASE=gatherly
     ports:
       - 3306:3306
     volumes:
@@ -68,6 +68,6 @@ services:
     environment:
       - PMA_HOST=mariadb
       - PMA_PORT=3306
-      - PMA_DATABASE=my_database
+      - PMA_DATABASE=gatherly
     ports:
       - 9090:80
