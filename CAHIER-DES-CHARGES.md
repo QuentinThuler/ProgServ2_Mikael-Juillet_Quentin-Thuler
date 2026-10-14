@@ -8,7 +8,7 @@ leur email.
 
 L'objectif est d'offrir un moyen simple aux associations de déterminer le
 nombre d'inscrits à un évènement, afin de faciliter son organisation. De plus, 
-le but est qu'après avoir fait de la promotion de l'évènement  sur plusieurs 
+le but est qu'après avoir fait de la promotion de l'évènement sur plusieurs 
 canaux de communication, on puisse centraliser le point de conversion des prospects 
 sur une plateforme unique. Finalement, l'objectif est de pouvoir analyser et 
 mesurer l'efficacité des campagnes ainsi que l'engouement pour chaque évènement,
@@ -62,3 +62,6 @@ Un participant n'a aucune autre information que son email et la confirmation de 
 ## un utilisateur 
 Ce sont des participants qui ont décidé de créer un compte, ils doivent inscrire un nom et un mot de passe de plus ils ont un rôle (utilisateur) attribué. Ils peuvent optionnellement enregistrer une description, une photo de profil, un lien LinkedIn et un numéro de téléphone\.
 En plus des accès de base du participant, l'utilisateur peut voir, modifier son profil et accéder à la liste des évènements à laquelle il est inscrit. De plus, il n'a désormais plus besoin de confirmer son email pour s'inscrire dès lors qu'il est connecté.
+
+## Événements
+Quand un utilisateur d'inscrit à un évènement l'on souhaite capturer la source de sa provenance via un UTM dans l'URL, l'on souhaite aussi avoir l'information de la date d'inscription et si le mail de rappel a bien été envoyé.
