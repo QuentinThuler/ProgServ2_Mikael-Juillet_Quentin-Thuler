@@ -44,11 +44,14 @@ services:
       - MARIADB_RANDOM_ROOT_PASSWORD=yes
       - MARIADB_USER=username
       - MARIADB_PASSWORD=password
-      - MARIADB_DATABASE=my_database
+      - MARIADB_DATABASE=gatherly
     ports:
       - 3306:3306
     volumes:
       - mariadb_data:/var/lib/mysql
+      - ./src/db/MPD.sql:/docker-entrypoint-initdb.d/01-MPD.sql:ro
+      - ./src/db/population.sql:/docker-entrypoint-initdb.d/02-population.sql:ro
+      - ./src/db/population-test.sql:/docker-entrypoint-initdb.d/03-population-test.sql:ro
     healthcheck:
       test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
       start_period: 10s
@@ -65,6 +68,6 @@ services:
     environment:
       - PMA_HOST=mariadb
       - PMA_PORT=3306
-      - PMA_DATABASE=my_database
+      - PMA_DATABASE=gatherly
     ports:
       - 9090:80
