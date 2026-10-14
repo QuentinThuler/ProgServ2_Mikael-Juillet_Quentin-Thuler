@@ -1,0 +1,49 @@
+erDiagram
+    roles {
+        int id PK
+        varchar nom "UNIQUE, NOT NULL"
+    }
+    participants {
+        int id PK
+        varchar email "UNIQUE, NOT NULL"
+    }
+    utilisateurs {
+        int id PK
+        int participant_id FK, UK "NOT NULL"
+        varchar nom "NOT NULL"
+        varchar mot_de_passe "NOT NULL"
+        varchar description "TEXT"
+        varchar image "VARCHAR"
+        varchar linkedin "VARCHAR"
+        varchar telephone "VARCHAR"
+        int role_id FK "NOT NULL"
+    }
+    evenements {
+        int id PK
+        varchar titre "NOT NULL"
+        varchar description "NOT NULL"
+        varchar phrase_accroche "NOT NULL"
+        datetime date_et_heure "NOT NULL"
+        varchar adresse "NOT NULL"
+        varchar ville "NOT NULL"
+        varchar salle "VARCHAR"
+        varchar image "VARCHAR"
+        datetime date_creation "NOT NULL"
+        int createur_id FK "NOT NULL"
+    }
+    inscriptions {
+        int id PK
+        int participant_id FK "NOT NULL"
+        int evenement_id FK "NOT NULL"
+        datetime date_inscription
+        boolean statut_validation
+        varchar jeton_validation
+        boolean rappel_envoye
+        varchar canal_origine
+    }
+
+    participants ||--o| utilisateurs : "1..1 (participant_id)"
+    roles ||--o{ utilisateurs : "1..N (role_id)"
+    utilisateurs ||--o{ evenements : "1..N (createur_id)"
+    participants ||--o{ inscriptions : "1..N (participant_id)"
+    evenements ||--o{ inscriptions : "1..N (evenement_id)"

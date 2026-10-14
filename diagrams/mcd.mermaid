@@ -1,0 +1,35 @@
+erDiagram
+    PARTICIPANT {
+        numerique id
+        texte email
+    }
+    UTILISATEUR {
+        numerique id
+        texte nom
+        texte mot_de_passe
+        texte description
+        image image
+        texte linkedin
+        numerique telephone
+    }
+    ROLE {
+        numerique id
+        texte nom
+    }
+    EVENEMENT {
+        numerique id
+        texte titre
+        texte description
+        texte phrase_accroche
+        texte date_et_heure
+        texte adresse
+        texte ville
+        textesalle
+        image image
+        date date_creation
+    }
+
+    PARTICIPANT |o--|| UTILISATEUR : "avoir"
+    UTILISATEUR }|--|| ROLE : "posseder"
+    UTILISATEUR ||--o{ EVENEMENT : "creer"
+    PARTICIPANT }|--|{ EVENEMENT : "inscrire"
