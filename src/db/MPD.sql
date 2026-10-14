@@ -1,18 +1,20 @@
 USE my_database;
 
--- 1. Table des rôles
+-- 1. Table of Roles
 CREATE TABLE IF NOT EXISTS roles (
     id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(100) NOT NULL UNIQUE
 );
 
--- 2. Table des participants (socle basé sur l'email pour toute inscription)
+-- 2. List of participants (based on email address for all registrations)
 CREATE TABLE IF NOT EXISTS participants (
     id INT PRIMARY KEY AUTO_INCREMENT,
+    is_approved BOOLEAN NOT NULL DEFAULT FALSE,
+    validation_number VARCHAR(6),
     email VARCHAR(255) NOT NULL UNIQUE
 );
 
--- 3. Table des utilisateurs (compte optionnel lié à un participant)
+-- 3. User table (optional account linked to a participant)
 CREATE TABLE IF NOT EXISTS users (
     id INT PRIMARY KEY AUTO_INCREMENT,
     participant_id INT NOT NULL UNIQUE,
@@ -34,7 +36,7 @@ CREATE TABLE IF NOT EXISTS users (
         REFERENCES roles(id)
 );
 
--- 4. Table des événements
+-- 4. Table of Events
 CREATE TABLE IF NOT EXISTS events (
     id INT PRIMARY KEY AUTO_INCREMENT,
     title VARCHAR(255) NOT NULL,
@@ -53,14 +55,12 @@ CREATE TABLE IF NOT EXISTS events (
         REFERENCES users(id)
 );
 
--- 5. Table d'association des inscriptions (porte les métadonnées de validation par événement)
+-- 5. Registration mapping table (contains validation metadata by event)
 CREATE TABLE IF NOT EXISTS subscriptions (
     id INT PRIMARY KEY AUTO_INCREMENT,
     id_events INT NOT NULL,
     id_participants INT NOT NULL,
     subscription_date DATETIME DEFAULT CURRENT_TIMESTAMP,
-    is_approved BOOLEAN NOT NULL DEFAULT FALSE,
-    validation_number VARCHAR(6),
     reminder_sent BOOLEAN NOT NULL DEFAULT FALSE,
     origin_channel VARCHAR(100),
 
