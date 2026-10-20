@@ -13,7 +13,7 @@
             <?php if ($isConnected): ?>
                 <a href="/my-registrations.php">Mes inscriptions</a>
             <?php else: ?>
-                <a href="/events.php">Évènements à venir</a>
+                <a href="/index.php">Évènements à venir</a>
             <?php endif; ?>
         </section>
 
