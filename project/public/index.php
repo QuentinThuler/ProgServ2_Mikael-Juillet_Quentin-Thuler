@@ -16,18 +16,19 @@ $stmt = $pdo->prepare($sql);
 $stmt->execute();
 
 $results = $stmt->fetchAll();
+
+$pageTitle = "Accueil";
 ?>
 
 <!DOCTYPE html>
 <html lang="fr">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ProgServ2 Course PHP Template</title>
-</head>
+<?php require_once __DIR__ . '/../components/head.php' ?>
 
 <body>
+
+    <?php require_once __DIR__ . '/../components/header.php' ?>
+
     <h1>ProgServ2 Course PHP Template</h1>
 
     <p>Bienvenue dans votre projet PHP pour le cours ProgServ2 à la HEIG-VD !</p>
@@ -44,6 +45,8 @@ $results = $stmt->fetchAll();
             </li>
         <?php } ?>
     </ul>
+
+    <?php require_once __DIR__ . '/../components/footer.php' ?>
 </body>
 
 </html>
