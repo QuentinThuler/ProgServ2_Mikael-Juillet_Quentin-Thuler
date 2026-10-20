@@ -1,7 +1,7 @@
 <?php
 const DB_HOST = 'mariadb';
 const DB_PORT = 3306;
-const DB_NAME = 'my_database';
+const DB_NAME = 'gatherly';
 const DB_USER = 'username';
 const DB_PASSWORD = 'password';
 
@@ -9,13 +9,16 @@ $dsn = "mysql:host=" . DB_HOST . ";port=" . DB_PORT . ";dbname=" . DB_NAME . ";c
 
 $pdo = new PDO($dsn, DB_USER, DB_PASSWORD);
 
-$sql = "SELECT * FROM my_table";
+$sql = "SELECT id, title, city, date_time, tagline
+        FROM events
+        WHERE date_time >= NOW()
+        ORDER BY date_time ASC";
+
+$results = $pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
 
 $stmt = $pdo->prepare($sql);
 
 $stmt->execute();
-
-$results = $stmt->fetchAll();
 
 $pageTitle = "Accueil";
 ?>
