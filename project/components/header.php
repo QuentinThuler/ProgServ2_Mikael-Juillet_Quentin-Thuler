@@ -1,9 +1,12 @@
 <?php
-$isConnected = isset($_SESSION['user_id']);
-$isAdmin = ($_SESSION['role'] ?? '') === 'admin';
+
+/**
+ * @var bool $isConnected Defined in src/init.php
+ * @var bool $isAdmin     Defined in src/init.php
+ */
 ?>
 <header>
-    <nav>
+    <nav aria-label="Principale">
         <a href="/index.php">Accueil</a>
 
         <?php if ($isConnected): ?>
