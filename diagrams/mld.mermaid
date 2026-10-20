@@ -6,40 +6,45 @@ erDiagram
     participants {
         int id PK
         varchar email "UNIQUE, NOT NULL"
-        boolean statut_validation
-        varchar jeton_validation
+        boolean statut_validation "NOT NULL, DEFAULT FALSE"
+        varchar code_validation "6 caracteres, NULL"
     }
     utilisateurs {
         int id PK
         int participant_id FK, UK "NOT NULL"
         varchar nom "NOT NULL"
         varchar mot_de_passe "NOT NULL"
-        varchar description "TEXT"
-        varchar image "VARCHAR"
-        varchar linkedin "VARCHAR"
-        varchar telephone "VARCHAR"
+        text description
+        varchar image
+        varchar linkedin
+        varchar telephone
         int role_id FK "NOT NULL"
     }
     evenements {
         int id PK
         varchar titre "NOT NULL"
-        varchar description "NOT NULL"
+        text description "NOT NULL"
         varchar phrase_accroche "NOT NULL"
         datetime date_et_heure "NOT NULL"
         varchar adresse "NOT NULL"
         varchar ville "NOT NULL"
-        varchar salle "VARCHAR"
-        varchar image "VARCHAR"
-        datetime date_creation "NOT NULL"
+        varchar salle
+        varchar image
+        datetime date_creation "NOT NULL, DEFAULT CURRENT_TIMESTAMP"
         int createur_id FK "NOT NULL"
     }
     inscriptions {
         int id PK
+        int evenement_id FK "NOT NULL, UNIQUE avec participant_id"
         int participant_id FK "NOT NULL"
-        int evenement_id FK "NOT NULL"
-        datetime date_inscription
-        boolean rappel_envoye
-        varchar canal_origine
+        datetime date_inscription "NOT NULL, DEFAULT CURRENT_TIMESTAMP"
+        boolean est_confirmee "NOT NULL, DEFAULT FALSE"
+        char jeton_hash "64 caracteres, UNIQUE, NULL"
+        datetime jeton_expiration "NULL"
+        boolean rappel_envoye "NOT NULL, DEFAULT FALSE"
+        varchar utm_source
+        varchar utm_medium
+        varchar utm_campaign
     }
 
     participants ||--o| utilisateurs : "1..1 (participant_id)"
