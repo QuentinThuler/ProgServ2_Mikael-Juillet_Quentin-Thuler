@@ -10,6 +10,9 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
+$isConnected = isset($_SESSION['user_id']);
+$isAdmin = ($_SESSION['role'] ?? '') === 'admin';
+
 const DB_HOST     = 'mariadb';
 const DB_PORT     = 3306;
 const DB_NAME     = 'gatherly';

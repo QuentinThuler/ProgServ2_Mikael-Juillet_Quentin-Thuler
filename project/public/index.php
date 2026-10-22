@@ -1,49 +1,48 @@
 <?php
-const DB_HOST = 'mariadb';
-const DB_PORT = 3306;
-const DB_NAME = 'my_database';
-const DB_USER = 'username';
-const DB_PASSWORD = 'password';
+require_once __DIR__ . '/../src/init.php';
 
-$dsn = "mysql:host=" . DB_HOST . ";port=" . DB_PORT . ";dbname=" . DB_NAME . ";charset=utf8mb4";
+$stmt = $pdo->query(
+    "SELECT id, title, city, date_time, tagline
+     FROM events
+     WHERE date_time >= NOW()
+     ORDER BY date_time ASC"
+);
+$events = $stmt->fetchAll();
 
-$pdo = new PDO($dsn, DB_USER, DB_PASSWORD);
-
-$sql = "SELECT * FROM my_table";
-
-$stmt = $pdo->prepare($sql);
-
-$stmt->execute();
-
-$results = $stmt->fetchAll();
+$pageTitle = "Accueil";
 ?>
 
 <!DOCTYPE html>
 <html lang="fr">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ProgServ2 Course PHP Template</title>
-</head>
+<?php require_once __DIR__ . '/../components/head.php' ?>
 
 <body>
-    <h1>ProgServ2 Course PHP Template</h1>
+    <main>
+        <?php require_once __DIR__ . '/../components/header.php' ?>
 
-    <p>Bienvenue dans votre projet PHP pour le cours ProgServ2 à la HEIG-VD !</p>
+        <h1>ProgServ2 Course PHP Template</h1>
 
-    <h2>Résultats de la base de données :</h2>
+        <p>Bienvenue dans votre projet PHP pour le cours ProgServ2 à la HEIG-VD !</p>
 
-    <ul>
-        <?php foreach ($results as $row) { ?>
-            <li>ID: <?= htmlspecialchars($row['id']) ?>
-                <ul>
-                    <li>Column1: <?= htmlspecialchars($row['column1']) ?></li>
-                    <li>Column2: <?= htmlspecialchars($row['column2']) ?></li>
-                </ul>
-            </li>
-        <?php } ?>
-    </ul>
+        <h2>Résultats de la base de données :</h2>
+
+        <ul>
+            <?php if (empty($events)): ?>
+                <p>Aucun évènement à venir pour le moment.</p>
+            <?php else: ?>
+                <?php foreach ($events as $event): ?>
+                    <article class="event-card">
+                        <h3><?= htmlspecialchars($event['title']) ?> - <?= htmlspecialchars($event['city']) ?></h3>
+                        <p><?= date('d.m.Y - H:i', strtotime($event['date_time'])) ?></p>
+                        <p><?= htmlspecialchars($event['tagline']) ?></p>
+                        <a href="/event.php?id=<?= (int) $event['id'] ?>">Détails de l'évènement</a>
+                    </article>
+                <?php endforeach; ?>
+            <?php endif; ?>
+        </ul>
+    </main>
+    <?php require_once __DIR__ . '/../components/footer.php' ?>
 </body>
 
 </html>
