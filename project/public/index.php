@@ -1,16 +1,13 @@
 <?php
 require_once __DIR__ . '/../src/init.php';
 
-$sql = "SELECT id, title, city, date_time, tagline
-        FROM events
-        WHERE date_time >= NOW()
-        ORDER BY date_time ASC";
-
-$results = $pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
-
-$stmt = $pdo->prepare($sql);
-
-$stmt->execute();
+$stmt = $pdo->query(
+    "SELECT id, title, city, date_time, tagline
+     FROM events
+     WHERE date_time >= NOW()
+     ORDER BY date_time ASC"
+);
+$events = $stmt->fetchAll();
 
 $pageTitle = "Accueil";
 ?>
@@ -21,26 +18,30 @@ $pageTitle = "Accueil";
 <?php require_once __DIR__ . '/../components/head.php' ?>
 
 <body>
+    <main>
+        <?php require_once __DIR__ . '/../components/header.php' ?>
 
-    <?php require_once __DIR__ . '/../components/header.php' ?>
+        <h1>ProgServ2 Course PHP Template</h1>
 
-    <h1>ProgServ2 Course PHP Template</h1>
+        <p>Bienvenue dans votre projet PHP pour le cours ProgServ2 à la HEIG-VD !</p>
 
-    <p>Bienvenue dans votre projet PHP pour le cours ProgServ2 à la HEIG-VD !</p>
+        <h2>Résultats de la base de données :</h2>
 
-    <h2>Résultats de la base de données :</h2>
-
-    <ul>
-        <?php foreach ($results as $row) { ?>
-            <li>ID: <?= htmlspecialchars($row['id']) ?>
-                <ul>
-                    <li>Column1: <?= htmlspecialchars($row['column1']) ?></li>
-                    <li>Column2: <?= htmlspecialchars($row['column2']) ?></li>
-                </ul>
-            </li>
-        <?php } ?>
-    </ul>
-
+        <ul>
+            <?php if (empty($events)): ?>
+                <p>Aucun évènement à venir pour le moment.</p>
+            <?php else: ?>
+                <?php foreach ($events as $event): ?>
+                    <article class="event-card">
+                        <h3><?= htmlspecialchars($event['title']) ?> - <?= htmlspecialchars($event['city']) ?></h3>
+                        <p><?= date('d.m.Y - H:i', strtotime($event['date_time'])) ?></p>
+                        <p><?= htmlspecialchars($event['tagline']) ?></p>
+                        <a href="/event.php?id=<?= (int) $event['id'] ?>">Détails de l'évènement</a>
+                    </article>
+                <?php endforeach; ?>
+            <?php endif; ?>
+        </ul>
+    </main>
     <?php require_once __DIR__ . '/../components/footer.php' ?>
 </body>
 
