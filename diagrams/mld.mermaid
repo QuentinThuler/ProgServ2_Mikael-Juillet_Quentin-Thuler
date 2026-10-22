@@ -6,8 +6,9 @@ erDiagram
     participants {
         int id PK
         varchar email "UNIQUE, NOT NULL"
-        boolean statut_validation "NOT NULL, DEFAULT FALSE"
-        varchar code_validation "6 caracteres, NULL"
+        boolean est_confirmee "NOT NULL, DEFAULT FALSE"
+        char jeton_hash "64 caracteres, UNIQUE, NULL"
+        datetime jeton_expiration "NULL"
     }
     utilisateurs {
         int id PK
@@ -38,9 +39,6 @@ erDiagram
         int evenement_id FK "NOT NULL, UNIQUE avec participant_id"
         int participant_id FK "NOT NULL"
         datetime date_inscription "NOT NULL, DEFAULT CURRENT_TIMESTAMP"
-        boolean est_confirmee "NOT NULL, DEFAULT FALSE"
-        char jeton_hash "64 caracteres, UNIQUE, NULL"
-        datetime jeton_expiration "NULL"
         boolean rappel_envoye "NOT NULL, DEFAULT FALSE"
         varchar utm_source
         varchar utm_medium

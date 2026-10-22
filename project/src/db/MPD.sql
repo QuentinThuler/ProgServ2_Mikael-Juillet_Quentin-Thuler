@@ -9,9 +9,12 @@ CREATE TABLE IF NOT EXISTS roles (
 -- 2. Participants (one row per email address)
 CREATE TABLE IF NOT EXISTS participants (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    is_approved BOOLEAN NOT NULL DEFAULT FALSE,
-    validation_number VARCHAR(6),
-    email VARCHAR(255) NOT NULL UNIQUE
+    email VARCHAR(255) NOT NULL UNIQUE, 
+    
+    -- Email confirmation (logged-out visitors only)
+    is_confirmed BOOLEAN NOT NULL DEFAULT FALSE,
+    token_hash CHAR(64) NULL UNIQUE,
+    token_expires_at DATETIME NULL
 );
 
 -- 3. Users (optional account linked to a participant)
@@ -63,11 +66,6 @@ CREATE TABLE IF NOT EXISTS registrations (
     event_id INT NOT NULL,
     participant_id INT NOT NULL,
     registration_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-
-    -- Email confirmation (logged-out visitors only)
-    is_confirmed BOOLEAN NOT NULL DEFAULT FALSE,
-    token_hash CHAR(64) NULL UNIQUE,
-    token_expires_at DATETIME NULL,
 
     reminder_sent BOOLEAN NOT NULL DEFAULT FALSE,
 
