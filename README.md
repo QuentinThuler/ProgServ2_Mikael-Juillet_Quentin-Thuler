@@ -1,6 +1,6 @@
 # HEIG-VD ProgServ2 - Project Gatherly
 
-Ce projet as pour base
+Ce projet a pour base
 [_"Programmation Serveur 2 (ProgServ2)"_](https://github.com/heig-vd-progserv-course/heig-vd-progserv2-course)
 à la [HEIG-VD](https://heig-vd.ch).
 
@@ -27,11 +27,11 @@ Pour plus de détails, consultez le [cahier des charges](CAHIER-DES-CHARGES.md).
 Les outils suivants sont nécessaires au développement du projet :
 
 - [Visual Studio Code](https://code.visualstudio.com/), version 1.1 ou
-  ultérieure.
+  ultérieure.
 - [Docker](https://www.docker.com/), version 29 ou ultérieure, avec Docker
-  Compose.
+  Compose.
 - [Git](https://git-scm.com/) pour récupérer le dépôt et gérer les
-  modifications.
+  modifications.
 
 Les versions indiquées constituent les versions minimales prévues pour le
 projet. Une version plus récente peut être nécessaire selon les fonctionnalités
@@ -40,46 +40,46 @@ utilisées.
 #### Extensions Visual Studio Code recommandées
 
 - [PHP Intelephense](https://marketplace.visualstudio.com/items?itemName=bmewburn.vscode-intelephense-client)
-  : analyse du code PHP et autocomplétion.
+  : analyse du code PHP et autocomplétion.
 - [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
-  : formatage du code pris en charge.
+  : formatage du code pris en charge.
 - [SQLite Viewer](https://marketplace.visualstudio.com/items?itemName=qwtel.sqlite-viewer)
-  : consultation de bases SQLite, si nécessaire.
+  : consultation de bases SQLite, si nécessaire.
 - [Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
-  : ouverture du projet dans un conteneur de développement.
+  : ouverture du projet dans un conteneur de développement.
 
 ### Production
 
-Dépendance et versions nécésaire pour ce projet :
+Dépendances et versions nécessaires pour ce projet :
 
 - Un serveur [Apache 2.4 ou plus tard](https://httpd.apache.org/) avec
-  [PHP 8.5 ou plus tard](https://www.php.net/) et les extensions nécessaires
-  pour se connecter à une base de données [MariaDB](https://mariadb.org/).
+  [PHP 8.5 ou plus tard](https://www.php.net/) et les extensions nécessaires
+  pour se connecter à une base de données [MariaDB](https://mariadb.org/).
 - Une base de données [MariaDB 10.6 ou plus tard](https://mariadb.org/)
 - **Envoi d'e-mails** : un service SMTP accessible (par exemple Infomaniak),
-  avec une adresse e-mail valide et ses identifiants, est nécessaire si
-  l'application doit envoyer des e-mails en production.
+  avec une adresse e-mail valide et ses identifiants, est nécessaire si
+  l'application doit envoyer des e-mails en production.
 
 ## Structure du projet
 
 - `.devcontainer/`: Contient la configuration pour le développement dans un
-  conteneur Debian (Trixie) avec Visual Studio Code.
+  conteneur Debian (Trixie) avec Visual Studio Code.
 - `.vscode/`: Contient les paramètres recommandés pour Visual Studio Code.
 - `.gitignore`: Fichier de configuration pour Git, spécifiant les fichiers et
-  dossiers à ignorer.
+  dossiers à ignorer.
 - `compose.yaml`: Fichier de configuration pour Docker Compose, définissant les
-  services nécessaires pour le projet, avec :
-  - [Apache](https://httpd.apache.org/) : Serveur web pour exécuter les fichiers
-    PHP.
-  - [MariaDB](https://mariadb.org/) : Base de données relationnelle.
-  - [phpMyAdmin](https://www.phpmyadmin.net/) : Interface web pour gérer la base
-    de données MariaDB.
-  - [Mailpit](https://mailpit.axllent.org/) : Serveur SMTP pour tester l'envoi
-    d'e-mails.
+  services nécessaires pour le projet, avec :
+  - [Apache](https://httpd.apache.org/) : Serveur web pour exécuter les fichiers
+    PHP.
+  - [MariaDB](https://mariadb.org/) : Base de données relationnelle.
+  - [phpMyAdmin](https://www.phpmyadmin.net/) : Interface web pour gérer la base
+    de données MariaDB.
+  - [Mailpit](https://mailpit.axllent.org/) : Serveur SMTP pour tester l'envoi
+    d'e-mails.
 
 - `index.php`: Fichier PHP principal du projet.
 - `script.sql`: Fichier SQL pour créer la table `my_table` dans la base de
-  données.
+  données.
 - `README.md`: Ce fichier de documentation.
 
 ```shell
@@ -116,7 +116,7 @@ D:\
 
 ```
 
-# Developpement
+# Développement
 
 ## Ouvrir le projet localement
 
@@ -189,8 +189,8 @@ effectuer d'autres opérations sur la base de données.
    SQL depuis le fichier `script.sql` et l'exécuter pour appliquer les
    modifications à la base de données.
 
-A noter que des fichier de population automatique de la base de donnée sont
-automatiquement importé losr de la création du contener.
+À noter que des fichiers de population automatique de la base de données sont
+automatiquement importés lors de la création du conteneur.
 
 ## Exécuter vos scripts PHP
 
@@ -234,7 +234,7 @@ redémarrés.
 
 # Production
 
-A compléter
+À compléter
 
 ## 1. Préparer les fichiers à déployer
 
@@ -276,7 +276,7 @@ SMTP_FROM=
 Les valeurs ci-dessus sont des exemples de noms de variables. Les valeurs
 réelles doivent être obtenues auprès de l'hébergeur ou du fournisseur SMTP.
 
-# Github Actions
+# GitHub Actions
 
 To complete
 
