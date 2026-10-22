@@ -2,6 +2,9 @@ erDiagram
     PARTICIPANT {
         numerique id
         texte email
+        booleen valide
+        texte numero_de_validation
+        date date_validité_accès 
     }
     UTILISATEUR {
         numerique id
@@ -10,7 +13,7 @@ erDiagram
         texte description
         image image
         texte linkedin
-        numerique telephone
+        texte telephone
     }
     ROLE {
         numerique id
@@ -21,15 +24,24 @@ erDiagram
         texte titre
         texte description
         texte phrase_accroche
-        texte date_et_heure
+        date date_et_heure
         texte adresse
         texte ville
         texte salle
         image image
         date date_creation
     }
+    INSCRIPTION {
+        numerique id
+        date date_inscription
+        booleen rappel_envoye
+        texte utm_source
+        texte utm_medium
+        texte utm_campaign
+    }
 
-    PARTICIPANT |o--|| UTILISATEUR : "avoir"
-    UTILISATEUR }|--|| ROLE : "posseder"
+    PARTICIPANT ||--o| UTILISATEUR : "avoir"
+    ROLE ||--o{ UTILISATEUR : "posseder"
     UTILISATEUR ||--o{ EVENEMENT : "creer"
-    PARTICIPANT }o--o{ EVENEMENT : "inscrire"
+    PARTICIPANT ||--o{ INSCRIPTION : "effectuer"
+    EVENEMENT ||--o{ INSCRIPTION : "recevoir"
