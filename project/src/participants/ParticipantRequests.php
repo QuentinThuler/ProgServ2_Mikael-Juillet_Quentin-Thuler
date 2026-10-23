@@ -1,6 +1,4 @@
 <?php
-require_once __DIR__ . '/ParticipantRequests.php';
-require_once __DIR__ . '/Participant.php';
 
 class ParticipantRequests {
     private PDO $connection;
@@ -34,6 +32,5 @@ class ParticipantRequests {
     public function create(Participant $participant): void {
 
     }
-
 
 }

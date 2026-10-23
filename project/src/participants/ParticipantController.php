@@ -1,5 +1,4 @@
 <?php
-require_once __DIR__ . '/ParticipantRequests.php';
 
 class ParticipantController {
     private ParticipantRequests $participantRequests;
