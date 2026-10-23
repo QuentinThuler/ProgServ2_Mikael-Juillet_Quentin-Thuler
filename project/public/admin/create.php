@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../../src/init.php';
 /* requireAdmin(); */
+/* $_SESSION['user_id'] ??= 1; */
 
 $pageTitle = "Créer un Évènement";
 
@@ -12,9 +13,10 @@ $address = $_POST["address"] ?? '';
 $city = $_POST["city"] ?? '';
 $room = $_POST["room"] ?? '';
 $date_time = $_POST["date_time"] ?? '';
-$image = $_POST["image"] ?? '';
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    $imageFile = IMAGE_UPLOAD_ENABLED ? ($_FILES['image'] ?? null) : null;
+
     // Validation de l'évènement
     $errors = validateEvent(
         $title,
@@ -24,8 +26,16 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $city,
         $room,
         $date_time,
-        $image,
+        $imageFile,
     );
+
+    $imagePath = null;
+    if (empty($errors) && $imageFile !== null && $imageFile['error'] === UPLOAD_ERR_OK) {
+        $imagePath = saveEventImage($imageFile);
+        if ($imagePath === null) {
+            $errors[] = "Impossible d'enregistrer l'image.";
+        }
+    }
 
     if (empty($errors)) {
         $newEventId = addEvent(
@@ -36,16 +46,17 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $address,
             $city,
             $room ?: null,
-            $date_time,
-            $image ?: null,
+            (new DateTime($date_time))->format('Y-m-d H:i:s'),
+            $imagePath,
+            $_SESSION['user_id']
         );
 
         if ($newEventId !== null) {
             header('Location: ./view.php?id=' . $newEventId);
             exit;
-        } else {
-            $errors = array_push($errors, "Une erreur est survenue lors de l'ajout de l'évènement.");
         }
+
+        $errors[] = "Une erreur est survenue lors de l'ajout de l'évènement.";
     }
 }
 
@@ -72,7 +83,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 </ul>
             <?php } ?>
         <?php } ?>
-        <form action="./create.php">
+        <form action="./create.php" method="POST" enctype="multipart/form-data">
             <label for="title">Titre*</label>
             <input
                 type="text"
@@ -135,13 +146,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 value="<?= htmlspecialchars($date_time) ?>"
                 required />
 
-            <label for="">Image</label>
-            <input
-                type="file"
-                id="image"
-                name="image"
-                value="<?= htmlspecialchars($image) ?>"
-                accept="/png, /jpeg, /jpg, /tiff, /svg" />
+            <?php if (IMAGE_UPLOAD_ENABLED) { ?>
+                <label for="">Image</label>
+                <input
+                    type="file"
+                    id="image"
+                    name="image"
+                    value="<?= htmlspecialchars($imageFile) ?>"
+                    accept="image/png, image/jpeg, image/jpg" />
+            <?php } ?>
 
             <button type="submit">Ajouter l'évènement</button>
         </form>
