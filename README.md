@@ -62,59 +62,44 @@ Dépendances et versions nécessaires pour ce projet :
 
 ## Structure du projet
 
-- `.devcontainer/`: Contient la configuration pour le développement dans un
-  conteneur Debian (Trixie) avec Visual Studio Code.
-- `.vscode/`: Contient les paramètres recommandés pour Visual Studio Code.
-- `.gitignore`: Fichier de configuration pour Git, spécifiant les fichiers et
-  dossiers à ignorer.
-- `compose.yaml`: Fichier de configuration pour Docker Compose, définissant les
-  services nécessaires pour le projet, avec :
-  - [Apache](https://httpd.apache.org/) : Serveur web pour exécuter les fichiers
-    PHP.
-  - [MariaDB](https://mariadb.org/) : Base de données relationnelle.
-  - [phpMyAdmin](https://www.phpmyadmin.net/) : Interface web pour gérer la base
-    de données MariaDB.
-  - [Mailpit](https://mailpit.axllent.org/) : Serveur SMTP pour tester l'envoi
-    d'e-mails.
-
-- `index.php`: Fichier PHP principal du projet.
-- `script.sql`: Fichier SQL pour créer la table `my_table` dans la base de
-  données.
-- `README.md`: Ce fichier de documentation.
-
 ```shell
-
-D:\
+.
 ├── .devcontainer/  #Contient la configuration pour le développement dans un conteneur Debian (Trixie) avec Visual Studio Code.
-├── compose.yaml  #Fichier de configuration pour Docker Compose
-├── .vscode/ #Contient les paramètres recommandés pour Visual Studio Code.
+├── .gitignore  
+├── .vscode/    #Contient les paramètres recommandés pour Visual Studio Code.
+├── AI-USAGE.md #Déclaration d'usage de l'IA
+├── CAHIER-DES-CHARGES.md
+├── LICENSE.md
+├── README.md
+├── compose.yaml #Fichier de configuration pour Docker Compose
 ├── diagrams/
 ├── mockups/
-├── .github/  # Automatisation Github
-│   └── workflows/
-│       └── deploy.yml
-├── .gitignore
-├── .env.example
 └── project/
-    ├── public/                 # Seule racine accessible au public
+    ├── components/ #Composants PHP internes
+    ├── config/
+    │   ├── database.ini    #Doit être créer et compléter à la main
+    │   └── database.ini.exemple    #exemple de fichier de configuration (mot de passe, etc...) pour la base de donnée
+    ├── public/  #Seule racine accessible au public
+    │   ├── .htaccess   #Configuration serveur
     │   ├── index.php
-    │   ├── .htaccess
-    │   └── assets/
-    │       ├── css/
-    │       ├── js/
-    │       └── images/
-    ├── components/             # Composants PHP internes
-    ├── src/                    # Logique métier
-    │   ├── db/
-    │   │   └── Database.php
-    │   ├── Controllers/
-    │   ├── Services/
-    │   └── Middleware/
-    ├── database/               # Migrations et scripts SQL
-    ├── tests/
-    └── vendor/                 # Si Composer est utilisé
-
+    └── src/    # Logique métier
+        ├── constants.php
+        ├── db 
+        ├── functions.php
+        └── init.php
 ```
+
+
+> `compose.yaml`: Fichier de configuration pour Docker Compose, définissant les
+>  services nécessaires pour le projet, avec :
+> - [Apache](https://httpd.apache.org/) : Serveur web pour exécuter les fichiers
+>   PHP.
+> - [MariaDB](https://mariadb.org/) : Base de données relationnelle.
+> - [phpMyAdmin](https://www.phpmyadmin.net/) : Interface web pour gérer la base
+>   de données MariaDB.
+> - [Mailpit](https://mailpit.axllent.org/) : Serveur SMTP pour tester l'envoi
+>   d'e-mails.
+
 
 # Développement
 
@@ -147,6 +132,14 @@ Si aucune notification n'apparaît, vous pouvez ouvrir manuellement le conteneur
 en utilisant la commande _"Dev Containers: Reopen in Container"_ dans la palette
 de commandes (<kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>P</kbd> sur Windows/Linux ou
 <kbd>Cmd</kbd>+<kbd>Shift</kbd>+<kbd>P</kbd> sur macOS).
+
+## Paramétrer les informations de configuration
+Dans le dossier `project/config` se trouve différents documents de configuration qui représente des informations d'accès notamment à des bases de données ou serveur mail. 
+
+Dupliquer le fichier `database.ini.exemple` renommez le sans le .exemple (exemple `database.ini`).
+Copier les informations relatives à la base de données, si vous utiliser Docker vous trouverez ses informations dans le fichier `compose.yaml`.
+Faites de même pour tous les fichiers finissant par .exemple dans le dossier `project/config`.
+
 
 ## Démarrer les services Docker
 
@@ -234,51 +227,68 @@ redémarrés.
 
 # Production
 
-À compléter
+Cette partie explique de quel manière ajouter le projet dans un serveur web contenant la configuration près établie.
 
 ## 1. Préparer les fichiers à déployer
 
+Commencez par vous connecter via l'interface de votre client FTP/SFTP sur votre serveur.
+Déplacez\-vous dans le dossier de votre serveur, par exemple `~/sites/HEIG-ProgServ.domaine.ch/`. 
+Créez un dossier au nom de votre projet.
+Importez dans ce dossier, le dossier `project/` et tout ce qui se trouve à l'intérieur de votre projet en local.
+
+> Attention à importer une version stable du projet de préférence la dernière version de votre branche main.
+
 Exemple d'organisation côté serveur :
 
-```text
-application/
-├── private/
-│   ├── src/
-│   ├── components/
-│   ├── database/
-│   └── vendor/
-└── public/
-    ├── index.php
-    ├── .htaccess
-    └── assets/
+```shell
+~/sites/HEIG-ProgServ.domaine.ch/
+└── mon-projet/
+    └── project/
+        ├── components/ #Composants PHP internes
+        ├── config/
+        │   ├── database.ini    #Doit être créer et compléter à la main
+        │   └── database.ini.exemple    #exemple de fichier de configuration (mot de passe, etc...) pour la base de donnée
+        ├── public/  #Seule racine accessible au public
+        │   ├── .htaccess   #Configuration serveur
+        │   ├── index.php
+        └── src/    # Logique métier
+            ├── constants.php
+            ├── db 
+            ├── functions.php
+            └── init.php
 ```
 
-## Configurer les variables d'environnement
+## 2. Configurer les variables d'environnement
 
-Variables possibles :
+Depuis votre service FTP/SFTP ouvrez le fichier `database.ini` et éditez les informations en fonction de ce que vous avez défini chez votre hébergeur.
 
-```dotenv
-APP_ENV=production
-APP_DEBUG=false
+```shell
+host = "mariadb.infomaniak.com"
+port = 3306
+database = "gatherly"
+username = "username"
+password = "password"
 
-DB_HOST=
-DB_NAME=
-DB_USER=
-DB_PASSWORD=
-
-SMTP_HOST=
-SMTP_PORT=
-SMTP_USER=
-SMTP_PASSWORD=
-SMTP_FROM=
 ```
 
 Les valeurs ci-dessus sont des exemples de noms de variables. Les valeurs
 réelles doivent être obtenues auprès de l'hébergeur ou du fournisseur SMTP.
 
-# GitHub Actions
+## 3. Sécurisation
+*Database*
 
-To complete
+Votre utilisateur de base de données ne doit avoir *uniquement* les doits suivants : 
+- Lecture
+- Écriture
+
+Toute autre droit peut éventuellement permettre des modifications non voulues,
+
+
+
+*Emplacement du site*
+
+Dans les paramètres de votre site sur le site de votre hébergeur, changer le chemin ou l'emplacement du site pour qu'il pointe sur votre dossier public. Ce paramètre peut être caché dans les paramètres avancés. 
+Exemple de chemin : `~/sites/HEIG-ProgServ.domaine.ch/mon-projet/projet/public`
 
 # Contact
 
