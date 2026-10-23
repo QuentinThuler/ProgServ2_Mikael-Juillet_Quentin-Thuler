@@ -1,72 +1,107 @@
-# HEIG-VD ProgServ2 Course PHP Template
+# HEIG-VD ProgServ2 - Project Gatherly
 
-Ce modèle de projet est conçu pour les étudiant.es du cours
+Ce projet a pour base
 [_"Programmation Serveur 2 (ProgServ2)"_](https://github.com/heig-vd-progserv-course/heig-vd-progserv2-course)
 à la [HEIG-VD](https://heig-vd.ch).
 
-Il fournit une structure de base pour les projets PHP avec les éléments suivants
-:
+## Contexte du projet
 
-- Un serveur [Apache](https://httpd.apache.org/) avec
-  [PHP 8.5](https://www.php.net/) et les extensions nécessaires pour se
-  connecter à une base de données [MariaDB](https://mariadb.org/).
-- Une base de données [MariaDB](https://mariadb.org/) préconfigurée avec un
-  utilisateur et un mot de passe par défaut. Dans vos scripts PHP, utilisez le
-  nom d'hôte `mariadb` et les identifiants définis dans le fichier
-  `compose.yaml`.
-- Une interface web [phpMyAdmin](https://www.phpmyadmin.net/) pour gérer la base
-  de données MariaDB en utilisant les mêmes identifiants que ceux définis dans
-  le fichier `compose.yaml`.
-- Un serveur SMTP [Mailpit](https://mailpit.axllent.org/) pour tester l'envoi
-  d'e-mails depuis votre application PHP.
-- Des configurations recommandées pour l'éditeur de code
-  [Visual Studio Code](https://code.visualstudio.com/), y compris des extensions
-  utiles pour le développement PHP et la gestion de bases de données
-  ([PHP Intelephense](https://marketplace.visualstudio.com/items?itemName=bmewburn.vscode-intelephense-client),
-  [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode),
-  [SQLite Viewer](https://marketplace.visualstudio.com/items?itemName=qwtel.sqlite-viewer)).
+Gatherly est une application de gestion d'événements destinée aux associations.
+Elle permet de présenter les événements de l'année et aux visiteurs de s'y
+inscrire en renseignant leur adresse e-mail.
 
-Tous ses éléments sont configurés pour fonctionner avec
-[Docker Compose](https://docs.docker.com/compose/), ce qui permet de créer un
-environnement de développement isolé et reproductible.
+L'objectif est de fournir aux associations un moyen simple d'estimer le nombre
+de participants à un événement afin de faciliter son organisation.
 
-N'hésitez pas à personnaliser ce modèle et ce document pour ajouter des
-instructions spécifiques à votre projet ou des détails supplémentaires sur la
-configuration et l'utilisation du projet.
+L'application vise également à centraliser les inscriptions générées par
+différents canaux de communication. Elle doit permettre de mesurer l'efficacité
+des campagnes promotionnelles et l'intérêt suscité par chaque événement,
+notamment à des fins de reporting.
 
-## Utiliser ce modèle pour votre projet
+Pour plus de détails, consultez le [cahier des charges](CAHIER-DES-CHARGES.md).
 
-1. Cliquez sur le bouton "Use this template" (Utiliser ce modèle) sur la page
-   GitHub de ce dépôt.
-2. Donnez un nom à votre nouveau dépôt et configurez les options selon vos
-   préférences.
-3. Invitez les membres de votre équipe à collaborer sur le projet en leur
-   donnant accès au dépôt (si applicable).
-4. Chaque membre de l'équipe doit cloner le nouveau dépôt sur sa machine locale
-   pour commencer à travailler sur le projet.
-5. Utilisez le workflow GitHub étudié en cours pour gérer les branches, les
-   commits et les pull requests afin de collaborer efficacement sur le projet.
+## Prérequis
+
+### Développement
+
+Les outils suivants sont nécessaires au développement du projet :
+
+- [Visual Studio Code](https://code.visualstudio.com/), version 1.1 ou
+  ultérieure.
+- [Docker](https://www.docker.com/), version 29 ou ultérieure, avec Docker
+  Compose.
+- [Git](https://git-scm.com/) pour récupérer le dépôt et gérer les
+  modifications.
+
+Les versions indiquées constituent les versions minimales prévues pour le
+projet. Une version plus récente peut être nécessaire selon les fonctionnalités
+utilisées.
+
+#### Extensions Visual Studio Code recommandées
+
+- [PHP Intelephense](https://marketplace.visualstudio.com/items?itemName=bmewburn.vscode-intelephense-client)
+  : analyse du code PHP et autocomplétion.
+- [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
+  : formatage du code pris en charge.
+- [SQLite Viewer](https://marketplace.visualstudio.com/items?itemName=qwtel.sqlite-viewer)
+  : consultation de bases SQLite, si nécessaire.
+- [Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
+  : ouverture du projet dans un conteneur de développement.
+
+### Production
+
+Dépendances et versions nécessaires pour ce projet :
+
+- Un serveur [Apache 2.4 ou plus tard](https://httpd.apache.org/) avec
+  [PHP 8.5 ou plus tard](https://www.php.net/) et les extensions nécessaires
+  pour se connecter à une base de données [MariaDB](https://mariadb.org/).
+- Une base de données [MariaDB 10.6 ou plus tard](https://mariadb.org/)
+- **Envoi d'e-mails** : un service SMTP accessible (par exemple Infomaniak),
+  avec une adresse e-mail valide et ses identifiants, est nécessaire si
+  l'application doit envoyer des e-mails en production.
 
 ## Structure du projet
 
-- `.devcontainer/`: Contient la configuration pour le développement dans un
-  conteneur Debian (Trixie) avec Visual Studio Code.
-- `.vscode/`: Contient les paramètres recommandés pour Visual Studio Code.
-- `.gitignore`: Fichier de configuration pour Git, spécifiant les fichiers et
-  dossiers à ignorer.
-- `compose.yaml`: Fichier de configuration pour Docker Compose, définissant les
-  services nécessaires pour le projet, avec :
-  - [Apache](https://httpd.apache.org/) : Serveur web pour exécuter les fichiers
-    PHP.
-  - [MariaDB](https://mariadb.org/) : Base de données relationnelle.
-  - [phpMyAdmin](https://www.phpmyadmin.net/) : Interface web pour gérer la base
-    de données MariaDB.
-  - [Mailpit](https://mailpit.axllent.org/) : Serveur SMTP pour tester l'envoi
-    d'e-mails.
-- `index.php`: Fichier PHP principal du projet.
-- `script.sql`: Fichier SQL pour créer la table `my_table` dans la base de
-  données.
-- `README.md`: Ce fichier de documentation.
+```shell
+.
+├── .devcontainer/  #Contient la configuration pour le développement dans un conteneur Debian (Trixie) avec Visual Studio Code.
+├── .gitignore  
+├── .vscode/    #Contient les paramètres recommandés pour Visual Studio Code.
+├── AI-USAGE.md #Déclaration d'usage de l'IA
+├── CAHIER-DES-CHARGES.md
+├── LICENSE.md
+├── README.md
+├── compose.yaml #Fichier de configuration pour Docker Compose
+├── diagrams/
+├── mockups/
+└── project/
+    ├── components/ #Composants PHP internes
+    ├── config/
+    │   ├── database.ini    #Doit être créer et compléter à la main
+    │   └── database.ini.exemple    #exemple de fichier de configuration (mot de passe, etc...) pour la base de donnée
+    ├── public/  #Seule racine accessible au public
+    │   ├── .htaccess   #Configuration serveur
+    │   ├── index.php
+    └── src/    # Logique métier
+        ├── constants.php
+        ├── db 
+        ├── functions.php
+        └── init.php
+```
+
+
+> `compose.yaml`: Fichier de configuration pour Docker Compose, définissant les
+>  services nécessaires pour le projet, avec :
+> - [Apache](https://httpd.apache.org/) : Serveur web pour exécuter les fichiers
+>   PHP.
+> - [MariaDB](https://mariadb.org/) : Base de données relationnelle.
+> - [phpMyAdmin](https://www.phpmyadmin.net/) : Interface web pour gérer la base
+>   de données MariaDB.
+> - [Mailpit](https://mailpit.axllent.org/) : Serveur SMTP pour tester l'envoi
+>   d'e-mails.
+
+
+# Développement
 
 ## Ouvrir le projet localement
 
@@ -98,6 +133,14 @@ en utilisant la commande _"Dev Containers: Reopen in Container"_ dans la palette
 de commandes (<kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>P</kbd> sur Windows/Linux ou
 <kbd>Cmd</kbd>+<kbd>Shift</kbd>+<kbd>P</kbd> sur macOS).
 
+## Paramétrer les informations de configuration
+Dans le dossier `project/config` se trouve différents documents de configuration qui représente des informations d'accès notamment à des bases de données ou serveur mail. 
+
+Dupliquer le fichier `database.ini.exemple` renommez le sans le .exemple (exemple `database.ini`).
+Copier les informations relatives à la base de données, si vous utiliser Docker vous trouverez ses informations dans le fichier `compose.yaml`.
+Faites de même pour tous les fichiers finissant par .exemple dans le dossier `project/config`.
+
+
 ## Démarrer les services Docker
 
 Pour démarrer les services Docker nécessaires à développer des applications PHP,
@@ -117,9 +160,6 @@ Ceci va démarrer les services suivants dans des conteneurs Docker :
 - Mailpit (ports 1025 et 8025) : Serveur SMTP pour tester l'envoi d'e-mails.
 
 ## Se connecter à la base de données MariaDB avec phpMyAdmin
-
-La configuration Docker Compose inclut également phpMyAdmin, un outil web pour
-gérer les bases de données MariaDB.
 
 Pour accéder à phpMyAdmin, ouvrez votre navigateur et rendez-vous à l'adresse
 suivante : <http://localhost:9090>.
@@ -142,33 +182,13 @@ effectuer d'autres opérations sur la base de données.
    SQL depuis le fichier `script.sql` et l'exécuter pour appliquer les
    modifications à la base de données.
 
-## Voir les données de la table `my_table`
-
-Une fois le ou les scripts SQL exécutés, vous pouvez vérifier que les données
-ont été correctement insérées dans la table `my_table` dans le menu latéral
-gauche de phpMyAdmin. Cliquez sur le nom de la base de données, puis sur le nom
-de la table pour voir les données.
+À noter que des fichiers de population automatique de la base de données sont
+automatiquement importés lors de la création du conteneur.
 
 ## Exécuter vos scripts PHP
 
-La configuration Docker Compose inclut un serveur web Apache avec PHP, ce qui
-vous permet d'exécuter vos scripts PHP directement dans le conteneur.
-
-Le serveur sera accessible à l'adresse <http://localhost:8080> dans votre
+Le serveur web sera accessible à l'adresse <http://localhost:8080> dans votre
 navigateur.
-
-La liste des fichiers PHP disponibles sera affichée, et vous pourrez cliquer sur
-un fichier pour l'exécuter.
-
-Les scripts PHP peuvent se connecter à la base de données MariaDB en utilisant
-le nom d'hôte `mariadb` et les identifiants définis dans le fichier
-`compose.yaml`.
-
-En accédant à l'adresse <http://localhost:8080/public/index.php>, vous pourrez
-exécuter le script PHP principal du projet.
-
-La page d'accueil de démonstration affiche un message de bienvenue et utilise la
-base de données MariaDB pour afficher les données de la table `my_table`.
 
 ## Visualiser les e-mails envoyés par votre application PHP
 
@@ -204,3 +224,77 @@ Lorsque vous fermez Visual Studio Code, les conteneurs Docker seront
 automatiquement arrêtés. Dès que vous rouvrez Visual Studio Code et que vous
 exécutez à nouveau la commande `docker compose up`, les services Docker seront
 redémarrés.
+
+# Production
+
+Cette partie explique de quel manière ajouter le projet dans un serveur web contenant la configuration près établie.
+
+## 1. Préparer les fichiers à déployer
+
+Commencez par vous connecter via l'interface de votre client FTP/SFTP sur votre serveur.
+Déplacez\-vous dans le dossier de votre serveur, par exemple `~/sites/HEIG-ProgServ.domaine.ch/`. 
+Créez un dossier au nom de votre projet.
+Importez dans ce dossier, le dossier `project/` et tout ce qui se trouve à l'intérieur de votre projet en local.
+
+> Attention à importer une version stable du projet de préférence la dernière version de votre branche main.
+
+Exemple d'organisation côté serveur :
+
+```shell
+~/sites/HEIG-ProgServ.domaine.ch/
+└── mon-projet/
+    └── project/
+        ├── components/ #Composants PHP internes
+        ├── config/
+        │   ├── database.ini    #Doit être créer et compléter à la main
+        │   └── database.ini.exemple    #exemple de fichier de configuration (mot de passe, etc...) pour la base de donnée
+        ├── public/  #Seule racine accessible au public
+        │   ├── .htaccess   #Configuration serveur
+        │   ├── index.php
+        └── src/    # Logique métier
+            ├── constants.php
+            ├── db 
+            ├── functions.php
+            └── init.php
+```
+
+## 2. Configurer les variables d'environnement
+
+Depuis votre service FTP/SFTP ouvrez le fichier `database.ini` et éditez les informations en fonction de ce que vous avez défini chez votre hébergeur.
+
+```shell
+host = "mariadb.infomaniak.com"
+port = 3306
+database = "gatherly"
+username = "username"
+password = "password"
+
+```
+
+Les valeurs ci-dessus sont des exemples de noms de variables. Les valeurs
+réelles doivent être obtenues auprès de l'hébergeur ou du fournisseur SMTP.
+
+## 3. Sécurisation
+*Database*
+
+Votre utilisateur de base de données ne doit avoir *uniquement* les doits suivants : 
+- Lecture
+- Écriture
+
+Toute autre droit peut éventuellement permettre des modifications non voulues,
+
+
+
+*Emplacement du site*
+
+Dans les paramètres de votre site sur le site de votre hébergeur, changer le chemin ou l'emplacement du site pour qu'il pointe sur votre dossier public. Ce paramètre peut être caché dans les paramètres avancés. 
+Exemple de chemin : `~/sites/HEIG-ProgServ.domaine.ch/mon-projet/projet/public`
+
+# Contact
+
+Si vous avez des questions, vous pouvez nous contacter en créant une Issue.
+
+# Licence
+
+Ce matériel est mis à disposition sous licence
+[Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/).

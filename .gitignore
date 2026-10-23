@@ -12,3 +12,5 @@ Thumbs.db
 
 # Folder config file
 [Dd]esktop.ini
+
+*.ini
