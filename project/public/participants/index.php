@@ -1,6 +1,5 @@
 <?php
 
-require_once __DIR__ . '/../../src/db/database.php';
 require_once __DIR__ . '/../../src/participants/Participant.php';
 require_once __DIR__ . '/../../src/participants/ParticipantRequests.php';
 require_once __DIR__ . '/../../src/participants/ParticipantController.php';
@@ -8,8 +7,7 @@ require_once __DIR__ . '/../../src/participants/ParticipantController.php';
 $errors = [];
 
 try {
-    $pdo = Database::getInstance()->getConnection();
-
+    require_once __DIR__ . '/../../src/init.php';
     $requests = new ParticipantRequests($pdo);
     $controller = new ParticipantController($requests);
 
@@ -24,28 +22,43 @@ try {
 
 ?>
 
-<h1>Participants</h1>
+<!DOCTYPE html>
+<html lang="fr">
 
-<?php if (!empty($errors)): ?>
+<?php require_once __DIR__ . '/../../components/head.php' ?>
 
-    <?php foreach ($errors as $error): ?>
-        <p role="alert">
-            <?= htmlspecialchars($error) ?>
-        </p>
-    <?php endforeach; ?>
+<body>
+    <main>
+        <?php require_once __DIR__ . '/../../components/header.php' ?>
 
-<?php elseif (empty($participants)): ?>
+        <h1>Participants</h1>
 
-    <p>Aucun participant pour le moment.</p>
+        <?php if (!empty($errors)): ?>
 
-<?php else: ?>
+            <?php foreach ($errors as $error): ?>
+                <p role="alert">
+                    <?= htmlspecialchars($error) ?>
+                </p>
+            <?php endforeach; ?>
 
-    <ul>
-        <?php foreach ($participants as $participant): ?>
-            <li>
-                <?= htmlspecialchars($participant->getEmail()) ?>
-            </li>
-        <?php endforeach; ?>
-    </ul>
+        <?php elseif (empty($participants)): ?>
 
-<?php endif; ?>
+            <p>Aucun participant pour le moment.</p>
+
+        <?php else: ?>
+
+            <ul>
+                <?php foreach ($participants as $participant): ?>
+                    <li>
+                        <?= htmlspecialchars($participant->getEmail()) ?>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
+
+        <?php endif; ?>
+
+    </main>
+    <?php require_once __DIR__ . '/../../components/footer.php' ?>
+</body>
+
+</html>
