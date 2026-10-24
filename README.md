@@ -290,6 +290,12 @@ Toute autre droit peut éventuellement permettre des modifications non voulues,
 Dans les paramètres de votre site sur le site de votre hébergeur, changer le chemin ou l'emplacement du site pour qu'il pointe sur votre dossier public. Ce paramètre peut être caché dans les paramètres avancés. 
 Exemple de chemin : `~/sites/HEIG-ProgServ.domaine.ch/mon-projet/projet/public`
 
+
+*Sessions*
+
+Dans le document `ini.php` décomentez la ligne `'secure' => true`.
+ > // 'secure' => true,  // to be activated when switching to HTTPS
+
 # Contact
 
 Si vous avez des questions, vous pouvez nous contacter en créant une Issue.
