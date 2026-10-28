@@ -1,66 +1,43 @@
 <?php
 require_once __DIR__ . '/../../src/init.php';
+require_once __DIR__ . '/../../src/Event/EventController.php';
+require_once __DIR__ . '/../../src/Event/EventRequests.php';
+
 /* requireAdmin(); */
-/* $_SESSION['user_id'] ??= 1; */
+$_SESSION['user_id'] ??= 1; // Pour le test si besoin
 
 $pageTitle = "Créer un Évènement";
 
-// Définition des valeurs par défaut de l'évènement
-$title = $_POST["title"] ?? '';
-$description = $_POST["description"] ?? '';
-$tagline = $_POST["tagline"] ?? '';
-$address = $_POST["address"] ?? '';
-$city = $_POST["city"] ?? '';
-$room = $_POST["room"] ?? '';
-$date_time = $_POST["date_time"] ?? '';
+// Initialisation des dépendances orientées objet
+$eventRequests = new Eventrequests($pdo); // Supposant que $pdo est déjà initialisé dans init.php
+$eventController = new EventController($eventRequests);
+
+// Valeurs par défaut du formulaire
+$title = '';
+$description = '';
+$tagline = '';
+$address = '';
+$city = '';
+$room = '';
+$date_time = '';
+$errors = [];
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $imageFile = IMAGE_UPLOAD_ENABLED ? ($_FILES['image'] ?? null) : null;
+    $imageFile = $_FILES['image'] ?? null;
+    $result = $eventController->store($_POST, $imageFile, $_SESSION['user_id']);
 
-    // Validation de l'évènement
-    $errors = validateEvent(
-        $title,
-        $description,
-        $tagline,
-        $address,
-        $city,
-        $room,
-        $date_time,
-        $imageFile,
-    );
+    $errors = $result['errors'];
+    $inputs = $result['inputs'];
 
-    $imagePath = null;
-    if (empty($errors) && $imageFile !== null && $imageFile['error'] === UPLOAD_ERR_OK) {
-        $imagePath = saveEventImage($imageFile);
-        if ($imagePath === null) {
-            $errors[] = "Impossible d'enregistrer l'image.";
-        }
-    }
-
-    if (empty($errors)) {
-        $newEventId = addEvent(
-            $pdo,
-            $title,
-            $description,
-            $tagline,
-            $address,
-            $city,
-            $room ?: null,
-            (new DateTime($date_time))->format('Y-m-d H:i:s'),
-            $imagePath,
-            $_SESSION['user_id']
-        );
-
-        if ($newEventId !== null) {
-            header('Location: ./view.php?id=' . $newEventId);
-            exit;
-        }
-
-        $errors[] = "Une erreur est survenue lors de l'ajout de l'évènement.";
-    }
+    // Réaffectation pour réinjecter les valeurs saisies en cas d'erreur
+    $title = $inputs['title'];
+    $description = $inputs['description'];
+    $tagline = $inputs['tagline'];
+    $address = $inputs['address'];
+    $city = $inputs['city'];
+    $room = $inputs['room'];
+    $date_time = $inputs['date_time'];
 }
-
-
 ?>
 
 <!DOCTYPE html>
@@ -73,92 +50,44 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <?php require __DIR__ . '/../../components/header.php' ?>
 
     <main>
-        <?php if ($_SERVER["REQUEST_METHOD"] === "POST") { ?>
-            <?php if (!empty($errors)) { ?>
-                <p style="color: red;">Le formulaire contient des erreurs :</p>
-                <ul>
-                    <?php foreach ($errors as $error) { ?>
-                        <li><?= $error ?></li>
-                    <?php } ?>
-                </ul>
-            <?php } ?>
-        <?php } ?>
+        <?php if (!empty($errors)): ?>
+            <p style="color: red;">Le formulaire contient des erreurs :</p>
+            <ul>
+                <?php foreach ($errors as $error): ?>
+                    <li><?= htmlspecialchars($error) ?></li>
+                <?php endforeach; ?>
+            </ul>
+        <?php endif; ?>
+
         <form action="./create.php" method="POST" enctype="multipart/form-data">
             <label for="title">Titre*</label>
-            <input
-                type="text"
-                id="title"
-                name="title"
-                value="<?= htmlspecialchars($title) ?>"
-                required
-                maxlength="255" />
+            <input type="text" id="title" name="title" value="<?= htmlspecialchars($title) ?>" required maxlength="255" />
 
-            <label for="">Description*</label>
-            <input
-                type="text"
-                id="description"
-                name="description"
-                value="<?= htmlspecialchars($description) ?>"
-                required
-                maxlength="500" />
+            <label for="description">Description*</label>
+            <input type="text" id="description" name="description" value="<?= htmlspecialchars($description) ?>" required maxlength="500" />
 
-            <label for="">Phrase d'accroche (max 80 caractères)*</label>
-            <input
-                type="text"
-                id="tagline"
-                name="tagline"
-                value="<?= htmlspecialchars($tagline) ?>"
-                required
-                maxlength="80" />
+            <label for="tagline">Phrase d'accroche (max 80 caractères)*</label>
+            <input type="text" id="tagline" name="tagline" value="<?= htmlspecialchars($tagline) ?>" required maxlength="80" />
 
-            <label for="">Adresse*</label>
-            <input
-                type="text"
-                id="address"
-                name="address"
-                value="<?= htmlspecialchars($address) ?>"
-                required
-                minlength="5"
-                maxlength="60" />
+            <label for="address">Adresse*</label>
+            <input type="text" id="address" name="address" value="<?= htmlspecialchars($address) ?>" required minlength="5" maxlength="60" />
 
-            <label for="">Ville*</label>
-            <input
-                type="text"
-                id="city"
-                name="city"
-                value="<?= htmlspecialchars($city) ?>"
-                required
-                maxlength="40" />
+            <label for="city">Ville*</label>
+            <input type="text" id="city" name="city" value="<?= htmlspecialchars($city) ?>" required maxlength="40" />
 
-            <label for="">Salle</label>
-            <input
-                type="text"
-                id="room"
-                name="room"
-                value="<?= htmlspecialchars($room) ?>"
-                maxlength="20" />
+            <label for="room">Salle</label>
+            <input type="text" id="room" name="room" value="<?= htmlspecialchars($room) ?>" maxlength="20" />
 
-            <label for="">Date et heure*</label>
-            <input
-                type="datetime-local"
-                id="date_time"
-                name="date_time"
-                value="<?= htmlspecialchars($date_time) ?>"
-                required />
+            <label for="date_time">Date et heure*</label>
+            <input type="datetime-local" id="date_time" name="date_time" value="<?= htmlspecialchars($date_time) ?>" required />
 
-            <?php if (IMAGE_UPLOAD_ENABLED) { ?>
-                <label for="">Image</label>
-                <input
-                    type="file"
-                    id="image"
-                    name="image"
-                    value="<?= htmlspecialchars($imageFile) ?>"
-                    accept="image/png, image/jpeg, image/jpg" />
-            <?php } ?>
+            <?php if (defined('IMAGE_UPLOAD_ENABLED') && IMAGE_UPLOAD_ENABLED): ?>
+                <label for="image">Image</label>
+                <input type="file" id="image" name="image" accept="image/png, image/jpeg, image/jpg" />
+            <?php endif; ?>
 
             <button type="submit">Ajouter l'évènement</button>
         </form>
-
     </main>
 
     <?php require __DIR__ . '/../../components/footer.php' ?>

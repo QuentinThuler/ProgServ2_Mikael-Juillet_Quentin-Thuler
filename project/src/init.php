@@ -33,8 +33,6 @@ function requireAdmin(): void {
     }
 }
 
-const IMAGE_UPLOAD_ENABLED = false;
-
 // --- Base de données -------------------------------------------------------
 $dbHost = getenv('DB_HOST') ?: 'mariadb';
 $dbPort = getenv('DB_PORT') ?: '3306';
@@ -60,3 +58,4 @@ try {
 }
 
 require_once __DIR__ . '/functions.php';
+require_once __DIR__ . '/constants.php';
