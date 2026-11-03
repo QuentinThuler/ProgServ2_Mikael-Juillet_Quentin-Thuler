@@ -19,7 +19,7 @@ class EventRequests {
         ?string $imagePath,
         int $creatorId
     ): ?int {
-        $sql = "INSERT INTO evenements (titre, description, phrase_accroche, adresse, ville, salle, date_et_heure, image, createur_id) 
+        $sql = "INSERT INTO events (title, description, tagline, address, city, room, date_time, image, created_by) 
                 VALUES (:title, :description, :tagline, :address, :city, :room, :date_time, :image, :creator_id)";
 
         $stmt = $this->pdo->prepare($sql);

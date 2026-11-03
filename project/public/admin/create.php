@@ -81,10 +81,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <label for="date_time">Date et heure*</label>
             <input type="datetime-local" id="date_time" name="date_time" value="<?= htmlspecialchars($date_time) ?>" required />
 
-            <?php if (defined('IMAGE_UPLOAD_ENABLED') && IMAGE_UPLOAD_ENABLED): ?>
-                <label for="image">Image</label>
-                <input type="file" id="image" name="image" accept="image/png, image/jpeg, image/jpg" />
-            <?php endif; ?>
+            <label for="image">Image</label>
+            <input type="file" id="image" name="image" accept="image/png, image/jpeg, image/jpg" />
 
             <button type="submit">Ajouter l'évènement</button>
         </form>
