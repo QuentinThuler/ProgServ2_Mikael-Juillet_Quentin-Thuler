@@ -1,0 +1,15 @@
+# Disable listing files in a directory.
+Options -Indexes
+
+# Set the default home page.
+DirectoryIndex index.php
+
+# Block hidden files starting with a dot.
+<FilesMatch “^\.”>
+    Require all denied
+</FilesMatch>
+
+# Block certain sensitive files.
+<FilesMatch “\.(sql|ini|log|conf|dist|)$”>
+    Require all denied
+</FilesMatch>
