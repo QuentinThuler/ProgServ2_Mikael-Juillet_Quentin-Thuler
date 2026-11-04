@@ -31,6 +31,16 @@ class ParticipantRequests {
 
     public function create(Participant $participant): void {
 
+        $sql = '
+            INSERT INTO participants (email)
+            VALUES (:email)
+        ';
+
+        $statement = $this->connection->prepare($sql);
+
+        $statement->execute([
+            'email' => $participant->getEmail()
+        ]);
     }
 
 }
