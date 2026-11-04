@@ -19,7 +19,7 @@ class EventController {
         $room = $postData["room"] ?? '';
         $date_time = $postData["date_time"] ?? '';
 
-        // Validation (vous conservez votre logique de validation existante)
+        // Validation
         $imageUpload = IMAGE_UPLOAD_ENABLED ? ($imageFile ?? null) : null;
         $errors = validateEvent(
             $title,
