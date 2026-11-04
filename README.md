@@ -220,6 +220,11 @@ intégré dans Visual Studio Code et en exécutant la commande suivante :
 docker compose down
 ```
 
+```bash
+# Arrête tous les services définis dans le fichier compose.yaml et supprime
+docker compose down -v
+```
+
 Lorsque vous fermez Visual Studio Code, les conteneurs Docker seront
 automatiquement arrêtés. Dès que vous rouvrez Visual Studio Code et que vous
 exécutez à nouveau la commande `docker compose up`, les services Docker seront
