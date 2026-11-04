@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 class Participant {
     private int $id;
@@ -11,11 +11,16 @@ class Participant {
         $this->email = $email;
     }
 
-    public function setParticipantAllValues(int $id, string $email, bool $isConfirmed, ?string $tokenHash, ?DateTime $tokenExpiresAt): void {
+    public function setParticipantAllValues(int $id, bool $isConfirmed, ?string $tokenHash, ?DateTime $tokenExpiresAt): void {
         $this->id = $id;
         $this->isConfirmed = $isConfirmed;
         $this->tokenHash = $tokenHash;
         $this->tokenExpiresAt = $tokenExpiresAt;
+    }
+
+    public function setToken(string $tokenHash): void {
+        $this->tokenHash = $tokenHash;
+        $this->tokenExpiresAt = new DateTime('+3 hours');
     }
 
     public function getId(): int {
