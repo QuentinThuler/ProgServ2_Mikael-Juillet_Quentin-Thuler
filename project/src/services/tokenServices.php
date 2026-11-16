@@ -24,3 +24,14 @@ function generateToken(int $length): string {
     // substr cut to the actual number wanted of char
     return substr(bin2hex(random_bytes($length)), 0, $length);
 }
+
+/**
+ * compareToken : compare a token with a hash of token.
+ *
+ * @param string $token given
+ * @param string $tokenHash hash of the token given
+ * @return bool true if the token is the same as the hash, false otherwise
+ */
+function compareToken(string $token, string $tokenHash): bool {
+    return hash_equals(encriptToken($token), $tokenHash);
+}

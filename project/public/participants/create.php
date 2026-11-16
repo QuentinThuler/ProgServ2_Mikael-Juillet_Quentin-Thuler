@@ -13,9 +13,14 @@ try {
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $email = $_POST['email'] ?? '';
+
         $controller->create($email);
+
+        header(
+            'Location: validate.php?email=' . urlencode(trim($email))
+        );
+        exit;
     }
-    
 } catch (PDOException $e) {
     error_log("Database error: " . $e->getMessage());
     $errors[] = "Une erreur interne s'est produite. Veuillez réessayer plus tard.";

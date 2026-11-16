@@ -16,9 +16,7 @@ class ParticipantController {
 
         $email = trim($email);
 
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            throw new InvalidArgumentException('L’adresse e-mail est invalide.');
-        }
+        $this->validateEmail($email);
 
         $participant = new Participant($email);
         $existingParticipant = $this->participantRequests->getParticipantByEmail($email);
@@ -40,12 +38,39 @@ class ParticipantController {
     }
 
     public function validateToken(string $email, string $token): void {
-        /* 
-        in an other form file add a validation (add hiden email /and event id.)
-        hash token 
-        get participant, check if there token and if it is the same token 
-        update status, validate 
-        how to link event and participan
-        */
+        $email = trim($email);
+        $token = trim($token);
+
+        $this->validateEmail($email);
+
+        // Vérifie le format du code généré.
+        if (strlen($token) !== 6) {
+            throw new InvalidArgumentException('Le code de vérification est invalide.');
+        }
+
+        $participant = $this->participantRequests->getParticipantByEmail($email);
+
+        if (!$participant) {
+            throw new InvalidArgumentException('Aucun participant trouvé pour cet e-mail.');
+        }
+
+        if ($participant->getTokenExpiresAt() > new DateTime() && compareToken($token, $participant->getTokenHash())) {
+            // TODO : Valider l'inscription du participant.
+            $participant->setParticipantAllValues(
+                $participant->getId(),
+                true,
+                null,
+                null
+            );
+            $this->participantRequests->updateToken($participant);
+        } else {
+            throw new InvalidArgumentException('Code incorrect ou expiré. Veuillez vérifier votre code.');
+        }
+    }
+
+    private function validateEmail(string $email): void {
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            throw new InvalidArgumentException('Adresse e-mail invalide.');
+        }
     }
 }

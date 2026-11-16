@@ -3,7 +3,7 @@
 class Participant {
     private int $id;
     private string $email;
-    private bool $isConfirmed;
+    private bool $isConfirmed = false;
     private ?string $tokenHash = null;
     private ?DateTime $tokenExpiresAt = null;
 
