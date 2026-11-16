@@ -36,7 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $imageFile = $_FILES['image'] ?? null;
         $newEventId = $eventController->create($_POST, $imageFile, $_SESSION['user_id']);
 
-        header('Location: ./view.php?id=' . $newEventId);
+        header('Location: ./view-admin.php?id=' . $newEventId);
         exit;
     } catch (Exception $e) {
         $errors[] = $e->getMessage();
