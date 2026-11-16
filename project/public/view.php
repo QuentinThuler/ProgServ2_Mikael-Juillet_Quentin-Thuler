@@ -1,9 +1,11 @@
 <?php
-require_once __DIR__ . '/../../src/init.php';
-require_once __DIR__ . '/../../src/Event/EventController.php';
-require_once __DIR__ . '/../../src/Event/EventRequests.php';
+ini_set('display_errors', '1');
+error_reporting(E_ALL);
 
-// Validation de l'identifiant passé dans l'URL (?id=...)
+require_once __DIR__ . '/../src/init.php';
+require_once __DIR__ . '/../src/Event/EventController.php';
+require_once __DIR__ . '/../src/Event/EventRequests.php';
+
 $eventId = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
 
 if (!$eventId || $eventId <= 0) {
@@ -11,11 +13,9 @@ if (!$eventId || $eventId <= 0) {
     die("Identifiant d'évènement invalide.");
 }
 
-// Initialisation des dépendances orientées objet
 $eventRequests = new EventRequests($pdo);
 $eventController = new EventController($eventRequests);
 
-// Récupération de l'objet Event via le contrôleur
 $event = $eventController->show($eventId);
 
 if (!$event) {
@@ -29,11 +29,11 @@ $pageTitle = $event->getTitle();
 <!DOCTYPE html>
 <html lang="fr">
 
-<?php require __DIR__ . '/../../components/head.php' ?>
+<?php require_once __DIR__ . '/../components/head.php' ?>
 
 <body>
 
-    <?php require __DIR__ . '/../../components/header.php' ?>
+    <?php require_once __DIR__ . '/../components/header.php' ?>
 
     <main>
         <article class="event-detail">
@@ -66,7 +66,7 @@ $pageTitle = $event->getTitle();
         </article>
     </main>
 
-    <?php require __DIR__ . '/../../components/footer.php' ?>
+    <?php require_once __DIR__ . '/../components/footer.php' ?>
 </body>
 
 </html>
