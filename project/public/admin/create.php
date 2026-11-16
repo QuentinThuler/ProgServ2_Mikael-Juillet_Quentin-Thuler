@@ -9,7 +9,7 @@ $_SESSION['user_id'] ??= 1; // Pour le test si besoin
 $pageTitle = "Créer un Évènement";
 
 // Initialisation des dépendances orientées objet
-$eventRequests = new Eventrequests($pdo); // Supposant que $pdo est déjà initialisé dans init.php
+$eventRequests = new EventRequests($pdo);
 $eventController = new EventController($eventRequests);
 
 // Valeurs par défaut du formulaire
@@ -23,20 +23,24 @@ $date_time = '';
 $errors = [];
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $imageFile = $_FILES['image'] ?? null;
-    $result = $eventController->store($_POST, $imageFile, $_SESSION['user_id']);
+    // Sauvegarde des saisies utilisateur pour les réinjecter en cas d'erreur
+    $title = trim($_POST['title'] ?? '');
+    $description = trim($_POST['description'] ?? '');
+    $tagline = trim($_POST['tagline'] ?? '');
+    $address = trim($_POST['address'] ?? '');
+    $city = trim($_POST['city'] ?? '');
+    $room = trim($_POST['room'] ?? '');
+    $date_time = trim($_POST['date_time'] ?? '');
 
-    $errors = $result['errors'];
-    $inputs = $result['inputs'];
+    try {
+        $imageFile = $_FILES['image'] ?? null;
+        $newEventId = $eventController->create($_POST, $imageFile, $_SESSION['user_id']);
 
-    // Réaffectation pour réinjecter les valeurs saisies en cas d'erreur
-    $title = $inputs['title'];
-    $description = $inputs['description'];
-    $tagline = $inputs['tagline'];
-    $address = $inputs['address'];
-    $city = $inputs['city'];
-    $room = $inputs['room'];
-    $date_time = $inputs['date_time'];
+        header('Location: ./view.php?id=' . $newEventId);
+        exit;
+    } catch (Exception $e) {
+        $errors[] = $e->getMessage();
+    }
 }
 ?>
 
@@ -81,8 +85,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <label for="date_time">Date et heure*</label>
             <input type="datetime-local" id="date_time" name="date_time" value="<?= htmlspecialchars($date_time) ?>" required />
 
-            <label for="image">Image</label>
-            <input type="file" id="image" name="image" accept="image/png, image/jpeg, image/jpg" />
+            <?php if (defined('IMAGE_UPLOAD_ENABLED') && IMAGE_UPLOAD_ENABLED): ?>
+                <label for="image">Image</label>
+                <input type="file" id="image" name="image" accept="image/png, image/jpeg, image/jpg" />
+            <?php endif; ?>
 
             <button type="submit">Ajouter l'évènement</button>
         </form>

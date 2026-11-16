@@ -1,72 +1,80 @@
 <?php
 
 require_once __DIR__ . '/../init.php';
-
+require_once __DIR__ . '/Event.php';
 require_once __DIR__ . '/EventRequests.php';
 
-class EventController {
-    public function __construct(
-        private EventRequests $requests
-    ) {
+class EventController
+{
+    private EventRequests $eventRequests;
+
+    public function __construct(EventRequests $eventRequests)
+    {
+        $this->eventRequests = $eventRequests;
     }
 
-    public function store(array $postData, ?array $imageFile, int $userId): array {
-        $title = $postData["title"] ?? '';
-        $description = $postData["description"] ?? '';
-        $tagline = $postData["tagline"] ?? '';
-        $address = $postData["address"] ?? '';
-        $city = $postData["city"] ?? '';
-        $room = $postData["room"] ?? '';
-        $date_time = $postData["date_time"] ?? '';
+    public function index(): array
+    {
+        return $this->eventRequests->getAllEvents();
+    }
 
-        // Validation
-        $imageUpload = IMAGE_UPLOAD_ENABLED ? ($imageFile ?? null) : null;
-        $errors = $this->validateEvent(
+    public function show(int $id): ?Event
+    {
+        return $this->eventRequests->getEventById($id);
+    }
+
+    public function create(array $postData, ?array $imageFile, int $userId): int
+    {
+        $title = trim($postData['title'] ?? '');
+        $description = trim($postData['description'] ?? '');
+        $tagline = trim($postData['tagline'] ?? '');
+        $address = trim($postData['address'] ?? '');
+        $city = trim($postData['city'] ?? '');
+        $room = trim($postData['room'] ?? '');
+        $dateTimeStr = trim($postData['date_time'] ?? '');
+
+        $imageUpload = (defined('IMAGE_UPLOAD_ENABLED') && IMAGE_UPLOAD_ENABLED) ? $imageFile : null;
+
+        // Validation (lève une InvalidArgumentException en cas d'erreur, comme dans ParticipantController)
+        $this->validateEvent(
             $title,
             $description,
             $tagline,
             $address,
             $city,
             $room,
-            $date_time,
+            $dateTimeStr,
             $imageUpload
         );
 
         $imagePath = null;
-        if (empty($errors) && $imageUpload !== null && $imageUpload['error'] === UPLOAD_ERR_OK) {
+        if ($imageUpload !== null && $imageUpload['error'] === UPLOAD_ERR_OK) {
             $imagePath = $this->saveEventImage($imageUpload);
             if ($imagePath === null) {
-                $errors[] = "Impossible d'enregistrer l'image.";
+                throw new Exception("Impossible d'enregistrer l'image.");
             }
         }
 
-        if (empty($errors)) {
-            $formattedDate = (new DateTime($date_time))->format('Y-m-d H:i:s');
+        // Instanciation du modèle Event (comme new Participant($email))
+        $event = new Event(
+            $title,
+            $description,
+            $tagline,
+            $address,
+            $city,
+            $room !== '' ? $room : null,
+            new DateTime($dateTimeStr),
+            $imagePath,
+            $userId
+        );
 
-            $newEventId = $this->requests->create(
-                $title,
-                $description,
-                $tagline,
-                $address,
-                $city,
-                $room ?: null,
-                $formattedDate,
-                $imagePath,
-                $userId
-            );
+        $newEventId = $this->eventRequests->create($event);
 
-            if ($newEventId !== null) {
-                header('Location: ./view.php?id=' . $newEventId);
-                exit;
-            }
-
-            $errors[] = "Une erreur est survenue lors de l'ajout de l'évènement.";
+        if ($newEventId === null) {
+            throw new Exception("Une erreur est survenue lors de l'ajout de l'évènement.");
         }
 
-        return [
-            'errors' => $errors,
-            'inputs' => compact('title', 'description', 'tagline', 'address', 'city', 'room', 'date_time')
-        ];
+        return $newEventId;
     }
 
     private function validateEvent(
@@ -76,78 +84,82 @@ class EventController {
         string $address,
         string $city,
         string $room,
-        string $date_time,
-        ?array $imageFile = null,
-    ): array {
-        $errors = [];
-
+        string $dateTimeStr,
+        ?array $imageFile = null
+    ): void {
         if ($title === '') {
-            $errors[] = "Le titre est obligatoire.";
-        } elseif (mb_strlen($title) > 255) {
-            $errors[] = "Le titre ne peut pas faire plus de 255 caractères.";
+            throw new InvalidArgumentException("Le titre est obligatoire.");
+        }
+        if (mb_strlen($title) > 255) {
+            throw new InvalidArgumentException("Le titre ne peut pas faire plus de 255 caractères.");
         }
 
         if ($description === '') {
-            $errors[] = "La description est obligatoire.";
-        } elseif (mb_strlen($description) > 500) {
-            $errors[] = "La description ne peut pas faire plus de 500 caractères.";
+            throw new InvalidArgumentException("La description est obligatoire.");
+        }
+        if (mb_strlen($description) > 500) {
+            throw new InvalidArgumentException("La description ne peut pas faire plus de 500 caractères.");
         }
 
         if ($tagline === '') {
-            $errors[] = "La phrase d'accroche est obligatoire.";
-        } elseif (mb_strlen($tagline) > 80) {
-            $errors[] = "La phrase d'accroche ne peut pas faire plus de 80 caractères.";
+            throw new InvalidArgumentException("La phrase d'accroche est obligatoire.");
+        }
+        if (mb_strlen($tagline) > 80) {
+            throw new InvalidArgumentException("La phrase d'accroche ne peut pas faire plus de 80 caractères.");
         }
 
         if ($address === '') {
-            $errors[] = "L'adresse est obligatoire.";
-        } elseif (mb_strlen($address) > 60) {
-            $errors[] = "L'adresse ne peut pas faire plus de 60 caractères.";
+            throw new InvalidArgumentException("L'adresse est obligatoire.");
+        }
+        if (mb_strlen($address) > 60) {
+            throw new InvalidArgumentException("L'adresse ne peut pas faire plus de 60 caractères.");
         }
 
         if ($city === '') {
-            $errors[] = "La ville est obligatoire.";
-        } elseif (mb_strlen($city) > 40) {
-            $errors[] = "La ville ne peut pas faire plus de 40 caractères.";
+            throw new InvalidArgumentException("La ville est obligatoire.");
+        }
+        if (mb_strlen($city) > 40) {
+            throw new InvalidArgumentException("La ville ne peut pas faire plus de 40 caractères.");
         }
 
         if (mb_strlen($room) > 20) {
-            $errors[] = "La salle ne peut pas faire plus de 20 caractères.";
+            throw new InvalidArgumentException("La salle ne peut pas faire plus de 20 caractères.");
         }
 
-
-        $date = DateTime::createFromFormat('Y-m-d\TH:i', $date_time);
-        if ($date_time === '') {
-            $errors[] = "La date et l'heure sont obligatoires.";
-        } elseif ($date === false || $date->format('Y-m-d\TH:i') !== $date_time) {
-            $errors[] = "La date et l'heure ne sont pas valides.";
+        if ($dateTimeStr === '') {
+            throw new InvalidArgumentException("La date et l'heure sont obligatoires.");
+        }
+        $date = DateTime::createFromFormat('Y-m-d\TH:i', $dateTimeStr);
+        if ($date === false || $date->format('Y-m-d\TH:i') !== $dateTimeStr) {
+            throw new InvalidArgumentException("La date et l'heure ne sont pas valides.");
         }
 
         if ($imageFile !== null && $imageFile['error'] !== UPLOAD_ERR_NO_FILE) {
             if ($imageFile['error'] !== UPLOAD_ERR_OK) {
-                $errors[] = "Le téléversement de l'image a échoué.";
-            } elseif ($imageFile['size'] > MAX_IMAGE_SIZE) {
-                $errors[] = "L'image ne peut pas dépasser 2 Mo.";
-            } elseif (!isset(ALLOWED_IMAGE_TYPES[mime_content_type($imageFile['tmp_name'])])) {
-                $errors[] = "L'image doit être au format JPEG, PNG ou WebP.";
+                throw new InvalidArgumentException("Le téléversement de l'image a échoué.");
+            }
+            if ($imageFile['size'] > MAX_IMAGE_SIZE) {
+                throw new InvalidArgumentException("L'image ne peut pas dépasser 2 Mo.");
+            }
+            if (!isset(ALLOWED_IMAGE_TYPES[mime_content_type($imageFile['tmp_name'])])) {
+                throw new InvalidArgumentException("L'image doit être au format JPEG, PNG ou WebP.");
             }
         }
-
-        return $errors;
     }
 
-    private function saveEventImage(array $file): ?string {
-        $extension = ALLOWED_IMAGE_TYPES[mime_content_type($file['tmp_name'])]; // Stocke l'extension
-        $fileName  = bin2hex(random_bytes(8)) . '.' . $extension; // convertit la nomenclature en 16 caractères hexadécimaux
-        $dir       = __DIR__ . '/../public/uploads/events';       // à adapter à votre arborescence
+    private function saveEventImage(array $file): ?string
+    {
+        $extension = ALLOWED_IMAGE_TYPES[mime_content_type($file['tmp_name'])];
+        $fileName  = bin2hex(random_bytes(8)) . '.' . $extension;
+        $dir       = __DIR__ . '/../../public/uploads/events';
 
-        if (!is_dir($dir) && !mkdir($dir, 0755, true)) { // Si le dossier n'existe pas, on tente de le créer
+        if (!is_dir($dir) && !mkdir($dir, 0755, true)) {
             return null;
         }
-        if (!move_uploaded_file($file['tmp_name'], $dir . '/' . $fileName)) { // Déplacement du fichier de son emplacement temporaire vers sa destination définitive
+        if (!move_uploaded_file($file['tmp_name'], $dir . '/' . $fileName)) {
             return null;
         }
 
-        return '/uploads/events/' . $fileName; // retourne le chemin web
+        return '/uploads/events/' . $fileName;
     }
 }
