@@ -88,4 +88,18 @@ class EventRequests
 
         return $event;
     }
+
+    public function getUpcomingEvents(): array
+    {
+        $sql = "SELECT * FROM events WHERE date_time >= NOW() ORDER BY date_time ASC";
+        $stmt = $this->pdo->query($sql);
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        $events = [];
+        foreach ($rows as $row) {
+            $events[] = $this->hydrateEvent($row);
+        }
+
+        return $events;
+    }
 }
