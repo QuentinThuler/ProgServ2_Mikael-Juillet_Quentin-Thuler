@@ -195,9 +195,4 @@ class EventController
 
         return '/uploads/events/' . $fileName;
     }
-
-    public function upcoming(): array
-    {
-        return $this->eventRequests->getUpcomingEvents();
-    }
 }

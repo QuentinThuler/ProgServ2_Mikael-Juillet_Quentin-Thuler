@@ -33,11 +33,10 @@ $pageTitle = "Accueil";
                 <?php foreach ($events as $index => $event): ?>
                     <li <?= $index >= 8 ? 'hidden' : '' ?>>
                         <article class="event-card">
-                            <h3><?= htmlspecialchars($event->getTitle()) ?> - <?= htmlspecialchars($event->getCity()) ?></h3>
-                            <p><?= $event->getDateTime()->format('d.m.Y - H:i') ?></p>
-                            <p><?= htmlspecialchars($event->getTagline()) ?></p>
-                            <a href="./view.php?id=<?= (int) $event->getId() ?>">ℹ️ Détails de l'évènement</a>
-                            <a href="">🗓️ S'inscrire</a>
+                            <h3><?= e($event->getTitle()) ?> - <?= e($event->getCity()) ?></h3>
+                            <p><?= e($event->getDateTime()->format('d.m.Y - H:i')) ?></p>
+                            <p><?= e($event->getTagline()) ?></p>
+                            <a href="./view.php?id=<?= (int) $event->getId() ?>">Détails de l'évènement</a>
                         </article>
                     </li>
                 <?php endforeach; ?>

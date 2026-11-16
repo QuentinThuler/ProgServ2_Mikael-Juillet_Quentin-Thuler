@@ -1,14 +1,13 @@
 <?php
-ini_set('display_errors', '1');
-error_reporting(E_ALL);
-
 require_once __DIR__ . '/../src/init.php';
 require_once __DIR__ . '/../src/Event/EventController.php';
 require_once __DIR__ . '/../src/Event/EventRequests.php';
 
-$eventId = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+$eventId = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT, [
+    'options' => ['min_range' => 1]
+]);
 
-if (!$eventId || $eventId <= 0) {
+if (!$eventId) {
     http_response_code(400);
     die("Identifiant d'évènement invalide.");
 }
@@ -24,6 +23,8 @@ if (!$event) {
 }
 
 $pageTitle = $event->getTitle();
+$imagePath = $event->getImagePath();
+$hasValidImage = $imagePath !== null && str_starts_with($imagePath, '/uploads/events/');
 ?>
 
 <!DOCTYPE html>
@@ -37,31 +38,31 @@ $pageTitle = $event->getTitle();
 
     <main>
         <article class="event-detail">
-            <h1><?= htmlspecialchars($event->getTitle()) ?></h1>
-            <p class="tagline"><strong><?= htmlspecialchars($event->getTagline()) ?></strong></p>
+            <h1><?= e($event->getTitle()) ?></h1>
+            <p class="tagline"><strong><?= e($event->getTagline()) ?></strong></p>
 
-            <?php if ($event->getImagePath()): ?>
-                <img src="<?= htmlspecialchars($event->getImagePath()) ?>" alt="<?= htmlspecialchars($event->getTitle()) ?>" />
+            <?php if ($hasValidImage): ?>
+                <img src="<?= e($imagePath) ?>" alt="<?= e($event->getTitle()) ?>" />
             <?php endif; ?>
 
             <section class="event-info">
-                <p><strong>Date et heure :</strong> <?= $event->getDateTime()->format('d.m.Y - H:i') ?></p>
+                <p><strong>Date et heure :</strong> <?= e($event->getDateTime()->format('d.m.Y - H:i')) ?></p>
                 <p>
                     <strong>Lieu :</strong>
-                    <?= htmlspecialchars($event->getAddress()) ?>, <?= htmlspecialchars($event->getCity()) ?>
+                    <?= e($event->getAddress()) ?>, <?= e($event->getCity()) ?>
                     <?php if ($event->getRoom()): ?>
-                        (Salle : <?= htmlspecialchars($event->getRoom()) ?>)
+                        (Salle : <?= e($event->getRoom()) ?>)
                     <?php endif; ?>
                 </p>
             </section>
 
             <section class="event-description">
                 <h2>Description</h2>
-                <p><?= nl2br(htmlspecialchars($event->getDescription())) ?></p>
+                <p><?= nl2br(e($event->getDescription())) ?></p>
             </section>
 
             <?php if ($event->getCreatedAt()): ?>
-                <p><small>Publié le <?= $event->getCreatedAt()->format('d.m.Y à H:i') ?></small></p>
+                <p><small>Publié le <?= e($event->getCreatedAt()->format('d.m.Y à H:i')) ?></small></p>
             <?php endif; ?>
         </article>
     </main>
