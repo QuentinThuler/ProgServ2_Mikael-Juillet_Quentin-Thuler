@@ -36,7 +36,8 @@ $pageTitle = "Accueil";
                             <h3><?= htmlspecialchars($event->getTitle()) ?> - <?= htmlspecialchars($event->getCity()) ?></h3>
                             <p><?= $event->getDateTime()->format('d.m.Y - H:i') ?></p>
                             <p><?= htmlspecialchars($event->getTagline()) ?></p>
-                            <a href="/view.php?id=<?= (int) $event->getId() ?>">Détails de l'évènement</a>
+                            <a href="./view.php?id=<?= (int) $event->getId() ?>">ℹ️ Détails de l'évènement</a>
+                            <a href="">🗓️ S'inscrire</a>
                         </article>
                     </li>
                 <?php endforeach; ?>
