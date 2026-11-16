@@ -13,7 +13,7 @@ try {
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $email = $_POST['email'] ?? '';
-        $participants = $controller->create($email);
+        $controller->create($email);
     }
     
 } catch (PDOException $e) {

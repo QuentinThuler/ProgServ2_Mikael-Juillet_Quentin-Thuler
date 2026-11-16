@@ -12,7 +12,7 @@ class ParticipantController {
         return $this->participantRequests->getAllParticipants();
     }
 
-    public function create(string $email) {
+    public function create(string $email): void {
 
         $email = trim($email);
 

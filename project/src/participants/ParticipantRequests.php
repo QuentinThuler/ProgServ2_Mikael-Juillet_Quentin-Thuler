@@ -18,12 +18,11 @@ class ParticipantRequests {
             $participant = new Participant($row['email']);
             $participant->setParticipantAllValues(
                 $row['id'],
-                $row['email'],
                 $row['is_confirmed'],
                 $row['token_hash'],
                 $row['token_expires_at'] ? new DateTime($row['token_expires_at']) : null
             );
-            $participants[] = $participant; 
+            $participants[] = $participant;
         }
 
         return $participants;
@@ -82,5 +81,4 @@ class ParticipantRequests {
             'email' => $participant->getEmail()
         ]);
     }
-
 }
