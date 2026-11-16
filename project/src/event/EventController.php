@@ -18,6 +18,11 @@ class EventController
         return $this->eventRequests->getAllEvents();
     }
 
+    public function upcoming(): array
+    {
+        return $this->eventRequests->getUpcomingEvents();
+    }
+
     public function show(int $id): ?Event
     {
         return $this->eventRequests->getEventById($id);
@@ -134,31 +139,59 @@ class EventController
             throw new InvalidArgumentException("La date et l'heure ne sont pas valides.");
         }
 
+        // Validation sécurisée de l'image
         if ($imageFile !== null && $imageFile['error'] !== UPLOAD_ERR_NO_FILE) {
+            if (!isset($imageFile['tmp_name']) || !is_uploaded_file($imageFile['tmp_name'])) {
+                throw new InvalidArgumentException("Fichier téléversé invalide.");
+            }
             if ($imageFile['error'] !== UPLOAD_ERR_OK) {
                 throw new InvalidArgumentException("Le téléversement de l'image a échoué.");
             }
-            if ($imageFile['size'] > MAX_IMAGE_SIZE) {
-                throw new InvalidArgumentException("L'image ne peut pas dépasser 2 Mo.");
+
+            $realSize = filesize($imageFile['tmp_name']);
+            if ($realSize === false || $realSize <= 0 || $realSize > MAX_IMAGE_SIZE) {
+                throw new InvalidArgumentException("L'image est vide ou dépasse la taille maximale autorisée.");
             }
-            if (!isset(ALLOWED_IMAGE_TYPES[mime_content_type($imageFile['tmp_name'])])) {
+
+            $finfo = new finfo(FILEINFO_MIME_TYPE);
+            $mimeType = $finfo->file($imageFile['tmp_name']);
+            if ($mimeType === false || !isset(ALLOWED_IMAGE_TYPES[$mimeType])) {
                 throw new InvalidArgumentException("L'image doit être au format JPEG, PNG ou WebP.");
+            }
+
+            if (@getimagesize($imageFile['tmp_name']) === false) {
+                throw new InvalidArgumentException("Le fichier fourni n'est pas une image valide.");
             }
         }
     }
 
     private function saveEventImage(array $file): ?string
     {
-        $extension = ALLOWED_IMAGE_TYPES[mime_content_type($file['tmp_name'])];
-        $fileName  = bin2hex(random_bytes(8)) . '.' . $extension;
+        $finfo = new finfo(FILEINFO_MIME_TYPE);
+        $mimeType = $finfo->file($file['tmp_name']);
+
+        if (!isset(ALLOWED_IMAGE_TYPES[$mimeType])) {
+            return null;
+        }
+
+        // Extension déterminée uniquement par notre liste blanche côté serveur
+        $extension = ALLOWED_IMAGE_TYPES[$mimeType];
+        // Nom aléatoire cryptographiquement sûr (aucune donnée utilisateur conservée)
+        $fileName  = bin2hex(random_bytes(16)) . '.' . $extension;
         $dir       = __DIR__ . '/../../public/uploads/events';
 
         if (!is_dir($dir) && !mkdir($dir, 0755, true)) {
             return null;
         }
-        if (!move_uploaded_file($file['tmp_name'], $dir . '/' . $fileName)) {
+
+        $destination = $dir . '/' . $fileName;
+
+        if (!move_uploaded_file($file['tmp_name'], $destination)) {
             return null;
         }
+
+        // Droits en lecture/écriture uniquement (non exécutable)
+        chmod($destination, 0644);
 
         return '/uploads/events/' . $fileName;
     }
