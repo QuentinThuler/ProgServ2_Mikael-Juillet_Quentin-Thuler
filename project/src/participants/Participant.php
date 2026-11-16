@@ -4,8 +4,8 @@ class Participant {
     private int $id;
     private string $email;
     private bool $isConfirmed;
-    private ?string $tokenHash;
-    private ?DateTime $tokenExpiresAt;
+    private ?string $tokenHash = null;
+    private ?DateTime $tokenExpiresAt = null;
 
     public function __construct(string $email) {
         $this->email = $email;
@@ -35,7 +35,7 @@ class Participant {
         return $this->isConfirmed;
     }
 
-    public function getTokenHash(): string {
+    public function getTokenHash(): ?string {
         return $this->tokenHash;
     }
 

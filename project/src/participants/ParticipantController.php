@@ -1,5 +1,5 @@
 <?php
-require_once '../project/src/services/tokenServices.php'; 
+require_once __DIR__ . '/../services/tokenServices.php';
 
 class ParticipantController {
     private ParticipantRequests $participantRequests;
@@ -21,20 +21,22 @@ class ParticipantController {
         }
 
         $participant = new Participant($email);
+        $existingParticipant = $this->participantRequests->getParticipantByEmail($email);
 
-        $token = generateToken(6);
-        $participant->setToken(encriptToken($token));
-        error_log($token);
+        if (!$existingParticipant) {
+            $this->participantRequests->create($participant);
+        } else {
+            $participant = $existingParticipant;
+        }
 
-        /*
-            generate random char and hash -> service 
-            create participant in db with token and duration of 3h
-            send mail (log at first)
-        */
-
-        /* does it exist if yes update values */
-
-        return $this->participantRequests->create($participant);
+        if ($participant->getTokenHash() && $participant->getTokenExpiresAt() > new DateTime()) {
+            throw new Exception('Un token a déjà été généré pour cet e-mail et est encore valide.');
+        } else {
+            $token = generateToken(6);
+            $participant->setToken(encriptToken($token));
+            error_log($token);
+            $this->participantRequests->updateToken($participant);
+        }
     }
 
     public function validateToken(string $email, string $token): void {
