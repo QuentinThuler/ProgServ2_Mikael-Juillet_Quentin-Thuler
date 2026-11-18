@@ -1,9 +1,15 @@
 <?php
 
-function render(string $component, array $data = []): void {
+function render(string $component, array $data = []): void
+{
     $componentPath = __DIR__ . '/../components/' . $component . '.php';
     extract($data, EXTR_SKIP);
     require $componentPath;
+}
+
+function e(?string $value): string
+{
+    return htmlspecialchars($value ?? '', ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 }
 
 const MAX_IMAGE_SIZE = 2 * 1024 * 1024;

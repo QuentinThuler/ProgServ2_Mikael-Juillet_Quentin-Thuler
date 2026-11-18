@@ -67,6 +67,7 @@ class EventRequests
         return $this->hydrateEvent($row);
     }
 
+    // Transforme un tableau associatif brut issu de la base de données en un objet PHP fortement typé.
     private function hydrateEvent(array $row): Event
     {
         $event = new Event(
@@ -87,5 +88,19 @@ class EventRequests
         );
 
         return $event;
+    }
+
+    public function getUpcomingEvents(): array
+    {
+        $sql = "SELECT * FROM events WHERE date_time >= NOW() ORDER BY date_time ASC";
+        $stmt = $this->pdo->query($sql);
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        $events = [];
+        foreach ($rows as $row) {
+            $events[] = $this->hydrateEvent($row);
+        }
+
+        return $events;
     }
 }
