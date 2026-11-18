@@ -1,8 +1,8 @@
 <?php
 require_once __DIR__ . '/../../src/init.php';
 
-use App\Participant\ParticipantRequests;
-use App\Participant\ParticipantController;
+use App\participant\ParticipantRequests;
+use App\participant\ParticipantController;
 
 $errors = [];
 

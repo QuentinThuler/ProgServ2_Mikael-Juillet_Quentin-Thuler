@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Role;
+namespace App\role;
 
 use PDO;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\PendingVerifications;
+namespace App\pendingVerifications;
 
 use DateTime;
 use JsonSerializable;

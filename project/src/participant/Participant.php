@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Participant;
+namespace App\participant;
 
 class Participant {
     private ?int $id;

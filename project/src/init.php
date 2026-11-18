@@ -1,4 +1,9 @@
 <?php
+
+use App\db\Database;
+
+require_once dirname(__DIR__, 2) . '/vendor/autoload.php';
+
 // --- Session ---
 if (session_status() === PHP_SESSION_NONE) {
     ini_set('session.use_strict_mode', '1');
@@ -14,7 +19,6 @@ $isConnected = isset($_SESSION['user_id']);
 $isAdmin     = $isConnected && ($_SESSION['role'] ?? '') === 'admin';
 
 // --- Database ---
-use App\Db\Database;
 
 $database = Database::getInstance();
 $pdo = $database->getConnection();

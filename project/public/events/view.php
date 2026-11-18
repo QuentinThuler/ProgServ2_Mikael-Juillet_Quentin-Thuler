@@ -1,8 +1,8 @@
 <?php
 require_once __DIR__ . '/../../src/init.php';
 
-use App\Event\EventRequests;
-use App\Event\EventController;
+use App\event\EventRequests;
+use App\event\EventController;
 
 $eventId = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT, [
     'options' => ['min_range' => 1]

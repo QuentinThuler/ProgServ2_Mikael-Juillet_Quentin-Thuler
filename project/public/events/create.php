@@ -1,8 +1,8 @@
 <?php
 require_once __DIR__ . '/../../src/init.php';
 
-use App\Event\EventRequests;
-use App\Event\EventController;
+use App\event\EventRequests;
+use App\event\EventController;
 
 $_SESSION['user_id'] ??= 1;
 

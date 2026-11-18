@@ -1,9 +1,9 @@
 <?php
 
-namespace App\User;
+namespace App\user;
 
-use App\Participant\Participant;
-use App\Role\Role;
+use App\participant\Participant;
+use App\role\Role;
 use DateTime;
 use PDO;
 

@@ -2,10 +2,10 @@
 
 require_once __DIR__ . '/../../src/init.php';
 
-use App\Participant\ParticipantRequests;
-use App\Role\RoleRequests;
-use App\User\UserRequests;
-use App\User\UserController;
+use App\participant\ParticipantRequests;
+use App\role\RoleRequests;
+use App\user\UserRequests;
+use App\user\UserController;
 
 $userRequests = new UserRequests($pdo);
 $participantRequests = new ParticipantRequests($pdo);

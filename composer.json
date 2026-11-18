@@ -10,8 +10,8 @@
             "App\\": "project/src/"
         },
         "files": [
-            "project/src/functions.php",
-            "project/src/constants.php",
+            "project/src/services/functions.php",
+            "project/src/services/constants.php",
             "project/src/services/security.php"
         ]
     }

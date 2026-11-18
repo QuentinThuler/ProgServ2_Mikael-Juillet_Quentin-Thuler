@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Role;
+namespace App\role;
 
 class Role {
     private int $id;

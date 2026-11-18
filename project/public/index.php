@@ -1,8 +1,8 @@
 <?php
 require_once __DIR__ . '/../src/init.php';
 
-use App\Event\EventRequests;
-use App\Event\EventController;
+use App\event\EventRequests;
+use App\event\EventController;
 
 $eventRequests = new EventRequests($pdo);
 $eventController = new EventController($eventRequests);

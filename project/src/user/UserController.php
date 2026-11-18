@@ -1,10 +1,10 @@
 <?php
 
-namespace App\User;
+namespace App\user;
 
-use App\Participant\ParticipantRequests;
-use App\PendingVerifications\IVerificationHandler;
-use App\Role\RoleRequests;
+use App\participant\ParticipantRequests;
+use App\pendingVerifications\IVerificationHandler;
+use App\role\RoleRequests;
 use InvalidArgumentException;
 use JsonSerializable;
 
