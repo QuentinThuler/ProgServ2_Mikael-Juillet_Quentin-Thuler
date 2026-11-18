@@ -14,18 +14,12 @@ $isConnected = isset($_SESSION['user_id']);
 $isAdmin     = $isConnected && ($_SESSION['role'] ?? '') === 'admin';
 
 // --- Database ---
-require_once __DIR__ . '/db/Database.php';
+use App\Db\Database;
 
 $database = Database::getInstance();
 $pdo = $database->getConnection();
 
-// --- Functional & constants ---
-require_once __DIR__ . '/functions.php';
-require_once __DIR__ . '/constants.php';
-
 // --- Security services ---
-require_once __DIR__ . '/services/security.php';
-
 if (empty($_SESSION['csrf_token'])) {
     $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 }

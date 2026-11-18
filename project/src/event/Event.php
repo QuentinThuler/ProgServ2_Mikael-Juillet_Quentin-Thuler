@@ -1,7 +1,10 @@
 <?php
 
-class Event
-{
+namespace App\Event;
+
+use DateTime;
+
+class Event {
     private ?int $id = null;
     private string $title;
     private string $description;
@@ -44,58 +47,47 @@ class Event
         $this->createdAt = $createdAt;
     }
 
-    public function getId(): ?int
-    {
+    public function getId(): ?int {
         return $this->id;
     }
 
-    public function getTitle(): string
-    {
+    public function getTitle(): string {
         return $this->title;
     }
 
-    public function getDescription(): string
-    {
+    public function getDescription(): string {
         return $this->description;
     }
 
-    public function getTagline(): string
-    {
+    public function getTagline(): string {
         return $this->tagline;
     }
 
-    public function getAddress(): string
-    {
+    public function getAddress(): string {
         return $this->address;
     }
 
-    public function getCity(): string
-    {
+    public function getCity(): string {
         return $this->city;
     }
 
-    public function getRoom(): ?string
-    {
+    public function getRoom(): ?string {
         return $this->room;
     }
 
-    public function getDateTime(): DateTime
-    {
+    public function getDateTime(): DateTime {
         return $this->dateTime;
     }
 
-    public function getImagePath(): ?string
-    {
+    public function getImagePath(): ?string {
         return $this->imagePath;
     }
 
-    public function getCreatorId(): int
-    {
+    public function getCreatorId(): int {
         return $this->creatorId;
     }
 
-    public function getCreatedAt(): ?DateTime
-    {
+    public function getCreatedAt(): ?DateTime {
         return $this->createdAt;
     }
 }

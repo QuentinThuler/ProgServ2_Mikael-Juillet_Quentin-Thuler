@@ -1,6 +1,10 @@
 <?php
-require_once __DIR__ . '/../registration/RegistrationController.php';
-require_once __DIR__ . '/../user/UserController.php';
+
+namespace App\PendingVerifications;
+
+use InvalidArgumentException;
+use RegistrationController;
+use UserController;
 
 class VerificationHandlerFactory {
     public static function handle(string $purpose): IVerificationHandler {

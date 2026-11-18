@@ -1,5 +1,13 @@
 <?php
 
+namespace App\User;
+
+use App\Participant\ParticipantRequests;
+use App\PendingVerifications\IVerificationHandler;
+use App\Role\RoleRequests;
+use InvalidArgumentException;
+use JsonSerializable;
+
 class UserController implements IVerificationHandler {
     private UserRequests $userRequests;
     private ParticipantRequests $participantRequests;
@@ -115,7 +123,6 @@ class UserController implements IVerificationHandler {
     }
 
     public function handle(string $email, JsonSerializable $payload): void {
-        
     }
 
     // PRIVATE METHODS

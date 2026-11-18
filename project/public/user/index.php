@@ -1,14 +1,14 @@
 <?php
-require_once __DIR__ . '/../../src/user/User.php';
-require_once __DIR__ . '/../../src/user/UserRequests.php';
-require_once __DIR__ . '/../../src/user/UserController.php';
-require_once __DIR__ . '/../../src/user/RoleRequests.php';
-require_once __DIR__ . '/../../src/participants/ParticipantRequests.php';
+require_once __DIR__ . '/../../src/init.php';
+
+use App\Participant\ParticipantRequests;
+use App\Role\RoleRequests;
+use App\User\UserRequests;
+use App\User\UserController;
 
 $errors = [];
 
 try {
-    require_once __DIR__ . '/../../src/init.php';
     $requests = new UserRequests($pdo);
     $controller = new UserController($requests, new ParticipantRequests($pdo), new RoleRequests($pdo));
 
@@ -38,7 +38,7 @@ try {
 
             <?php foreach ($errors as $error): ?>
                 <p role="alert">
-                    <?= htmlspecialchars($error) ?>
+                    <?= e($error) ?>
                 </p>
             <?php endforeach; ?>
 
@@ -51,7 +51,7 @@ try {
             <ul>
                 <?php foreach ($users as $user): ?>
                     <li>
-                        <?= htmlspecialchars($user->getEmail()) ?>
+                        <?= e($user->getEmail()) ?>
                     </li>
                 <?php endforeach; ?>
             </ul>

@@ -1,5 +1,10 @@
 <?php
 
+namespace App\User;
+
+use App\Participant\Participant;
+use App\Role\Role;
+
 class User {
     private ?int $id;
     private Participant $participant;

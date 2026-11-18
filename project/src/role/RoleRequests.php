@@ -1,5 +1,9 @@
 <?php
 
+namespace App\Role;
+
+use PDO;
+
 class RoleRequests {
     private PDO $connection;
 

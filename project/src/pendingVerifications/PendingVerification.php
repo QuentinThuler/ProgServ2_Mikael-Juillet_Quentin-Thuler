@@ -1,5 +1,10 @@
 <?php
 
+namespace App\PendingVerifications;
+
+use DateTime;
+use JsonSerializable;
+
 class PendingVerification {
     private ?int $id;
     private string $email;
@@ -24,7 +29,7 @@ class PendingVerification {
         $this->payload = $payload;
         $this->attemptCount = $attemptCount;
     }
-    
+
     public function getId(): ?int {
         return $this->id;
     }

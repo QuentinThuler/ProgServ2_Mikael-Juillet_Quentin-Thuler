@@ -1,8 +1,11 @@
 <?php
 
-require_once __DIR__ . '/User.php';
-require_once __DIR__ . '/../participants/Participant.php';
-require_once __DIR__ . '/../roles/Role.php';
+namespace App\User;
+
+use App\Participant\Participant;
+use App\Role\Role;
+use DateTime;
+use PDO;
 
 class UserRequests {
     private PDO $connection;

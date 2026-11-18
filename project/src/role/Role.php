@@ -1,5 +1,7 @@
 <?php
 
+namespace App\Role;
+
 class Role {
     private int $id;
     private string $name;

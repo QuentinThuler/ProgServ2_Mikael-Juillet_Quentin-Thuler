@@ -1,5 +1,10 @@
 <?php
 
+namespace App\PendingVerifications;
+
+use DateTime;
+use PDO;
+
 class PendingVerificationRequests {
     private PDO $connection;
 

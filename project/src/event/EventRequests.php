@@ -1,18 +1,18 @@
 <?php
 
-require_once __DIR__ . '/Event.php';
+namespace App\Event;
 
-class EventRequests
-{
+use DateTime;
+use PDO;
+
+class EventRequests {
     private PDO $pdo;
 
-    public function __construct(PDO $pdo)
-    {
+    public function __construct(PDO $pdo) {
         $this->pdo = $pdo;
     }
 
-    public function create(Event $event): ?int
-    {
+    public function create(Event $event): ?int {
         $sql = "INSERT INTO events (title, description, tagline, address, city, room, date_time, image, created_by) 
                 VALUES (:title, :description, :tagline, :address, :city, :room, :date_time, :image, :creator_id)";
 
@@ -39,8 +39,7 @@ class EventRequests
     /**
      * @return Event[]
      */
-    public function getAllEvents(): array
-    {
+    public function getAllEvents(): array {
         $sql = "SELECT * FROM events ORDER BY date_time ASC";
         $stmt = $this->pdo->query($sql);
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -53,8 +52,7 @@ class EventRequests
         return $events;
     }
 
-    public function getEventById(int $id): ?Event
-    {
+    public function getEventById(int $id): ?Event {
         $sql = "SELECT * FROM events WHERE id = :id";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['id' => $id]);
@@ -68,8 +66,7 @@ class EventRequests
     }
 
     // Transforme un tableau associatif brut issu de la base de données en un objet PHP fortement typé.
-    private function hydrateEvent(array $row): Event
-    {
+    private function hydrateEvent(array $row): Event {
         $event = new Event(
             $row['title'],
             $row['description'],
@@ -90,8 +87,7 @@ class EventRequests
         return $event;
     }
 
-    public function getUpcomingEvents(): array
-    {
+    public function getUpcomingEvents(): array {
         $sql = "SELECT * FROM events WHERE date_time >= NOW() ORDER BY date_time ASC";
         $stmt = $this->pdo->query($sql);
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);

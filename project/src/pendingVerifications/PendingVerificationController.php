@@ -1,5 +1,11 @@
 <?php
-require_once __DIR__ . '/../services/tokenServices.php';
+
+namespace App\PendingVerifications;
+
+use DateTime;
+use InvalidArgumentException;
+use JsonSerializable;
+use PendingVerificationRequests;
 
 class PendingVerificationController {
     private PendingVerificationRequests $pendingVerificationRequests;
@@ -18,7 +24,7 @@ class PendingVerificationController {
         $encryptedToken = encriptToken($token);
         error_log($token); // TODO : replace by sending the token via email to the user
 
-        $pendingVerification = new PendingVerification($email, $encryptedToken, $purpose, payload : $payload);
+        $pendingVerification = new PendingVerification($email, $encryptedToken, $purpose, payload: $payload);
         $existingPendingVerification = $this->pendingVerificationRequests->getByEmail($email);
 
         if (!$existingPendingVerification) {

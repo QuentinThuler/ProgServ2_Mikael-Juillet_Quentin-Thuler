@@ -1,16 +1,15 @@
 <?php
 
-require_once __DIR__ . '/../../src/participants/Participant.php';
-require_once __DIR__ . '/../../src/participants/ParticipantRequests.php';
-require_once __DIR__ . '/../../src/user/User.php';
-require_once __DIR__ . '/../../src/user/UserRequests.php';
-require_once __DIR__ . '/../../src/user/UserController.php';
-require_once __DIR__ . '/../../src/user/RoleRequests.php';
+require_once __DIR__ . '/../../src/init.php';
+
+use App\Participant\ParticipantRequests;
+use App\Role\RoleRequests;
+use App\User\UserRequests;
+use App\User\UserController;
 
 $errors = [];
 
 try {
-    require_once __DIR__ . '/../../src/init.php'; 
     $participantRequests = new ParticipantRequests($pdo);
     $userRequests = new UserRequests($pdo);
     $roleRequests = new RoleRequests($pdo);
@@ -56,7 +55,7 @@ try {
 
     <?php foreach ($errors as $error): ?>
         <p class="error">
-            <?= escape($error) ?>
+            <?= e($error) ?>
         </p>
     <?php endforeach; ?>
 
@@ -65,7 +64,7 @@ try {
         <input
             type="hidden"
             name="csrf_token"
-            value="<?= escape($_SESSION['csrf_token'] ?? '') ?>">
+            value="<?= e($_SESSION['csrf_token'] ?? '') ?>">
 
         <div>
             <label for="email">Adresse e-mail</label>
@@ -73,7 +72,7 @@ try {
                 type="email"
                 id="email"
                 name="email"
-                value="<?= escape($_POST['email'] ?? '') ?>"
+                value="<?= e($_POST['email'] ?? '') ?>"
                 required>
         </div>
 
@@ -83,7 +82,7 @@ try {
                 type="text"
                 id="name"
                 name="name"
-                value="<?= escape($_POST['name'] ?? '') ?>"
+                value="<?= e($_POST['name'] ?? '') ?>"
                 required>
         </div>
 

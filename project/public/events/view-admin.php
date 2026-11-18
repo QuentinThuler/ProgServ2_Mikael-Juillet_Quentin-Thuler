@@ -1,7 +1,9 @@
 <?php
 require_once __DIR__ . '/../../src/init.php';
-require_once __DIR__ . '/../../src/Event/EventController.php';
-require_once __DIR__ . '/../../src/Event/EventRequests.php';
+
+use App\Event\EventRequests;
+use App\Event\EventController;
+
 
 // Contrôle d'accès administrateur (à décommenter dès que votre fonction est prête)
 /* requireAdmin(); */

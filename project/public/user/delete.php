@@ -1,11 +1,11 @@
 <?php
 
-require_once __DIR__ . '/../../src/user/User.php';
-require_once __DIR__ . '/../../src/user/UserRequests.php';
-require_once __DIR__ . '/../../src/user/UserController.php';
-require_once __DIR__ . '/../../src/user/RoleRequests.php';
-require_once __DIR__ . '/../../src/participants/ParticipantRequests.php';
 require_once __DIR__ . '/../../src/init.php';
+
+use App\Participant\ParticipantRequests;
+use App\Role\RoleRequests;
+use App\User\UserRequests;
+use App\User\UserController;
 
 $userRequests = new UserRequests($pdo);
 $participantRequests = new ParticipantRequests($pdo);
@@ -66,16 +66,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </p>
 
     <p>
-        Nom : <?= escape($user->getName()) ?>
+        Nom : <?= e($user->getName()) ?>
     </p>
 
     <p>
-        E-mail : <?= escape($user->getParticipant()->getEmail()) ?>
+        E-mail : <?= e($user->getParticipant()->getEmail()) ?>
     </p>
 
     <?php if ($error !== null): ?>
         <p style="color: red;">
-            <?= escape($error) ?>
+            <?= e($error) ?>
         </p>
     <?php endif; ?>
 
@@ -84,7 +84,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <input
             type="hidden"
             name="csrf_token"
-            value="<?= escape($_SESSION['csrf_token']) ?>">
+            value="<?= e($_SESSION['csrf_token']) ?>">
 
         <button type="submit">
             Oui, supprimer

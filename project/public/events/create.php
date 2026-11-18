@@ -1,8 +1,8 @@
 <?php
 require_once __DIR__ . '/../../src/init.php';
-require_once __DIR__ . '/../../src/Event/EventController.php';
-require_once __DIR__ . '/../../src/Event/EventRequests.php';
-require_once __DIR__ . '/../../src/functions.php';
+
+use App\Event\EventRequests;
+use App\Event\EventController;
 
 $_SESSION['user_id'] ??= 1;
 
