@@ -1,6 +1,5 @@
 <?php
-
-// --- Session ---------------------------------------------------------------
+// --- Session ---
 if (session_status() === PHP_SESSION_NONE) {
     ini_set('session.use_strict_mode', '1');
     session_set_cookie_params([
@@ -14,30 +13,17 @@ if (session_status() === PHP_SESSION_NONE) {
 $isConnected = isset($_SESSION['user_id']);
 $isAdmin     = $isConnected && ($_SESSION['role'] ?? '') === 'admin';
 
-function requireLogin(): void {
-    global $isConnected;
-
-    if (!$isConnected) {
-        header('Location: /login.php');
-        exit;
-    }
-}
-
-function requireAdmin(): void {
-    global $isAdmin;
-
-    requireLogin();
-    if (!$isAdmin) {
-        http_response_code(403);
-        exit('Accès refusé.');
-    }
-}
-
+// --- Database ---
 require_once __DIR__ . '/db/Database.php';
 
 $database = Database::getInstance();
 $pdo = $database->getConnection();
 
+// --- Functional & constants ---
+require_once __DIR__ . '/functions.php';
+require_once __DIR__ . '/constants.php';
+
+// --- Security services ---
 require_once __DIR__ . '/services/security.php';
 
 if (empty($_SESSION['csrf_token'])) {
