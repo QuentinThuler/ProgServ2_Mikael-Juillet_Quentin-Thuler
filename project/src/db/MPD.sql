@@ -9,12 +9,7 @@ CREATE TABLE IF NOT EXISTS roles (
 -- 2. Participants (one row per email address)
 CREATE TABLE IF NOT EXISTS participants (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    email VARCHAR(255) NOT NULL UNIQUE, 
-    
-    -- Email confirmation (logged-out visitors only)
-    is_confirmed BOOLEAN NOT NULL DEFAULT FALSE,
-    token_hash CHAR(64) NULL UNIQUE,
-    token_expires_at DATETIME NULL
+    email VARCHAR(255) NOT NULL UNIQUE
 );
 
 -- 3. Users (optional account linked to a participant)
@@ -86,4 +81,15 @@ CREATE TABLE IF NOT EXISTS registrations (
 
     CONSTRAINT unique_registrations
         UNIQUE (event_id, participant_id)
+);
+
+-- 6. pending_verifications (one row per email address)
+CREATE TABLE IF NOT EXISTS pending_verifications (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    email VARCHAR(255) NOT NULL UNIQUE, 
+    token_hash CHAR(64) NULL UNIQUE,
+    token_expires_at DATETIME NULL,
+    purpose VARCHAR(50) NOT NULL,
+    payload JSON NOT NULL,
+    attempt_count INT NOT NULL DEFAULT 0
 );
