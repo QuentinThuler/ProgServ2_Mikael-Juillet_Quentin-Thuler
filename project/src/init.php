@@ -17,3 +17,9 @@ require_once __DIR__ . '/db/Database.php';
 
 $database = Database::getInstance();
 $pdo = $database->getConnection();
+
+require_once __DIR__ . '/services/security.php';
+
+if (empty($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}

@@ -19,12 +19,12 @@ class PendingVerificationController {
         error_log($token); // TODO : replace by sending the token via email to the user
 
         $pendingVerification = new PendingVerification($email, $encryptedToken, $purpose, payload : $payload);
-        $existingPendingVerification = $this->pendingVerificationRequests->getPendingVerificationByEmail($email);
+        $existingPendingVerification = $this->pendingVerificationRequests->getByEmail($email);
 
         if (!$existingPendingVerification) {
-            $this->pendingVerificationRequests->createPendingVerification($pendingVerification);
+            $this->pendingVerificationRequests->create($pendingVerification);
         } else {
-            $this->pendingVerificationRequests->updatePendingVerification($pendingVerification);
+            $this->pendingVerificationRequests->update($pendingVerification);
         }
     }
 

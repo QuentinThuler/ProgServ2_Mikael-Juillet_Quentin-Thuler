@@ -7,7 +7,7 @@ class PendingVerificationRequests {
         $this->connection = $connection;
     }
 
-    public function createPendingVerification(PendingVerification $pendingVerification): void {
+    public function create(PendingVerification $pendingVerification): void {
         $query = "INSERT INTO pending_verifications (email, token_hash, token_expires_at, purpose, payload, attempt_count) VALUES (:email, :token_hash, :token_expires_at, :purpose, :payload, :attempt_count)";
         $statement = $this->connection->prepare($query);
         $statement->execute([
@@ -20,7 +20,7 @@ class PendingVerificationRequests {
         ]);
     }
 
-    public function getPendingVerificationByEmail(string $email): ?PendingVerification {
+    public function getByEmail(string $email): ?PendingVerification {
         $query = "SELECT * FROM pending_verifications WHERE email = :email";
         $statement = $this->connection->prepare($query);
         $statement->execute([':email' => $email]);
@@ -40,7 +40,7 @@ class PendingVerificationRequests {
         return null;
     }
 
-    public function updatePendingVerification(PendingVerification $pendingVerification): void {
+    public function update(PendingVerification $pendingVerification): void {
         $query = "UPDATE pending_verifications SET token_hash = :token_hash, token_expires_at = :token_expires_at, purpose = :purpose, payload = :payload, attempt_count = :attempt_count WHERE email = :email";
         $statement = $this->connection->prepare($query);
         $statement->execute([
@@ -53,7 +53,7 @@ class PendingVerificationRequests {
         ]);
     }
 
-    public function deletePendingVerification(string $email): void {
+    public function delete(string $email): void {
         $query = "DELETE FROM pending_verifications WHERE email = :email";
         $statement = $this->connection->prepare($query);
         $statement->execute([':email' => $email]);

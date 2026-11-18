@@ -86,7 +86,7 @@ CREATE TABLE IF NOT EXISTS registrations (
 -- 6. pending_verifications (one row per email address)
 CREATE TABLE IF NOT EXISTS pending_verifications (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    email VARCHAR(255) NOT NULL UNIQUE, 
+    email VARCHAR(255) NOT NULL UNIQUE,
     token_hash CHAR(64) NULL UNIQUE,
     token_expires_at DATETIME NULL,
     purpose VARCHAR(50) NOT NULL,
