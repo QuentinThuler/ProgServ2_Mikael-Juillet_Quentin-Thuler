@@ -40,7 +40,6 @@ class EventController
 
         $imageUpload = (defined('IMAGE_UPLOAD_ENABLED') && IMAGE_UPLOAD_ENABLED) ? $imageFile : null;
 
-        // Validation (lève une InvalidArgumentException en cas d'erreur, comme dans ParticipantController)
         $this->validateEvent(
             $title,
             $description,
@@ -60,7 +59,6 @@ class EventController
             }
         }
 
-        // Instanciation du modèle Event (comme new Participant($email))
         $event = new Event(
             $title,
             $description,
@@ -176,7 +174,7 @@ class EventController
 
         // Extension déterminée uniquement par notre liste blanche côté serveur
         $extension = ALLOWED_IMAGE_TYPES[$mimeType];
-        // Nom aléatoire cryptographiquement sûr (aucune donnée utilisateur conservée)
+        // Nom aléatoire cryptographiquement sûr
         $fileName  = bin2hex(random_bytes(16)) . '.' . $extension;
         $dir       = __DIR__ . '/../../public/uploads/events';
 

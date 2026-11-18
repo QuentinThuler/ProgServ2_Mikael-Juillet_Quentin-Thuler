@@ -2,15 +2,9 @@
 require_once __DIR__ . '/../../src/init.php';
 require_once __DIR__ . '/../../src/Event/EventController.php';
 require_once __DIR__ . '/../../src/Event/EventRequests.php';
+require_once __DIR__ . '/../../src/functions.php';
 
-/* requireAdmin(); */
 $_SESSION['user_id'] ??= 1;
-
-// Fonction utilitaire d'échappement XSS strict (attributs HTML et contenu)
-function e(?string $value): string
-{
-    return htmlspecialchars($value ?? '', ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
-}
 
 // Génération d'un jeton CSRF en session s'il n'existe pas
 if (empty($_SESSION['csrf_token'])) {
