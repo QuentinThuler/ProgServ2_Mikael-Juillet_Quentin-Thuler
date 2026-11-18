@@ -4,6 +4,8 @@ Ce projet a pour base
 [_"Programmation Serveur 2 (ProgServ2)"_](https://github.com/heig-vd-progserv-course/heig-vd-progserv2-course)
 à la [HEIG-VD](https://heig-vd.ch).
 
+Site en production : [heig-progserv.mikaeljuillet.ch](https://heig-progserv.mikaeljuillet.ch/)
+
 ## Contexte du projet
 
 Gatherly est une application de gestion d'événements destinée aux associations.

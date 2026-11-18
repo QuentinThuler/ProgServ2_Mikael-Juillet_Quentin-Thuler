@@ -1,17 +1,37 @@
 <?php
 
-session_set_cookie_params([
-    'httponly' => true,
-    'samesite' => 'Lax',
-    // 'secure' => true,  // to be activated when switching to HTTPS
-]);
-
+// --- Session ---------------------------------------------------------------
 if (session_status() === PHP_SESSION_NONE) {
+    ini_set('session.use_strict_mode', '1');
+    session_set_cookie_params([
+        'httponly' => true,
+        'samesite' => 'Lax',
+        'secure'   => !empty($_SERVER['HTTPS']),
+    ]);
     session_start();
 }
 
 $isConnected = isset($_SESSION['user_id']);
-$isAdmin = ($_SESSION['role'] ?? '') === 'admin';
+$isAdmin     = $isConnected && ($_SESSION['role'] ?? '') === 'admin';
+
+function requireLogin(): void {
+    global $isConnected;
+
+    if (!$isConnected) {
+        header('Location: /login.php');
+        exit;
+    }
+}
+
+function requireAdmin(): void {
+    global $isAdmin;
+
+    requireLogin();
+    if (!$isAdmin) {
+        http_response_code(403);
+        exit('Accès refusé.');
+    }
+}
 
 require_once __DIR__ . '/db/Database.php';
 
