@@ -76,9 +76,6 @@ class UserRequests {
 
                 participants.id AS participant_id,
                 participants.email,
-                participants.is_confirmed,
-                participants.token_hash,
-                participants.token_expires_at,
 
                 roles.name AS role_name
 
@@ -203,9 +200,6 @@ class UserRequests {
 
                 participants.id AS participant_id,
                 participants.email,
-                participants.is_confirmed,
-                participants.token_hash,
-                participants.token_expires_at,
 
                 roles.name AS role_name
 
@@ -253,15 +247,7 @@ class UserRequests {
      */
     private function buildUser(array $row): User {
         $participant = new Participant($row['email']);
-
-        $participant->setParticipantAllValues(
-            (int) $row['participant_id'],
-            (bool) $row['is_confirmed'],
-            $row['token_hash'],
-            $row['token_expires_at']
-                ? new DateTime($row['token_expires_at'])
-                : null
-        );
+        $participant->setId((int) $row['participant_id']);
 
         $role = new Role((int) $row['role_id'], $row['role_name'],);
 

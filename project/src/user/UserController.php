@@ -2,11 +2,13 @@
 
 namespace App\user;
 
+use App\participant\Participant;
 use App\participant\ParticipantRequests;
 use App\pendingVerifications\IVerificationHandler;
 use App\role\RoleRequests;
 use InvalidArgumentException;
 use JsonSerializable;
+use RuntimeException;
 
 class UserController implements IVerificationHandler {
     private UserRequests $userRequests;
@@ -81,13 +83,6 @@ class UserController implements IVerificationHandler {
         );
         if ($existingUser) throw new RuntimeException('Un compte existe déjà avec cette adresse e-mail.');
 
-        // TODO : gérer la validation. 
-        if (!$participant->isConfirmed()) {
-            throw new RuntimeException(
-                'Cette adresse e-mail doit être vérifiée avant de créer un compte.'
-            );
-        }
-
         // Get the role for the new user (default role is "User")
         $role = $this->roleRequests->getroleByName('User');
         if ($role === null) {
@@ -109,20 +104,33 @@ class UserController implements IVerificationHandler {
         $this->userRequests->create($user);
     }
 
-    // TODO : implement update
-
     // DELETE
     public function delete(int $id): void {
         $user = $this->userRequests->getUserById($id);
 
         if ($user === null) {
-            throw new Exception('Utilisateur introuvable.');
+            throw new RuntimeException('Utilisateur introuvable.');
         }
 
         $this->userRequests->delete($user);
     }
 
+    /**
+     * Handle the creation of a new user after email verification
+     * @param string $email The user's email
+     * @param JsonSerializable $payload The user data
+     * @return void
+     */
     public function handle(string $email, JsonSerializable $payload): void {
+        $this->create(
+            $email,
+            $payload->name,
+            $payload->password,
+            $payload->description ?? null,
+            $payload->image ?? null,
+            $payload->linkedin ?? null,
+            $payload->phone ?? null
+        );
     }
 
     // PRIVATE METHODS
@@ -141,23 +149,5 @@ class UserController implements IVerificationHandler {
                 'Le mot de passe doit contenir au moins 8 caractères.'
             );
         }
-    }
-
-    private function createUserFromPayload(string $email, JsonSerializable $payload): void {
-        $data = json_decode(json_encode($payload), true);
-
-        if (!isset($data['name']) || !isset($data['password'])) {
-            throw new InvalidArgumentException('Le nom et le mot de passe sont obligatoires.');
-        }
-
-        $this->create(
-            $email,
-            $data['name'],
-            $data['password'],
-            $data['description'] ?? null,
-            $data['image'] ?? null,
-            $data['linkedin'] ?? null,
-            $data['phone'] ?? null
-        );
     }
 }
