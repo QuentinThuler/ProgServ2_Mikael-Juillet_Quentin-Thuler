@@ -103,6 +103,26 @@ class UserController implements IVerificationHandler {
         $this->userRequests->create($user);
     }
 
+    /**
+     * Update an existing user
+     * @param User $user The user to update
+     * @return void
+     */
+    public function update(User $user): void {
+        $this->userValidation([
+            'email' => $user->getParticipant()->getEmail(),
+            'name' => $user->getName(),
+            'password' => $user->getPassword()
+        ]);
+
+        $existingUser = $this->userRequests->getById($user->getId());
+        if ($existingUser === null) {
+            throw new RuntimeException('Utilisateur introuvable.');
+        }
+
+        $this->userRequests->update($user);
+    }
+
     // DELETE
     public function delete(int $id): void {
         $user = $this->userRequests->getById($id);

@@ -9,6 +9,7 @@ use function App\services\escape;
 use function App\services\verifyCsrfToken;
 
 $errors = [];
+$pageTitle = "Créer un compte";
 
 try {
     $pendingVerificationRequest = new PendingVerificationRequests($pdo);
@@ -42,64 +43,62 @@ try {
 <!DOCTYPE html>
 <html lang="fr">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Créer un compte</title>
-</head>
+<?php require_once __DIR__ . '/../../components/head.php' ?>
 
 <body>
+    <main>
+        <?php require_once __DIR__ . '/../../components/header.php' ?>
 
-    <h1>Créer un compte</h1>
+        <h1>Créer un compte</h1>
 
-    <?php foreach ($errors as $error): ?>
-        <p class="error">
-            <?= escape($error) ?>
-        </p>
-    <?php endforeach; ?>
+        <?php foreach ($errors as $error): ?>
+            <p class="error">
+                <?= escape($error) ?>
+            </p>
+        <?php endforeach; ?>
 
-    <form method="POST">
+        <form method="POST">
 
-        <input
-            type="hidden"
-            name="csrf_token"
-            value="<?= escape($_SESSION['csrf_token'] ?? '') ?>">
-
-        <div>
-            <label for="email">Adresse e-mail</label>
             <input
-                type="email"
-                id="email"
-                name="email"
-                value="<?= escape($_POST['email'] ?? '') ?>"
-                required>
-        </div>
+                type="hidden"
+                name="csrf_token"
+                value="<?= escape($_SESSION['csrf_token'] ?? '') ?>">
 
-        <div>
-            <label for="name">Nom</label>
-            <input
-                type="text"
-                id="name"
-                name="name"
-                value="<?= escape($_POST['name'] ?? '') ?>"
-                required>
-        </div>
+            <div>
+                <label for="email">Adresse e-mail</label>
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    value="<?= escape($_POST['email'] ?? '') ?>"
+                    required>
+            </div>
 
-        <div>
-            <label for="password">Mot de passe</label>
-            <input
-                type="password"
-                id="password"
-                name="password"
-                minlength="8"
-                required>
-        </div>
+            <div>
+                <label for="name">Nom</label>
+                <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    value="<?= escape($_POST['name'] ?? '') ?>"
+                    required>
+            </div>
 
-        <button type="submit">Créer mon compte</button>
+            <div>
+                <label for="password">Mot de passe</label>
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    minlength="8"
+                    required>
+            </div>
 
-    </form>
+            <button type="submit">Créer mon compte</button>
 
+        </form>
+    </main>
+    <?php require_once __DIR__ . '/../../components/footer.php' ?>
 </body>
 
 </html>
-```

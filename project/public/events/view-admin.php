@@ -4,6 +4,7 @@ require_once __DIR__ . '/../../src/init.php';
 use App\event\EventRequests;
 use App\event\EventController;
 
+// TODO : missing try catch, can be cleaned and translated
 
 // Contrôle d'accès administrateur (à décommenter dès que votre fonction est prête)
 /* requireAdmin(); */

@@ -6,6 +6,8 @@ use App\role\RoleRequests;
 use App\user\UserRequests;
 use App\user\UserController;
 
+use function App\services\escape;
+
 $errors = [];
 
 try {

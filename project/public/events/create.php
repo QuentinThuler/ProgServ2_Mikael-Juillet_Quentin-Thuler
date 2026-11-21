@@ -4,12 +4,8 @@ require_once __DIR__ . '/../../src/init.php';
 use App\event\EventRequests;
 use App\event\EventController;
 
-$_SESSION['user_id'] ??= 1;
-
-// Génération d'un jeton CSRF en session s'il n'existe pas
-if (empty($_SESSION['csrf_token'])) {
-    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
-}
+use function App\services\escape;
+use function App\services\verifyCsrfToken;
 
 $pageTitle = "Créer un Évènement";
 
@@ -27,12 +23,10 @@ $date_time = '';
 $errors = [];
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    // 1. Vérification du jeton CSRF
-    $submittedToken = $_POST['csrf_token'] ?? '';
-    if (!is_string($submittedToken) || !hash_equals($_SESSION['csrf_token'], $submittedToken)) {
-        http_response_code(403);
-        die("Requête invalide (jeton CSRF manquant ou incorrect).");
-    }
+
+    verifyCsrfToken();
+
+    // TODO : Can be simplified and comments translated into english
 
     // 2. Récupération sécurisée des entrées (vérification que ce sont bien des chaînes et non des tableaux)
     $title       = is_string($_POST['title'] ?? null) ? trim($_POST['title']) : '';
@@ -56,9 +50,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             'room'        => $room,
             'date_time'   => $date_time,
         ], $imageFile, $userId);
-
-        // Régénération du jeton CSRF après succès
-        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 
         header('Location: ./view-admin.php?id=' . (int) $newEventId);
         exit;

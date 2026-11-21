@@ -4,6 +4,9 @@ require_once __DIR__ . '/../../src/init.php';
 use App\participant\ParticipantRequests;
 use App\participant\ParticipantController;
 
+use function App\services\escape;
+use function App\services\verifyCsrfToken;
+
 $errors = [];
 
 try {
@@ -11,6 +14,8 @@ try {
     $controller = new ParticipantController($requests);
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        verifyCsrfToken();
+
         $email = $_POST['email'] ?? '';
 
         $controller->create($email);
@@ -27,7 +32,6 @@ try {
     error_log("Unexpected error: " . $e->getMessage());
     $errors[] = "Une erreur inattendue s'est produite : " . $e->getMessage();
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -53,6 +57,12 @@ try {
 
             <!-- Default action actual file (/participants/create.php) -->
             <form method="POST" action="">
+
+                <input
+                    type="hidden"
+                    name="csrf_token"
+                    value="<?= escape($_SESSION['csrf_token'] ?? '') ?>">
+
                 <div>
                     <label for="email">Adresse e-mail</label>
                     <input
