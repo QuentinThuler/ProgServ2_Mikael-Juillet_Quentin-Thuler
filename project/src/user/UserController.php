@@ -7,7 +7,6 @@ use App\participant\ParticipantRequests;
 use App\pendingVerifications\IVerificationHandler;
 use App\role\RoleRequests;
 use InvalidArgumentException;
-use JsonSerializable;
 use RuntimeException;
 
 class UserController implements IVerificationHandler {
@@ -26,7 +25,7 @@ class UserController implements IVerificationHandler {
     }
 
     public function index(): array {
-        return $this->userRequests->getAllUsers();
+        return $this->userRequests->getAll();
     }
 
     /**
@@ -35,7 +34,7 @@ class UserController implements IVerificationHandler {
      * @return ?User The user if found, null otherwise
      */
     public function show(int $id): ?User {
-        return $this->userRequests->getUserById($id);
+        return $this->userRequests->getById($id);
     }
 
     /**
@@ -68,13 +67,13 @@ class UserController implements IVerificationHandler {
         ]);
 
         // Get the participant by email
-        $participant = $this->participantRequests->getParticipantByEmail($email);
+        $participant = $this->participantRequests->getByEmail($email);
 
         // If the participant does not exist, create a new participant
         if (!$participant) {
             $newParticipant = new Participant($email);
             $this->participantRequests->create($newParticipant);
-            $participant = $this->participantRequests->getParticipantByEmail($email);
+            $participant = $this->participantRequests->getByEmail($email);
         }
 
         // Check if a user already exists for this participant
@@ -106,7 +105,7 @@ class UserController implements IVerificationHandler {
 
     // DELETE
     public function delete(int $id): void {
-        $user = $this->userRequests->getUserById($id);
+        $user = $this->userRequests->getById($id);
 
         if ($user === null) {
             throw new RuntimeException('Utilisateur introuvable.');
@@ -118,18 +117,20 @@ class UserController implements IVerificationHandler {
     /**
      * Handle the creation of a new user after email verification
      * @param string $email The user's email
-     * @param JsonSerializable $payload The user data
+     * @param string $payload The user data
      * @return void
      */
-    public function handle(string $email, JsonSerializable $payload): void {
+    public function handle(string $email, string $payload): void {
+        $payload = json_decode($payload, true);
+
         $this->create(
             $email,
-            $payload->name,
-            $payload->password,
-            $payload->description ?? null,
-            $payload->image ?? null,
-            $payload->linkedin ?? null,
-            $payload->phone ?? null
+            $payload['name'],
+            $payload['password'],
+            $payload['description'] ?? null,
+            $payload['image'] ?? null,
+            $payload['linkedin'] ?? null,
+            $payload['phone'] ?? null
         );
     }
 

@@ -34,9 +34,9 @@ $pageTitle = "Accueil";
                 <?php foreach ($events as $index => $event): ?>
                     <li <?= $index >= 8 ? 'hidden' : '' ?>>
                         <article class="event-card">
-                            <h3><?= e($event->getTitle()) ?> - <?= e($event->getCity()) ?></h3>
-                            <p><?= e($event->getDateTime()->format('d.m.Y - H:i')) ?></p>
-                            <p><?= e($event->getTagline()) ?></p>
+                            <h3><?= escape($event->getTitle()) ?> - <?= escape($event->getCity()) ?></h3>
+                            <p><?= escape($event->getDateTime()->format('d.m.Y - H:i')) ?></p>
+                            <p><?= escape($event->getTagline()) ?></p>
                             <a href="./view.php?id=<?= (int) $event->getId() ?>">Détails de l'évènement</a>
                         </article>
                     </li>

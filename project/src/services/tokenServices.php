@@ -1,5 +1,7 @@
 <?php
 
+namespace App\services;
+
 /**
  * encriptToken : encript a string into sha256 format.
  * 

@@ -12,7 +12,7 @@ class ParticipantController {
     }
 
     public function index(): array {
-        return $this->participantRequests->getAllParticipants();
+        return $this->participantRequests->getAll();
     }
 
     public function create(string $email): void {
@@ -20,10 +20,8 @@ class ParticipantController {
         $email = trim($email);
         $this->validateEmail($email);
 
-        // create a pending validation then redirect to the validation page
-
         $participant = new Participant($email);
-        $existingParticipant = $this->participantRequests->getParticipantByEmail($email);
+        $existingParticipant = $this->participantRequests->getByEmail($email);
 
         if (!$existingParticipant) {
             $this->participantRequests->create($participant);

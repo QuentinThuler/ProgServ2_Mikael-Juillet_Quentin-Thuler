@@ -55,7 +55,7 @@ try {
 
     <?php foreach ($errors as $error): ?>
         <p class="error">
-            <?= e($error) ?>
+            <?= escape($error) ?>
         </p>
     <?php endforeach; ?>
 
@@ -64,7 +64,7 @@ try {
         <input
             type="hidden"
             name="csrf_token"
-            value="<?= e($_SESSION['csrf_token'] ?? '') ?>">
+            value="<?= escape($_SESSION['csrf_token'] ?? '') ?>">
 
         <div>
             <label for="email">Adresse e-mail</label>
@@ -72,7 +72,7 @@ try {
                 type="email"
                 id="email"
                 name="email"
-                value="<?= e($_POST['email'] ?? '') ?>"
+                value="<?= escape($_POST['email'] ?? '') ?>"
                 required>
         </div>
 
@@ -82,7 +82,7 @@ try {
                 type="text"
                 id="name"
                 name="name"
-                value="<?= e($_POST['name'] ?? '') ?>"
+                value="<?= escape($_POST['name'] ?? '') ?>"
                 required>
         </div>
 

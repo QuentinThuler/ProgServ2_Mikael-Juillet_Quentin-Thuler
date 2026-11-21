@@ -12,8 +12,8 @@
         "files": [
             "project/src/services/functions.php",
             "project/src/services/constants.php",
-            "project/src/services/security.php"
+            "project/src/services/security.php",
+            "project/src/services/tokenServices.php"
         ]
     }
 }
-

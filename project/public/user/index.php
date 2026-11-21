@@ -38,7 +38,7 @@ try {
 
             <?php foreach ($errors as $error): ?>
                 <p role="alert">
-                    <?= e($error) ?>
+                    <?= escape($error) ?>
                 </p>
             <?php endforeach; ?>
 
@@ -51,7 +51,7 @@ try {
             <ul>
                 <?php foreach ($users as $user): ?>
                     <li>
-                        <?= e($user->getEmail()) ?>
+                        <?= escape($user->getEmail()) ?>
                     </li>
                 <?php endforeach; ?>
             </ul>

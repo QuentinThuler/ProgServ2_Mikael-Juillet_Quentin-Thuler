@@ -39,20 +39,20 @@ $hasValidImage = $imagePath !== null && str_starts_with($imagePath, '/uploads/ev
 
     <main>
         <article class="event-detail">
-            <h1><?= e($event->getTitle()) ?></h1>
-            <p class="tagline"><strong><?= e($event->getTagline()) ?></strong></p>
+            <h1><?= escape($event->getTitle()) ?></h1>
+            <p class="tagline"><strong><?= escape($event->getTagline()) ?></strong></p>
 
             <?php if ($hasValidImage): ?>
-                <img src="<?= e($imagePath) ?>" alt="<?= e($event->getTitle()) ?>" />
+                <img src="<?= escape($imagePath) ?>" alt="<?= escape($event->getTitle()) ?>" />
             <?php endif; ?>
 
             <section class="event-info">
-                <p><strong>Date et heure :</strong> <?= e($event->getDateTime()->format('d.m.Y - H:i')) ?></p>
+                <p><strong>Date et heure :</strong> <?= escape($event->getDateTime()->format('d.m.Y - H:i')) ?></p>
                 <p>
                     <strong>Lieu :</strong>
-                    <?= e($event->getAddress()) ?>, <?= e($event->getCity()) ?>
+                    <?= escape($event->getAddress()) ?>, <?= escape($event->getCity()) ?>
                     <?php if ($event->getRoom()): ?>
-                        (Salle : <?= e($event->getRoom()) ?>)
+                        (Salle : <?= escape($event->getRoom()) ?>)
                     <?php endif; ?>
                 </p>
             </section>
@@ -63,7 +63,7 @@ $hasValidImage = $imagePath !== null && str_starts_with($imagePath, '/uploads/ev
             </section>
 
             <?php if ($event->getCreatedAt()): ?>
-                <p><small>Publié le <?= e($event->getCreatedAt()->format('d.m.Y à H:i')) ?></small></p>
+                <p><small>Publié le <?= escape($event->getCreatedAt()->format('d.m.Y à H:i')) ?></small></p>
             <?php endif; ?>
         </article>
     </main>

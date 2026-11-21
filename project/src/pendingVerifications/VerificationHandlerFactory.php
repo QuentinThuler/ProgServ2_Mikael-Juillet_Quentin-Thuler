@@ -2,19 +2,34 @@
 
 namespace App\pendingVerifications;
 
-use InvalidArgumentException;
-use RegistrationController;
-use UserController;
+use App\db\Database;
+use App\participant\ParticipantRequests;
+use App\registration\RegistrationController;
+use App\registration\RegistrationRequests;
+use App\role\RoleRequests;
+use App\user\UserController;
+use App\user\UserRequests;
+use RuntimeException;
 
 class VerificationHandlerFactory {
     public static function handle(string $purpose): IVerificationHandler {
+
+        $database = Database::getInstance();
+        $pdo = $database->getConnection();
+
         switch ($purpose) {
             case 'event_registration':
-                return new RegistrationController();
+                return new RegistrationController(
+                    new RegistrationRequests($pdo)
+                );
             case 'account_creation':
-                return new UserController();
+                return new UserController(
+                    new UserRequests($pdo),
+                    new ParticipantRequests($pdo),
+                    new RoleRequests($pdo)
+                );
             default:
-                throw new InvalidArgumentException("Unknown purpose: $purpose");
+                throw new RuntimeException("Unknown purpose: $purpose");
         }
     }
 }

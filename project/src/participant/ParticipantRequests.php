@@ -34,15 +34,15 @@ class ParticipantRequests {
      *
      * @return Participant[]
      */
-    public function getAllParticipants(): array {
-        $sql = "SELECT id, email, is_confirmed, token_hash, token_expires_at FROM participants";
+    public function getAll(): array {
+        $sql = "SELECT id, email FROM participants";
         $stmt = $this->connection->prepare($sql);
         $stmt->execute();
 
         $participants = [];
 
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $participants[] = $this->buildParticipant($row);
+            $participants[] = $this->build($row);
         }
 
         return $participants;
@@ -54,14 +54,18 @@ class ParticipantRequests {
      * @param string $email The participant's email
      * @return ?Participant The participant if found, null otherwise
      */
-    public function getParticipantByEmail(string $email): ?Participant {
-        $sql = "SELECT id, email, is_confirmed, token_hash, token_expires_at FROM participants WHERE email = :email";
+    public function getByEmail(string $email): ?Participant {
+        $sql = "SELECT id, email FROM participants WHERE email = :email";
         $stmt = $this->connection->prepare($sql);
         $stmt->execute(['email' => $email]);
 
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        $participant = $this->buildParticipant($row);
+        if ($row === false) {
+            return null;
+        }
+
+        $participant = $this->build($row);
         return $participant;
     }
 
@@ -71,7 +75,7 @@ class ParticipantRequests {
      * @param Participant $participant The participant to update
      * @return void
      */
-    public function updateEmail(Participant $participant): void {
+    public function update(Participant $participant): void {
         $sql = '
             UPDATE participants
             SET email = :email
@@ -104,9 +108,9 @@ class ParticipantRequests {
      * @param int $id The participant's ID
      * @return ?Participant The participant if found, null otherwise
      */
-    public function getParticipantById(int $id): ?Participant {
+    public function getById(int $id): ?Participant {
         $sql = '
-        SELECT id, email, is_confirmed, token_hash, token_expires_at
+        SELECT id, email
         FROM participants
         WHERE id = :id
     ';
@@ -120,13 +124,13 @@ class ParticipantRequests {
             return null;
         }
 
-        $participant = $this->buildParticipant($row);
+        $participant = $this->build($row);
         return $participant;
     }
 
     // PRIVATE METHODS
 
-    private function buildParticipant(array $row): Participant {
+    private function build(array $row): Participant {
         $participant = new Participant($row['email']);
         $participant->setID((int) $row['id']);
         return $participant;

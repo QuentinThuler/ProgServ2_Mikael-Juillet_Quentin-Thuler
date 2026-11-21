@@ -4,8 +4,10 @@ namespace App\pendingVerifications;
 
 use DateTime;
 use InvalidArgumentException;
-use JsonSerializable;
-use PendingVerificationRequests;
+
+use function App\services\compareToken;
+use function App\services\encriptToken;
+use function App\services\generateToken;
 
 class PendingVerificationController {
     private PendingVerificationRequests $pendingVerificationRequests;
@@ -14,15 +16,16 @@ class PendingVerificationController {
         $this->pendingVerificationRequests = $pendingVerificationRequests;
     }
 
-    public function create(string $email, string $purpose, JsonSerializable $payload): void {
+    public function create(string $email, string $purpose, string $payload): void {
 
         $email = trim($email);
 
         $this->validateEmail($email);
 
+        $_SESSION['email_temp'] = $email;
+
         $token = generateToken(6);
         $encryptedToken = encriptToken($token);
-        error_log($token); // TODO : replace by sending the token via email to the user
 
         $pendingVerification = new PendingVerification($email, $encryptedToken, $purpose, payload: $payload);
         $existingPendingVerification = $this->pendingVerificationRequests->getByEmail($email);
@@ -32,9 +35,12 @@ class PendingVerificationController {
         } else {
             $this->pendingVerificationRequests->update($pendingVerification);
         }
+
+        error_log("Token generated for $email: $token"); // TODO : replace by sending the token via email to the user
+
     }
 
-    public function validateToken(string $email, string $token): void {
+    public function validate(string $email, string $token): void {
         $email = trim($email);
         $token = trim($token);
 
@@ -45,15 +51,19 @@ class PendingVerificationController {
             throw new InvalidArgumentException('Le code de vérification est invalide.');
         }
 
-        $existingPendingVerification = $this->pendingVerificationRequests->getPendingVerificationByEmail($email);
+        $existingPendingVerification = $this->pendingVerificationRequests->getByEmail($email);
 
         if (!$existingPendingVerification) {
-            throw new InvalidArgumentException('Aucune vérification en attente trouvée pour cet e-mail.');
+            throw new InvalidArgumentException('Aucune demande de vérification en attente trouvée pour cet e-mail.');
         }
 
-        if ($existingPendingVerification->getTokenExpiresAt() > new DateTime() && compareToken($token, $existingPendingVerification->getTokenHash())) {
-            // TODO : Send purpose and payload to the next step of the registration process
-            // TODO : Delete the pending verification after successful validation
+        if (
+            $existingPendingVerification->getTokenExpiresAt() > new DateTime()
+            && compareToken($token, $existingPendingVerification->getTokenHash())
+        ) {
+            $verificationHandler = VerificationHandlerFactory::handle($existingPendingVerification->getPurpose());
+            $this->pendingVerificationRequests->delete($email);
+            $verificationHandler->handle($email, $existingPendingVerification->getPayload());
         } else {
             throw new InvalidArgumentException('Le code de vérification est invalide ou a expiré.');
         }

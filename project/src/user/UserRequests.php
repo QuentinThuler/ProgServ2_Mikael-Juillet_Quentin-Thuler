@@ -62,7 +62,7 @@ class UserRequests {
      * Get all users from the database
      * @return array
      */
-    public function getAllUsers(): array {
+    public function getAll(): array {
         $sql = '
             SELECT
                 users.id AS user_id,
@@ -94,7 +94,7 @@ class UserRequests {
         $users = [];
 
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $users[] = $this->buildUser($row);
+            $users[] = $this->build($row);
         }
 
         return $users;
@@ -105,7 +105,7 @@ class UserRequests {
      * @param int $id The user ID
      * @return ?User The user if found, null otherwise
      */
-    public function getUserById(int $id): ?User {
+    public function getById(int $id): ?User {
         $sql = '
             SELECT
                 users.id AS user_id,
@@ -119,9 +119,6 @@ class UserRequests {
 
                 participants.id AS participant_id,
                 participants.email,
-                participants.is_confirmed,
-                participants.token_hash,
-                participants.token_expires_at,
 
                 roles.name AS role_name
 
@@ -145,7 +142,7 @@ class UserRequests {
             return null;
         }
 
-        return $this->buildUser($row);
+        return $this->build($row);
     }
 
     /**
@@ -223,7 +220,7 @@ class UserRequests {
             return null;
         }
 
-        return $this->buildUser($row);
+        return $this->build($row);
     }
 
     /**
@@ -245,7 +242,7 @@ class UserRequests {
      * @param array $row The database row
      * @return User The constructed User object
      */
-    private function buildUser(array $row): User {
+    private function build(array $row): User {
         $participant = new Participant($row['email']);
         $participant->setId((int) $row['participant_id']);
 

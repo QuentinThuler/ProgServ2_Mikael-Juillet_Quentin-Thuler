@@ -86,34 +86,34 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <p style="color: red;">Le formulaire contient des erreurs :</p>
             <ul>
                 <?php foreach ($errors as $error): ?>
-                    <li><?= e($error) ?></li>
+                    <li><?= escape($error) ?></li>
                 <?php endforeach; ?>
             </ul>
         <?php endif; ?>
 
         <form action="./create.php" method="POST" enctype="multipart/form-data">
-            <input type="hidden" name="csrf_token" value="<?= e($_SESSION['csrf_token']) ?>" />
+            <input type="hidden" name="csrf_token" value="<?= escape($_SESSION['csrf_token']) ?>" />
 
             <label for="title">Titre*</label>
-            <input type="text" id="title" name="title" value="<?= e($title) ?>" required maxlength="255" />
+            <input type="text" id="title" name="title" value="<?= escape($title) ?>" required maxlength="255" />
 
             <label for="description">Description*</label>
-            <input type="text" id="description" name="description" value="<?= e($description) ?>" required maxlength="500" />
+            <input type="text" id="description" name="description" value="<?= escape($description) ?>" required maxlength="500" />
 
             <label for="tagline">Phrase d'accroche (max 80 caractères)*</label>
-            <input type="text" id="tagline" name="tagline" value="<?= e($tagline) ?>" required maxlength="80" />
+            <input type="text" id="tagline" name="tagline" value="<?= escape($tagline) ?>" required maxlength="80" />
 
             <label for="address">Adresse*</label>
-            <input type="text" id="address" name="address" value="<?= e($address) ?>" required minlength="5" maxlength="60" />
+            <input type="text" id="address" name="address" value="<?= escape($address) ?>" required minlength="5" maxlength="60" />
 
             <label for="city">Ville*</label>
-            <input type="text" id="city" name="city" value="<?= e($city) ?>" required maxlength="40" />
+            <input type="text" id="city" name="city" value="<?= escape($city) ?>" required maxlength="40" />
 
             <label for="room">Salle</label>
-            <input type="text" id="room" name="room" value="<?= e($room) ?>" maxlength="20" />
+            <input type="text" id="room" name="room" value="<?= escape($room) ?>" maxlength="20" />
 
             <label for="date_time">Date et heure*</label>
-            <input type="datetime-local" id="date_time" name="date_time" value="<?= e($date_time) ?>" required />
+            <input type="datetime-local" id="date_time" name="date_time" value="<?= escape($date_time) ?>" required />
 
             <?php if (defined('IMAGE_UPLOAD_ENABLED') && IMAGE_UPLOAD_ENABLED): ?>
                 <label for="image">Image</label>

@@ -91,12 +91,12 @@ $phone = $_POST['phone'] ?? $user->getPhone();
 
     <p>
         E-mail du participant :
-        <?= e($user->getParticipant()->getEmail()) ?>
+        <?= escape($user->getParticipant()->getEmail()) ?>
     </p>
 
     <?php foreach ($errors as $error): ?>
         <p style="color: red;">
-            <?= e($error) ?>
+            <?= escape($error) ?>
         </p>
     <?php endforeach; ?>
 
@@ -105,14 +105,14 @@ $phone = $_POST['phone'] ?? $user->getPhone();
         <input
             type="hidden"
             name="csrf_token"
-            value="<?= e($_SESSION['csrf_token']) ?>">
+            value="<?= escape($_SESSION['csrf_token']) ?>">
 
         <label for="name">Nom :</label>
         <input
             type="text"
             name="name"
             id="name"
-            value="<?= e($name) ?>"
+            value="<?= escape($name) ?>"
             required>
 
         <br><br>
@@ -135,7 +135,7 @@ $phone = $_POST['phone'] ?? $user->getPhone();
             name="role_id"
             id="role_id"
             min="1"
-            value="<?= e((string) $roleId) ?>"
+            value="<?= escape((string) $roleId) ?>"
             required>
 
         <br><br>
@@ -143,7 +143,7 @@ $phone = $_POST['phone'] ?? $user->getPhone();
         <label for="description">Description :</label>
         <textarea
             name="description"
-            id="description"><?= e($description) ?></textarea>
+            id="description"><?= escape($description) ?></textarea>
 
         <br><br>
 
@@ -152,7 +152,7 @@ $phone = $_POST['phone'] ?? $user->getPhone();
             type="text"
             name="image"
             id="image"
-            value="<?= e($image) ?>">
+            value="<?= escape($image) ?>">
 
         <br><br>
 
@@ -161,7 +161,7 @@ $phone = $_POST['phone'] ?? $user->getPhone();
             type="url"
             name="linkedin"
             id="linkedin"
-            value="<?= e($linkedin) ?>">
+            value="<?= escape($linkedin) ?>">
 
         <br><br>
 
@@ -170,7 +170,7 @@ $phone = $_POST['phone'] ?? $user->getPhone();
             type="tel"
             name="phone"
             id="phone"
-            value="<?= e($phone) ?>">
+            value="<?= escape($phone) ?>">
 
         <br><br>
 

@@ -66,16 +66,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </p>
 
     <p>
-        Nom : <?= e($user->getName()) ?>
+        Nom : <?= escape($user->getName()) ?>
     </p>
 
     <p>
-        E-mail : <?= e($user->getParticipant()->getEmail()) ?>
+        E-mail : <?= escape($user->getParticipant()->getEmail()) ?>
     </p>
 
     <?php if ($error !== null): ?>
         <p style="color: red;">
-            <?= e($error) ?>
+            <?= escape($error) ?>
         </p>
     <?php endif; ?>
 
@@ -84,7 +84,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <input
             type="hidden"
             name="csrf_token"
-            value="<?= e($_SESSION['csrf_token']) ?>">
+            value="<?= escape($_SESSION['csrf_token']) ?>">
 
         <button type="submit">
             Oui, supprimer
