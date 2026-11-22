@@ -11,7 +11,7 @@ class PendingVerification {
     private string $tokenHash;
     private DateTime $tokenExpiresAt;
     private string $purpose;
-    private ?string $payload;
+    private ?array $payload;
     private int $attemptCount;
 
     public function __construct(
@@ -19,7 +19,7 @@ class PendingVerification {
         ?string $tokenHash,
         string $purpose,
         ?DateTime $tokenExpiresAt = null,
-        ?string $payload = null,
+        ?array $payload = null,
         int $attemptCount = 0
     ) {
         $this->email = $email;
@@ -50,7 +50,7 @@ class PendingVerification {
         return $this->purpose;
     }
 
-    public function getPayload(): string {
+    public function getPayload(): array {
         return $this->payload;
     }
 

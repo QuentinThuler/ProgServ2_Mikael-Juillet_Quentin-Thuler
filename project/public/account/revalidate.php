@@ -18,12 +18,11 @@ try {
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         verifyCsrfToken();
 
-        $pendingVerificationController->validate(
-            $_SESSION['email_temp'] ?? null,
-            $_POST['verification_token'] ?? null
+        $pendingVerificationController->revalidate(
+            $_POST['email'] ?? '',
         );
 
-        header('Location: index.php');
+        header('Location: validation.php');
         exit;
     }
 } catch (InvalidArgumentException | RuntimeException $e) {

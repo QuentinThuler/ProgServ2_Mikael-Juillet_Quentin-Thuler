@@ -26,7 +26,7 @@ try {
         $pendingVerificationController->create(
             email: $_POST['email'] ?? '',
             purpose: 'account_creation',
-            payload: json_encode($payload)
+            payload: $payload
         );
 
         header('Location: validation.php');
