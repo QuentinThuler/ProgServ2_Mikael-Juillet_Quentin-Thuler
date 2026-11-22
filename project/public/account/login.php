@@ -11,8 +11,8 @@ use function App\services\verifyCsrfToken;
 $errors = [];
 $pageTitle = "Connection";
 
-    // TODO : Implement a proper login controller and requests class to handle user authentication.
-    try {
+// TODO : Implement a proper login controller and requests class to handle user authentication.
+try {
     $pendingVerificationRequest = new PendingVerificationRequests($pdo);
     $pendingVerificationController = new PendingVerificationController($pendingVerificationRequest);
 
@@ -50,8 +50,9 @@ $pageTitle = "Connection";
     <main>
         <?php require_once __DIR__ . '/../../components/header.php' ?>
 
+        <img src="/images/logo/big-gratherly.svg" alt="Logo de Gratherly avec une illustration de personnes qui se font un câlin.">
 
-        <h1>Se connecter</h1>
+        <h1>Connectez-vous à votre espace</h1>
 
         <?php foreach ($errors as $error): ?>
             <p class="error">
@@ -69,6 +70,7 @@ $pageTitle = "Connection";
             <div>
                 <label for="email">Adresse e-mail</label>
                 <input
+                    placeholder="Votre adresse email"
                     type="email"
                     id="email"
                     name="email"
@@ -79,6 +81,7 @@ $pageTitle = "Connection";
             <div>
                 <label for="password">Mot de passe</label>
                 <input
+                    placeholder="Votre mot de passe"
                     type="password"
                     id="password"
                     name="password"
@@ -89,6 +92,9 @@ $pageTitle = "Connection";
             <button type="submit">Se connecter</button>
 
         </form>
+
+        <p>Vous n’avez pas de compte ? <a href="/account/signup.php">S'inscrire</a></p>
+
     </main>
     <?php require_once __DIR__ . '/../../components/footer.php' ?>
 </body>

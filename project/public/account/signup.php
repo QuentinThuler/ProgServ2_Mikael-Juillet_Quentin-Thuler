@@ -9,7 +9,7 @@ use function App\services\escape;
 use function App\services\verifyCsrfToken;
 
 $errors = [];
-$pageTitle = "Créer un compte";
+$pageTitle = "Créez votre compte";
 
 try {
     $pendingVerificationRequest = new PendingVerificationRequests($pdo);
@@ -49,7 +49,13 @@ try {
     <main>
         <?php require_once __DIR__ . '/../../components/header.php' ?>
 
-        <h1>Créer un compte</h1>
+        <img src="/images/logo/big-gratherly.svg" alt="Logo de Gratherly avec une illustration de personnes qui se font un câlin.">
+
+        <h1>Créez votre compte</h1>
+        <p class="">Démarrez de suite avec la solution
+            la plus simple pour réserver et gérer
+            les événements d'une association !
+        </p>
 
         <?php foreach ($errors as $error): ?>
             <p class="error">
@@ -67,6 +73,7 @@ try {
             <div>
                 <label for="email">Adresse e-mail</label>
                 <input
+                    placeholder="Votre adresse email"
                     type="email"
                     id="email"
                     name="email"
@@ -77,6 +84,7 @@ try {
             <div>
                 <label for="name">Nom</label>
                 <input
+                    placeholder="Votre nom d'utilisateur"
                     type="text"
                     id="name"
                     name="name"
@@ -87,6 +95,7 @@ try {
             <div>
                 <label for="password">Mot de passe</label>
                 <input
+                    placeholder="Votre mot de passe"
                     type="password"
                     id="password"
                     name="password"
@@ -94,9 +103,11 @@ try {
                     required>
             </div>
 
-            <button type="submit">Créer mon compte</button>
+            <button type="submit">Continuer</button>
 
         </form>
+
+        <p>Vous avez déjà un compte ? <a href="/account/login.php">Se connecter</a></p>
     </main>
     <?php require_once __DIR__ . '/../../components/footer.php' ?>
 </body>
