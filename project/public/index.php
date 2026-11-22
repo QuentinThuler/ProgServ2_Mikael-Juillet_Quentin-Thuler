@@ -4,6 +4,8 @@ require_once __DIR__ . '/../src/init.php';
 use App\event\EventRequests;
 use App\event\EventController;
 
+use function App\services\escape;
+
 $eventRequests = new EventRequests($pdo);
 $eventController = new EventController($eventRequests);
 
