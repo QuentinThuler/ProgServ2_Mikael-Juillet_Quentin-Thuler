@@ -19,11 +19,11 @@ services:
       - |
         cat > /etc/apache2/sites-available/000-default.conf <<"EOF"
         <VirtualHost *:80>
-            DocumentRoot /var/www/html
+            DocumentRoot /var/www/html/project/public
             ErrorLog $${APACHE_LOG_DIR}/error.log
             CustomLog $${APACHE_LOG_DIR}/access.log combined
 
-            <Directory /var/www/html>
+            <Directory /var/www/html/project/public>
                 Options +Indexes
             </Directory>
         </VirtualHost>

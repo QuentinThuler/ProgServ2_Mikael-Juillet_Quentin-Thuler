@@ -58,6 +58,16 @@ class PendingVerificationRequests {
         ]);
     }
 
+    public function updateToken(PendingVerification $pendingVerification): void {
+        $query = "UPDATE pending_verifications SET token_hash = :token_hash, token_expires_at = :token_expires_at WHERE email = :email";
+        $statement = $this->connection->prepare($query);
+        $statement->execute([
+            ':email' => $pendingVerification->getEmail(),
+            ':token_hash' => $pendingVerification->getTokenHash(),
+            ':token_expires_at' => $pendingVerification->getTokenExpiresAt()->format('Y-m-d H:i:s')
+        ]);
+    }
+
     public function delete(string $email): void {
         $query = "DELETE FROM pending_verifications WHERE email = :email";
         $statement = $this->connection->prepare($query);

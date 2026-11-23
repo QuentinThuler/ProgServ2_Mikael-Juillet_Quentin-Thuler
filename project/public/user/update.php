@@ -11,6 +11,13 @@ use App\user\User;
 use function App\services\escape;
 use function App\services\verifyCsrfToken;
 
+$pageTitle = "Mise à jour du compte";
+
+if (!isset($_SESSION['user_id'])) {
+    header('Location: /account/login.php');
+    exit;
+}
+
 $userRequests = new UserRequests($pdo);
 $participantRequests = new ParticipantRequests($pdo);
 $roleRequests = new RoleRequests($pdo);
@@ -21,44 +28,37 @@ $userController = new UserController(
     $roleRequests
 );
 
-$pageTitle = "Mise à jour du compte";
-
-$id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
-
-if (!$id) {
-    header('Location: index.php');
-    exit;
-}
-
-$user = $userController->show($id);
-
-if ($user === null) {
-    http_response_code(404);
-    exit('Utilisateur introuvable.');
-}
-
 $errors = [];
+
+try {
+    $user = $userController->show($_SESSION['user_id']);
+} catch (PDOException $e) {
+    error_log("Database error: " . $e->getMessage());
+    $errors[] = "Une erreur interne s'est produite. Veuillez réessayer.";
+} catch (Exception $e) {
+    error_log("Unexpected error: " . $e->getMessage());
+    $errors[] = "Une erreur inattendue s'est produite.";
+}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
         verifyCsrfToken();
 
-        $updatedUser = new User(
+        $userUpdated = new User(
             $user->getParticipant(),
-            trim($_POST['name'] ?? ''),
-            $_POST['password'] ?? '',
+            $user->getName(),
+            $user->getPassword(),
             $user->getRole(),
-            trim($_POST['description'] ?? '') ?: null,
-            trim($_POST['image'] ?? '') ?: null,
-            trim($_POST['linkedin'] ?? '') ?: null,
-            trim($_POST['phone'] ?? '') ?: null
+            $_POST['description'] ?? '',
+            $_POST['image'] ?? '',
+            $_POST['linkedin'] ?? '',
+            $_POST['phone'] ?? ''
         );
+        $userUpdated->setId($user->getId());
 
-        $updatedUser->setId($user->getId());
+        $userController->update($userUpdated);
 
-        $userController->update($updatedUser);
-
-        header('Location: index.php?success=updated');
+        header('Location: /user/show.php');
         exit;
     } catch (Throwable $e) {
         error_log($e->getMessage());
@@ -68,12 +68,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             : 'Une erreur est survenue lors de la modification.';
     }
 }
-
-$name = $_POST['name'] ?? $user->getName();
-$description = $_POST['description'] ?? $user->getDescription();
-$image = $_POST['image'] ?? $user->getImage();
-$linkedin = $_POST['linkedin'] ?? $user->getLinkedin();
-$phone = $_POST['phone'] ?? $user->getPhone();
 
 ?>
 
@@ -86,75 +80,73 @@ $phone = $_POST['phone'] ?? $user->getPhone();
     <main>
         <?php require_once __DIR__ . '/../../components/header.php' ?>
 
-        <h1>Modifier l'utilisateur</h1>
+        <h1>Modifier votre compte</h1>
 
-        <a href="index.php">Retour à la liste</a>
+        <?php if (!empty($errors)): ?>
 
-        <p>
-            E-mail du participant :
-            <?= escape($user->getParticipant()->getEmail()) ?>
-        </p>
+            <?php foreach ($errors as $error): ?>
+                <p role="alert">
+                    <?= escape($error) ?>
+                </p>
+            <?php endforeach; ?>
 
-        <?php foreach ($errors as $error): ?>
-            <p style="color: red;">
-                <?= escape($error) ?>
-            </p>
-        <?php endforeach; ?>
+        <?php elseif (empty($user)): ?>
 
-        <form method="POST">
+            <p>Utilisateur introuvable.</p>
 
-            <input
-                type="hidden"
-                name="csrf_token"
-                value="<?= escape($_SESSION['csrf_token']) ?>">
+        <?php else: ?>
 
-            <label for="name">Nom :</label>
-            <input
-                type="text"
-                name="name"
-                id="name"
-                value="<?= escape($name) ?>"
-                required>
+            <section class="profile">
 
-            <label for="password">
-                Nouveau mot de passe (laisser vide pour conserver l'ancien) :
-            </label>
+                <?php if ($user->getImage()): ?>
+                    <img
+                        src="<?= escape($user->getImage()) ?>"
+                        alt="Photo de profil"
+                        width="150">
+                <?php endif; ?>
 
-            <input
-                type="password"
-                name="password"
-                id="password"
-                minlength="8">
+                <div>
+                    <h2><?= escape($user->getName()) ?></h2>
+                    <p><?= escape($user->getEmail()) ?></p>
+                </div>
 
-            <label for="description">Description :</label>
-            <textarea
-                name="description"
-                id="description"><?= escape($description) ?></textarea>
+                <form method="POST">
 
-            <label for="image">Image :</label>
-            <input
-                type="text"
-                name="image"
-                id="image"
-                value="<?= escape($image) ?>">
+                    <input
+                        type="hidden"
+                        name="csrf_token"
+                        value="<?= escape($_SESSION['csrf_token']) ?>">
 
-            <label for="linkedin">LinkedIn :</label>
-            <input
-                type="url"
-                name="linkedin"
-                id="linkedin"
-                value="<?= escape($linkedin) ?>">
+                    <label for="description">Description :</label>
+                    <textarea
+                        name="description"
+                        id="description"><?= escape($user->getDescription()) ?></textarea>
 
-            <label for="phone">Téléphone :</label>
-            <input
-                type="tel"
-                name="phone"
-                id="phone"
-                value="<?= escape($phone) ?>">
+                    <label for="image">Image :</label>
+                    <input
+                        type="text"
+                        name="image"
+                        id="image"
+                        value="<?= escape($user->getImage()) ?>">
 
-            <button type="submit">Enregistrer les modifications</button>
+                    <label for="linkedin">LinkedIn :</label>
+                    <input
+                        type="url"
+                        name="linkedin"
+                        id="linkedin"
+                        value="<?= escape($user->getLinkedin()) ?>">
 
-        </form>
+                    <label for="phone">Téléphone :</label>
+                    <input
+                        type="tel"
+                        name="phone"
+                        id="phone"
+                        value="<?= escape($user->getPhone()) ?>">
+
+                    <button type="submit">Enregistrer les modifications</button>
+
+                </form>
+            <?php endif; ?>
     </main>
     <?php require_once __DIR__ . '/../../components/footer.php' ?>
 </body>

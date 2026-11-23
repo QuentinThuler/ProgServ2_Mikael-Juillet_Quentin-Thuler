@@ -16,7 +16,7 @@ class PendingVerificationController {
         $this->pendingVerificationRequests = $pendingVerificationRequests;
     }
 
-    public function create(string $email, string $purpose, string $payload): void {
+    public function create(string $email, string $purpose, array $payload): void {
 
         $email = trim($email);
 
@@ -68,6 +68,30 @@ class PendingVerificationController {
             throw new InvalidArgumentException('Le code de vérification est invalide ou a expiré.');
         }
     }
+
+    public function revalidate(string $email): void {
+        $email = trim($email);
+
+        $this->validateEmail($email);
+
+        $_SESSION['email_temp'] = $email;
+
+        $token = generateToken(6);
+        $encryptedToken = encriptToken($token);
+
+        $pendingVerification = new PendingVerification(email : $email, tokenHash : $encryptedToken, purpose : "");
+        $existingPendingVerification = $this->pendingVerificationRequests->getByEmail($email);
+
+        if (!$existingPendingVerification) {
+            throw new InvalidArgumentException("Aucune demande en cours à cette adresse.");
+        } else {
+            $this->pendingVerificationRequests->updateToken($pendingVerification);
+        }
+
+        error_log("Token generated for $email: $token"); // TODO : replace by sending the token via email to the user
+    }
+
+
 
     // PRIVATE METHODS
 

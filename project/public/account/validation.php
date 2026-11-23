@@ -23,7 +23,7 @@ try {
             $_POST['verification_token'] ?? null
         );
 
-        header('Location: index.php');
+        header('Location: /index.php');
         exit;
     }
 } catch (InvalidArgumentException | RuntimeException $e) {
@@ -43,7 +43,10 @@ try {
     <main>
         <?php require_once __DIR__ . '/../../components/header.php' ?>
 
-        <h1>Validation du compte</h1>
+        <h1>Vérifiez votre email</h1>
+
+        <p>Nous vous avons envoyé un lien de confirmation à l’adresse <?= escape($_POST['email'] ?? '') ?>.
+            Veuillez le suivre pour confirmer votre inscription.</p>
 
         <?php foreach ($errors as $error): ?>
             <p class="error">
@@ -58,18 +61,6 @@ try {
                 name="csrf_token"
                 value="<?= escape($_SESSION['csrf_token'] ?? '') ?>">
 
-            <?php if (!isset($_SESSION['email_temp'])): ?>
-                <div>
-                    <label for="email">Adresse e-mail</label>
-                    <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        value="<?= escape($_POST['email'] ?? '') ?>"
-                        required>
-                </div>
-            <?php endif; ?>
-
             <div>
                 <label for="Verification token">Token de vérification</label>
                 <input
@@ -78,12 +69,15 @@ try {
                     name="verification_token"
                     length="6"
                     value="<?= escape($_POST['verification_token'] ?? '') ?>"
-                    required>
+                    required
+                    placeholder="Code à 6 charactères">
             </div>
 
-            <button type="submit">Créer mon compte</button>
+            <button type="submit">Valider</button>
 
         </form>
+
+        <p>Vous n’avez pas reçu de code ? <a href="/account/revalidate.php">Renvoyer le code.</a></p>
     </main>
     <?php require_once __DIR__ . '/../../components/footer.php' ?>
 </body>
