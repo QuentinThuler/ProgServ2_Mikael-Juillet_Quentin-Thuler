@@ -8,7 +8,7 @@ $eventController = new EventController($eventRequests);
 
 $events = $eventController->upcoming();
 
-$pageTitle = "Accueil";
+$pageTitle = e(t("Accueil"));
 ?>
 
 <!DOCTYPE html>
@@ -20,14 +20,14 @@ $pageTitle = "Accueil";
     <main>
         <?php require_once __DIR__ . '/../components/header.php' ?>
 
-        <h1>L'association</h1>
+        <h1><?= e(t('L\'association')) ?></h1>
 
-        <p>Cette association, basée à Yverdon-les-Bains, vise à faire la promotion de la photographie auprès de jeunes étudiants.</p>
+        <p><?= e(t('Cette association, basée à Yverdon-les-Bains, vise à faire la promotion de la photographie auprès de jeunes étudiants.')) ?></p>
 
-        <h2>Évènements à venir</h2>
+        <h2><?= e(t('Évènements à venir')) ?></h2>
 
         <?php if (empty($events)): ?>
-            <p>Aucun évènement à venir pour le moment.</p>
+            <p><?= e(t('Aucun évènement à venir pour le moment.')) ?></p>
         <?php else: ?>
             <ul id="events-list">
                 <?php foreach ($events as $index => $event): ?>
@@ -36,19 +36,19 @@ $pageTitle = "Accueil";
                             <h3><?= e($event->getTitle()) ?> - <?= e($event->getCity()) ?></h3>
                             <p><?= e($event->getDateTime()->format('d.m.Y - H:i')) ?></p>
                             <p><?= e($event->getTagline()) ?></p>
-                            <a href="./view.php?id=<?= (int) $event->getId() ?>">Détails de l'évènement</a>
+                            <a href="./view.php?id=<?= (int) $event->getId() ?>"><?= e(t('Détails de l\'évènement')) ?></a>
                         </article>
                     </li>
                 <?php endforeach; ?>
             </ul>
 
             <?php if (count($events) > 8): ?>
-                <button type="button" id="load-more-btn">Afficher plus</button>
+                <button type="button" id="load-more-btn"><?= e(t('Afficher plus')) ?></button>
             <?php endif; ?>
         <?php endif; ?>
 
         <p>
-            <a href="#top" id="back-to-top-btn">Haut de la page</a>
+            <a href="#top" id="back-to-top-btn"><?= e(t('Haut de la page')) ?></a>
         </p>
     </main>
 
