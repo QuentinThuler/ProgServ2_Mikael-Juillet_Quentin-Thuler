@@ -7,7 +7,7 @@ function render(string $component, array $data = []): void {
 }
 
 function e(?string $value): string {
-    return e($value ?? '', ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+    return htmlspecialchars($value ?? '', ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 }
 
 const MAX_IMAGE_SIZE = 2 * 1024 * 1024;
