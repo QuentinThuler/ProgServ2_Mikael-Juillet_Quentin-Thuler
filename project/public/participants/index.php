@@ -1,0 +1,66 @@
+<?php
+
+require_once __DIR__ . '/../../src/init.php';
+
+use App\participant\ParticipantRequests;
+use App\participant\ParticipantController;
+
+use function App\services\escape;
+use function App\services\translate;
+
+$errors = [];
+$pageTitle = escape(translate('Participants'));
+
+try {
+    $requests = new ParticipantRequests($pdo);
+    $controller = new ParticipantController($requests);
+
+    $participants = $controller->index();
+} catch (PDOException $e) {
+    error_log("Database error: " . $e->getMessage());
+    $errors[] = "Une erreur interne s'est produite. Veuillez réessayer plus tard.";
+} catch (Exception $e) {
+    error_log("Unexpected error: " . $e->getMessage());
+    $errors[] = "Une erreur inattendue s'est produite : " . $e->getMessage();
+}
+
+?>
+
+<!DOCTYPE html>
+<html lang="fr">
+
+<?php require_once __DIR__ . '/../../components/head.php' ?>
+
+<body>
+    <main>
+        <?php require_once __DIR__ . '/../../components/header.php' ?>
+
+        <h1><?= escape(translate('Participants')) ?></h1>
+
+        <?php if (!empty($errors)): ?>
+
+            <?php foreach ($errors as $error): ?>
+                <p class="error">
+                    <?= escape(translate($error)) ?>
+                </p>
+            <?php endforeach; ?>
+
+        <?php elseif (empty($participants)): ?>
+            <p><?= escape(translate('Aucun participant pour le moment.')) ?></p>
+        <?php else: ?>
+
+            <ul>
+                <?php foreach ($participants as $participant): ?>
+                    <li>
+                        <?= escape($participant->getEmail()) ?>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
+
+        <?php endif; ?>
+
+    </main>
+    <?php require_once __DIR__ . '/../../components/footer.php' ?>
+</body>
+
+</html>

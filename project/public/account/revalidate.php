@@ -1,0 +1,83 @@
+<?php
+
+require_once __DIR__ . '/../../src/init.php';
+
+use App\pendingVerifications\PendingVerificationController;
+use App\pendingVerifications\PendingVerificationRequests;
+
+use function App\services\verifyCsrfToken;
+use function App\services\escape;
+use function App\services\translate;
+
+$errors = [];
+$pageTitle = escape(translate('S\'inscrire'));
+
+try {
+    $pendingVerificationRequest = new PendingVerificationRequests($pdo);
+    $pendingVerificationController = new PendingVerificationController($pendingVerificationRequest);
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        verifyCsrfToken();
+
+        $pendingVerificationController->revalidate(
+            $_POST['email'] ?? '',
+        );
+
+        header('Location: validation.php');
+        exit;
+    }
+} catch (InvalidArgumentException | RuntimeException $e) {
+    $errors[] = $e->getMessage();
+} catch (Throwable $e) {
+    error_log($e->getMessage());
+    $errors[] = 'Une erreur interne est survenue. Veuillez réessayer.';
+}
+?>
+
+<!DOCTYPE html>
+<html lang="fr">
+
+<?php require_once __DIR__ . '/../../components/head.php' ?>
+
+<body>
+    <main>
+        <?php require_once __DIR__ . '/../../components/header.php' ?>
+
+        <h1><?= escape(translate('Renvoyer un code de validation')) ?></h1>
+
+        <p><?= escape(translate('Inscrivez votre email pour que nous puissions vous envoyer votre code de validation.')) ?></p>
+
+        <?php foreach ($errors as $error): ?>
+            <p class="error">
+                <?= escape(translate($error)) ?>
+            </p>
+        <?php endforeach; ?>
+
+        <form method="POST">
+
+            <input
+                type="hidden"
+                name="csrf_token"
+                value="<?= escape($_SESSION['csrf_token'] ?? '') ?>">
+
+            <div>
+                <label for="email"><?= escape(translate('Adresse e-mail')) ?></label>
+                <input
+                    placeholder="<?= escape(translate('Votre adresse email')) ?>"
+                    type="email"
+                    id="email"
+                    name="email"
+                    value="<?= escape($_POST['email'] ?? '') ?>"
+                    required>
+            </div>
+
+            <button type="submit"><?= escape(translate('Envoyer')) ?></button>
+
+        </form>
+
+        <p><?= escape(translate('Vous n’avez pas de compte ?')) ?> <a href="/account/signup.php"><?= escape(translate('S\'inscrire')) ?></a></p>
+    </main>
+    <?php require_once __DIR__ . '/../../components/footer.php' ?>
+</body>
+
+</html>

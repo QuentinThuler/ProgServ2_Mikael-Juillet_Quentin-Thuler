@@ -1,0 +1,97 @@
+<?php
+
+require_once __DIR__ . '/../../src/init.php';
+
+use App\participant\ParticipantRequests;
+use App\role\RoleRequests;
+use App\user\UserController;
+use App\user\UserRequests;
+
+use function App\services\escape;
+use function App\services\translate;
+use function App\services\verifyCsrfToken;
+
+$errors = [];
+$pageTitle = escape(translate('Se connecter'));
+
+try {
+    $userRequests = new UserRequests($pdo);
+    $participantRequests = new ParticipantRequests($pdo);
+    $roleRequests = new RoleRequests($pdo);
+    $userController = new UserController($userRequests, $participantRequests, $roleRequests);
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        verifyCsrfToken();
+
+        $userController->connect($_POST['email'] ?? null, $_POST['password'] ?? null);
+
+        header('Location: /index.php');
+        exit;
+    }
+} catch (InvalidArgumentException | RuntimeException $e) {
+    $errors[] = $e->getMessage();
+} catch (Throwable $e) {
+    error_log($e->getMessage());
+    $errors[] = 'Une erreur interne est survenue. Veuillez réessayer.';
+}
+?>
+
+<!DOCTYPE html>
+<html lang="fr">
+
+<?php require_once __DIR__ . '/../../components/head.php' ?>
+
+<body>
+    <main>
+        <?php require_once __DIR__ . '/../../components/header.php' ?>
+
+        <img src="/images/logo/big-gratherly.svg" alt="<?= escape(translate('Logo de Gratherly avec une illustration de personnes qui se font un câlin.')) ?>">
+
+        <h1> <?= escape(translate('Se connecter')) ?></h1>
+
+        <?php foreach ($errors as $error): ?>
+            <p class="error">
+                <?= escape(translate($error)) ?>
+            </p>
+        <?php endforeach; ?>
+
+        <form method="POST">
+
+            <input
+                type="hidden"
+                name="csrf_token"
+                value="<?= escape($_SESSION['csrf_token'] ?? '') ?>">
+
+            <div>
+                <label for="email"><?= escape(translate('Adresse e-mail')) ?></label>
+                <input
+                    placeholder="<?= escape(translate('Votre adresse email')) ?>"
+                    type="email"
+                    id="email"
+                    name="email"
+                    value="<?= escape($_POST['email'] ?? '') ?>"
+                    required>
+            </div>
+
+            <div>
+                <label for="password"><?= escape(translate('Mot de passe')) ?></label>
+                <input
+                    placeholder="<?= escape(translate('Votre mot de passe')) ?>"
+                    type="password"
+                    id="password"
+                    name="password"
+                    minlength="8"
+                    required>
+            </div>
+
+            <button type="submit"><?= escape(translate('Se connecter')) ?></button>
+
+        </form>
+
+        <p> <?= escape(translate('Vous n’avez pas de compte ?')) ?> <a href="/account/signup.php"><?= escape(translate('S\'inscrire')) ?></a></p>
+
+    </main>
+    <?php require_once __DIR__ . '/../../components/footer.php' ?>
+</body>
+
+</html>

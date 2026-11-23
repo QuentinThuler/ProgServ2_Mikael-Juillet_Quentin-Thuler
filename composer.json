@@ -1,0 +1,19 @@
+{
+    "name": "prog-serv/application",
+    "description": "PHP application",
+    "type": "project",
+    "require": {
+        "php": ">=8.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "project/src/"
+        },
+        "files": [
+            "project/src/services/functions.php",
+            "project/src/services/constants.php",
+            "project/src/services/security.php",
+            "project/src/services/tokenServices.php"
+        ]
+    }
+}

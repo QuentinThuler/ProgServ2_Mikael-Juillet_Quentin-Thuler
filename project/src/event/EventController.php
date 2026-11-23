@@ -1,35 +1,32 @@
 <?php
 
-require_once __DIR__ . '/../init.php';
-require_once __DIR__ . '/Event.php';
-require_once __DIR__ . '/EventRequests.php';
+namespace App\event;
 
-class EventController
-{
+use DateTime;
+use Exception;
+use finfo;
+use InvalidArgumentException;
+
+class EventController {
     private EventRequests $eventRequests;
 
-    public function __construct(EventRequests $eventRequests)
-    {
+    public function __construct(EventRequests $eventRequests) {
         $this->eventRequests = $eventRequests;
     }
 
-    public function index(): array
-    {
+    public function index(): array {
         return $this->eventRequests->getAllEvents();
     }
 
-    public function upcoming(): array
-    {
+    public function upcoming(): array {
         return $this->eventRequests->getUpcomingEvents();
     }
 
-    public function show(int $id): ?Event
-    {
+    public function show(int $id): ?Event {
         return $this->eventRequests->getEventById($id);
     }
 
-    public function create(array $postData, ?array $imageFile, int $userId): int
-    {
+    public function create(array $postData, ?array $imageFile, int $userId): int {
         $title = trim($postData['title'] ?? '');
         $description = trim($postData['description'] ?? '');
         $tagline = trim($postData['tagline'] ?? '');
@@ -163,8 +160,7 @@ class EventController
         }
     }
 
-    private function saveEventImage(array $file): ?string
-    {
+    private function saveEventImage(array $file): ?string {
         $finfo = new finfo(FILEINFO_MIME_TYPE);
         $mimeType = $finfo->file($file['tmp_name']);
 

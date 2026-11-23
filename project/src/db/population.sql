@@ -8,14 +8,9 @@ VALUES
 
 -- Insert default admin as a participant
 INSERT INTO
-    participants (email, is_confirmed, token_hash, token_expires_at)
+    participants (email)
 VALUES
-    (
-        'admin@clubphoto.ch',
-        TRUE,
-        SHA2(SUBSTRING(MD5(RAND()), 1, 6), 256), -- Generates a 6 character long substring from the MD5 hash of a random value then use encription to store it.
-        NOW() + INTERVAL 30 DAY
-    );
+    ('admin@clubphoto.ch');
 
 INSERT INTO users
     (participant_id, name, password, description, role_id)

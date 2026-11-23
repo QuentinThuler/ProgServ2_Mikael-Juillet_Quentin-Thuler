@@ -1,7 +1,12 @@
 <?php
 require_once __DIR__ . '/../../src/init.php';
-require_once __DIR__ . '/../../src/Event/EventController.php';
-require_once __DIR__ . '/../../src/Event/EventRequests.php';
+
+use App\event\EventRequests;
+use App\event\EventController;
+use function App\services\escape;
+use function App\services\translate;
+
+// TODO : missing try catch, can be cleaned and translated
 
 // Contrôle d'accès administrateur (à décommenter dès que votre fonction est prête)
 /* requireAdmin(); */
@@ -44,31 +49,31 @@ $hasValidImage = $imagePath !== null && str_starts_with($imagePath, '/uploads/ev
 
     <main>
         <article class="event-detail">
-            <h1><?= e($event->getTitle(), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?></h1>
-            <p class="tagline"><strong><?= e($event->getTagline(), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?></strong></p>
+            <h1><?= escape($event->getTitle(), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?></h1>
+            <p class="tagline"><strong><?= escape($event->getTagline(), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?></strong></p>
 
             <?php if ($hasValidImage): ?>
-                <img src="<?= e($imagePath, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>" alt="<?= e($event->getTitle(), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>" />
+                <img src="<?= escape($imagePath, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>" alt="<?= escape($event->getTitle(), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>" />
             <?php endif; ?>
 
             <section class="event-info">
-                <p><strong><?= e(t('Date et heure : ')) ?></strong> <?= htmlspecialchars($event->getDateTime()->format('d.m.Y - H:i'), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?></p>
+                <p><strong><?= escape(translate('Date et heure')) ?></strong> <?= htmlspecialchars($event->getDateTime()->format('d.m.Y - H:i'), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?></p>
                 <p>
-                    <strong><?= e(t('Lieu :')) ?></strong>
+                    <strong><?= escape(translate('Lieu')) ?> :</strong>
                     <?= htmlspecialchars($event->getAddress(), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>, <?= htmlspecialchars($event->getCity(), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>
                     <?php if ($event->getRoom()): ?>
-                        <?= e(t('(Salle : ')) ?><?= htmlspecialchars($event->getRoom(), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>)
+                        (<?= escape(translate('Salle')) ?> :<?= htmlspecialchars($event->getRoom(), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>)
                     <?php endif; ?>
                 </p>
             </section>
 
             <section class="event-description">
-                <h2><?= e(t('Description')) ?></h2>
+                <h2><?= escape(translate('Description')) ?></h2>
                 <p><?= nl2br(htmlspecialchars($event->getDescription(), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8')) ?></p>
             </section>
 
             <?php if ($event->getCreatedAt()): ?>
-                <p><small><?= e(t('Publié le ')) ?><?= htmlspecialchars($event->getCreatedAt()->format('d.m.Y à H:i'), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?></small></p>
+                <p><small><?= escape(translate('Publié le')) ?><?= htmlspecialchars($event->getCreatedAt()->format('d.m.Y à H:i'), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?></small></p>
             <?php endif; ?>
         </article>
     </main>
