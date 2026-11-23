@@ -7,7 +7,7 @@
 ?>
 <header>
     <nav aria-label="Principale">
-        <a href="../public/index.php">Accueil</a>
+        <a href="index.php">Accueil</a>
 
         <?php if ($isConnected): ?>
             <a href="/account/my-registrations.php">Mes inscriptions</a>
