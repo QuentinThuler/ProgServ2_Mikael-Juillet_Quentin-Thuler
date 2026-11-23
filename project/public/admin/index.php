@@ -49,7 +49,8 @@ try {
 
         <?php foreach ($errors as $error): ?>
             <p class="error">
-                <?= escape($error) ?>
+                <?= escape(translate($error)) ?>
+
             </p>
         <?php endforeach; ?>
 

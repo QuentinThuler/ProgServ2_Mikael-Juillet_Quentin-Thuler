@@ -10,10 +10,11 @@ use App\user\UserController;
 use App\user\UserRequests;
 
 use function App\services\escape;
+use function App\services\translate;
 use function App\services\verifyCsrfToken;
 
 $errors = [];
-$pageTitle = "Connection";
+$pageTitle = escape(translate('Se connecter'));
 
 try {
     $userRequests = new UserRequests($pdo);
@@ -46,13 +47,13 @@ try {
     <main>
         <?php require_once __DIR__ . '/../../components/header.php' ?>
 
-        <img src="/images/logo/big-gratherly.svg" alt="Logo de Gratherly avec une illustration de personnes qui se font un câlin.">
+        <img src="/images/logo/big-gratherly.svg" alt="<?= escape(translate('Logo de Gratherly avec une illustration de personnes qui se font un câlin.')) ?>">
 
-        <h1>Connectez-vous à votre espace</h1>
+        <h1> <?= escape(translate('Se connecter')) ?></h1>
 
         <?php foreach ($errors as $error): ?>
             <p class="error">
-                <?= escape($error) ?>
+                <?= escape(translate($error)) ?>
             </p>
         <?php endforeach; ?>
 
@@ -64,9 +65,9 @@ try {
                 value="<?= escape($_SESSION['csrf_token'] ?? '') ?>">
 
             <div>
-                <label for="email">Adresse e-mail</label>
+                <label for="email"><?= escape(translate('Adresse e-mail')) ?></label>
                 <input
-                    placeholder="Votre adresse email"
+                    placeholder="<?= escape(translate('Votre adresse email')) ?>"
                     type="email"
                     id="email"
                     name="email"
@@ -75,9 +76,9 @@ try {
             </div>
 
             <div>
-                <label for="password">Mot de passe</label>
+                <label for="password"><?= escape(translate('Mot de passe')) ?></label>
                 <input
-                    placeholder="Votre mot de passe"
+                    placeholder="<?= escape(translate('Votre mot de passe')) ?>"
                     type="password"
                     id="password"
                     name="password"
@@ -85,11 +86,11 @@ try {
                     required>
             </div>
 
-            <button type="submit">Se connecter</button>
+            <button type="submit"><?= escape(translate('Se connecter')) ?></button>
 
         </form>
 
-        <p>Vous n’avez pas de compte ? <a href="/account/signup.php">S'inscrire</a></p>
+        <p> <?= escape(translate('Vous n’avez pas de compte ?')) ?> <a href="/account/signup.php"><?= escape(translate('S\'inscrire')) ?></a></p>
 
     </main>
     <?php require_once __DIR__ . '/../../components/footer.php' ?>

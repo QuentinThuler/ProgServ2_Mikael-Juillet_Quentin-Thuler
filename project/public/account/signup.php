@@ -6,10 +6,11 @@ use App\pendingVerifications\PendingVerificationController;
 use App\pendingVerifications\PendingVerificationRequests;
 
 use function App\services\escape;
+use function App\services\translate;
 use function App\services\verifyCsrfToken;
 
 $errors = [];
-$pageTitle = "Créez votre compte";
+$pageTitle = escape(translate('S\'inscrire'));
 
 try {
     $pendingVerificationRequest = new PendingVerificationRequests($pdo);
@@ -51,15 +52,16 @@ try {
 
         <img src="/images/logo/big-gratherly.svg" alt="Logo de Gratherly avec une illustration de personnes qui se font un câlin.">
 
-        <h1>Créez votre compte</h1>
-        <p class="">Démarrez de suite avec la solution
+        <h1> <?= escape(translate('Créez votre compte')) ?></h1>
+        <p class="">
+            <?= escape(translate('Démarrez de suite avec la solution
             la plus simple pour réserver et gérer
-            les événements d'une association !
+            les événements d\'une association !')) ?>
         </p>
 
         <?php foreach ($errors as $error): ?>
             <p class="error">
-                <?= escape($error) ?>
+                <?= escape(translate($error)) ?>
             </p>
         <?php endforeach; ?>
 
@@ -71,9 +73,9 @@ try {
                 value="<?= escape($_SESSION['csrf_token'] ?? '') ?>">
 
             <div>
-                <label for="email">Adresse e-mail</label>
+                <label for="email"><?= escape(translate('Adresse e-mail')) ?></label>
                 <input
-                    placeholder="Votre adresse email"
+                    placeholder="<?= escape(translate('Votre adresse email')) ?>"
                     type="email"
                     id="email"
                     name="email"
@@ -82,9 +84,9 @@ try {
             </div>
 
             <div>
-                <label for="name">Nom</label>
+                <label for="name"><?= escape(translate('Nom d\'utilisateur')) ?></label>
                 <input
-                    placeholder="Votre nom d'utilisateur"
+                    placeholder="<?= escape(translate('Votre nom d\'utilisateur')) ?>"
                     type="text"
                     id="name"
                     name="name"
@@ -93,9 +95,9 @@ try {
             </div>
 
             <div>
-                <label for="password">Mot de passe</label>
+                <label for="password"><?= escape(translate('Mot de passe')) ?></label>
                 <input
-                    placeholder="Votre mot de passe"
+                    placeholder="<?= escape(translate('Votre mot de passe')) ?>"
                     type="password"
                     id="password"
                     name="password"
@@ -103,11 +105,11 @@ try {
                     required>
             </div>
 
-            <button type="submit">Continuer</button>
+            <button type="submit"><?= escape(translate('Continuer')) ?></button>
 
         </form>
 
-        <p>Vous avez déjà un compte ? <a href="/account/login.php">Se connecter</a></p>
+        <p><?= escape(translate('Vous avez déjà un compte ?')) ?> <a href="/account/login.php"><?= escape(translate('Se connecter')) ?></a></p>
     </main>
     <?php require_once __DIR__ . '/../../components/footer.php' ?>
 </body>

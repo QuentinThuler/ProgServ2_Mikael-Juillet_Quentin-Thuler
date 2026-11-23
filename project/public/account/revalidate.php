@@ -7,9 +7,10 @@ use App\pendingVerifications\PendingVerificationRequests;
 
 use function App\services\verifyCsrfToken;
 use function App\services\escape;
+use function App\services\translate;
 
 $errors = [];
-$pageTitle = "Validation du compte";
+$pageTitle = escape(translate('S\'inscrire'));
 
 try {
     $pendingVerificationRequest = new PendingVerificationRequests($pdo);
@@ -42,13 +43,13 @@ try {
     <main>
         <?php require_once __DIR__ . '/../../components/header.php' ?>
 
-        <h1>Renvoyer un code de validation</h1>
+        <h1><?= escape(translate('Renvoyer un code de validation')) ?></h1>
 
-        <p>Inscrivez votre email pour que nous puissions vous envoyer votre code de validation.</p>
+        <p><?= escape(translate('Inscrivez votre email pour que nous puissions vous envoyer votre code de validation.')) ?></p>
 
         <?php foreach ($errors as $error): ?>
             <p class="error">
-                <?= escape($error) ?>
+                <?= escape(translate($error)) ?>
             </p>
         <?php endforeach; ?>
 
@@ -60,9 +61,9 @@ try {
                 value="<?= escape($_SESSION['csrf_token'] ?? '') ?>">
 
             <div>
-                <label for="email">Adresse e-mail</label>
+                <label for="email"><?= escape(translate('Adresse e-mail')) ?></label>
                 <input
-                    placeholder="Votre adresse email"
+                    placeholder="<?= escape(translate('Votre adresse email')) ?>"
                     type="email"
                     id="email"
                     name="email"
@@ -70,11 +71,11 @@ try {
                     required>
             </div>
 
-            <button type="submit">Envoyer</button>
+            <button type="submit"><?= escape(translate('Envoyer')) ?></button>
 
         </form>
 
-        <p>Vous n’avez pas de compte ? <a href="/account/signup.php">S'inscrire</a></p>
+        <p><?= escape(translate('Vous n’avez pas de compte ?')) ?> <a href="/account/signup.php"><?= escape(translate('S\'inscrire')) ?></a></p>
     </main>
     <?php require_once __DIR__ . '/../../components/footer.php' ?>
 </body>

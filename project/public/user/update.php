@@ -86,7 +86,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             <?php foreach ($errors as $error): ?>
                 <p role="alert">
-                    <?= escape($error) ?>
+                    <?= escape(translate($error)) ?>
+
                 </p>
             <?php endforeach; ?>
 

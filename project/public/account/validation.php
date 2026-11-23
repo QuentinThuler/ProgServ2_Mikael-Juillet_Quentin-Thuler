@@ -7,9 +7,10 @@ use App\pendingVerifications\PendingVerificationRequests;
 
 use function App\services\verifyCsrfToken;
 use function App\services\escape;
+use function App\services\translate;
 
 $errors = [];
-$pageTitle = "Validation du compte";
+$pageTitle = escape(translate('Validation du compte'));
 
 try {
     $pendingVerificationRequest = new PendingVerificationRequests($pdo);
@@ -43,14 +44,22 @@ try {
     <main>
         <?php require_once __DIR__ . '/../../components/header.php' ?>
 
-        <h1>Vérifiez votre email</h1>
+        <h1><?= escape(translate('Vérifiez votre email')) ?></h1>
 
-        <p>Nous vous avons envoyé un lien de confirmation à l’adresse <?= escape($_POST['email'] ?? '') ?>.
-            Veuillez le suivre pour confirmer votre inscription.</p>
+        <p><?= escape(translate('Inscrivez votre email pour que nous puissions vous envoyer votre code de validation.')) ?></p>
+
+
+        <h1></h1>
+
+        <p>
+            <?= escape(translate('Nous vous avons envoyé un lien de confirmation à l’adresse')) ?>
+            <?= escape($_POST['email'] ?? '') ?>.
+        </p>
 
         <?php foreach ($errors as $error): ?>
             <p class="error">
-                <?= escape($error) ?>
+                <?= escape(translate($error)) ?>
+
             </p>
         <?php endforeach; ?>
 
@@ -62,7 +71,7 @@ try {
                 value="<?= escape($_SESSION['csrf_token'] ?? '') ?>">
 
             <div>
-                <label for="Verification token">Token de vérification</label>
+                <label for="Verification token"><?= escape(translate('Token de vérification')) ?></label>
                 <input
                     type="text"
                     id="verification_token"
@@ -70,14 +79,14 @@ try {
                     length="6"
                     value="<?= escape($_POST['verification_token'] ?? '') ?>"
                     required
-                    placeholder="Code à 6 charactères">
+                    placeholder="<?= escape(translate('Code à 6 charactères')) ?>">
             </div>
 
             <button type="submit">Valider</button>
 
         </form>
 
-        <p>Vous n’avez pas reçu de code ? <a href="/account/revalidate.php">Renvoyer le code.</a></p>
+        <p><?= escape(translate('Vous n’avez pas reçu de code ?')) ?> <a href="/account/revalidate.php"><?= escape(translate('Renvoyer le code')) ?>.</a></p>
     </main>
     <?php require_once __DIR__ . '/../../components/footer.php' ?>
 </body>

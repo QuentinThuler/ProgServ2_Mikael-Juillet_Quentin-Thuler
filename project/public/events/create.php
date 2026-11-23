@@ -77,7 +77,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <p style="color: red;">Le formulaire contient des erreurs :</p>
             <ul>
                 <?php foreach ($errors as $error): ?>
-                    <li><?= escape($error) ?></li>
+                    <li><?= escape(translate($error)) ?>
+                    </li>
                 <?php endforeach; ?>
             </ul>
         <?php endif; ?>

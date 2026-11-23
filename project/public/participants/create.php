@@ -64,13 +64,14 @@ try {
                     value="<?= escape($_SESSION['csrf_token'] ?? '') ?>">
 
                 <div>
-                    <label for="email">Adresse e-mail</label>
+                    <label for="email"><?= escape(translate('Adresse e-mail')) ?></label>
                     <input
                         type="email"
                         id="email"
                         name="email"
                         maxlength="254"
-                        placeholder="Votre adresse email"
+                        placeholder="<?= escape(translate('Votre adresse email')) ?>"
+
                         required>
                 </div>
 
