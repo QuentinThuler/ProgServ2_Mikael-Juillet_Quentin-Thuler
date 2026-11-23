@@ -4,7 +4,8 @@ Ce projet a pour base
 [_"Programmation Serveur 2 (ProgServ2)"_](https://github.com/heig-vd-progserv-course/heig-vd-progserv2-course)
 à la [HEIG-VD](https://heig-vd.ch).
 
-Site en production : [heig-progserv.mikaeljuillet.ch](https://heig-progserv.mikaeljuillet.ch/)
+Site en production :
+[heig-progserv.mikaeljuillet.ch](https://heig-progserv.mikaeljuillet.ch/)
 
 ## Contexte du projet
 
@@ -28,12 +29,14 @@ Pour plus de détails, consultez le [cahier des charges](CAHIER-DES-CHARGES.md).
 
 Les outils suivants sont nécessaires au développement du projet :
 
-- [Visual Studio Code](https://code.visualstudio.com/), version 1.1 ou
-  ultérieure.
-- [Docker](https://www.docker.com/), version 29 ou ultérieure, avec Docker
-  Compose.
-- [Git](https://git-scm.com/) pour récupérer le dépôt et gérer les
-  modifications.
+- [Visual Studio Code](https://code.visualstudio.com/), version 1.1 ou  
+  ultérieure.
+- [Docker](https://www.docker.com/), version 29 ou ultérieure, avec Docker  
+  Compose.
+- [Git](https://git-scm.com/) pour récupérer le dépôt et gérer les  
+  modifications.
+- [Composer 2.11 ou plus tard](https://getcomposer.org/) pour gérer les
+  dépendances.
 
 Les versions indiquées constituent les versions minimales prévues pour le
 projet. Une version plus récente peut être nécessaire selon les fonctionnalités
@@ -42,32 +45,32 @@ utilisées.
 #### Extensions Visual Studio Code recommandées
 
 - [PHP Intelephense](https://marketplace.visualstudio.com/items?itemName=bmewburn.vscode-intelephense-client)
-  : analyse du code PHP et autocomplétion.
+    : analyse du code PHP et autocomplétion.
 - [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
-  : formatage du code pris en charge.
+    : formatage du code pris en charge.
 - [SQLite Viewer](https://marketplace.visualstudio.com/items?itemName=qwtel.sqlite-viewer)
-  : consultation de bases SQLite, si nécessaire.
+    : consultation de bases SQLite, si nécessaire.
 - [Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
-  : ouverture du projet dans un conteneur de développement.
+    : ouverture du projet dans un conteneur de développement.
 
 ### Production
 
 Dépendances et versions nécessaires pour ce projet :
 
-- Un serveur [Apache 2.4 ou plus tard](https://httpd.apache.org/) avec
-  [PHP 8.5 ou plus tard](https://www.php.net/) et les extensions nécessaires
-  pour se connecter à une base de données [MariaDB](https://mariadb.org/).
+- Un serveur [Apache 2.4 ou plus tard](https://httpd.apache.org/) avec  
+  [PHP 8.5 ou plus tard](https://www.php.net/) et les extensions nécessaires  
+  pour se connecter à une base de données [MariaDB](https://mariadb.org/).
 - Une base de données [MariaDB 10.6 ou plus tard](https://mariadb.org/)
-- **Envoi d'e-mails** : un service SMTP accessible (par exemple Infomaniak),
-  avec une adresse e-mail valide et ses identifiants, est nécessaire si
-  l'application doit envoyer des e-mails en production.
+- **Envoi d'e-mails** : un service SMTP accessible (par exemple Infomaniak),  
+  avec une adresse e-mail valide et ses identifiants, est nécessaire si  
+  l'application doit envoyer des e-mails en production.
 
 ## Structure du projet
 
 ```shell
 .
 ├── .devcontainer/  #Contient la configuration pour le développement dans un conteneur Debian (Trixie) avec Visual Studio Code.
-├── .gitignore  
+├── .gitignore
 ├── .vscode/    #Contient les paramètres recommandés pour Visual Studio Code.
 ├── AI-USAGE.md #Déclaration d'usage de l'IA
 ├── CAHIER-DES-CHARGES.md
@@ -86,22 +89,21 @@ Dépendances et versions nécessaires pour ce projet :
     │   ├── index.php
     └── src/    # Logique métier
         ├── constants.php
-        ├── db 
+        ├── db
         ├── functions.php
         └── init.php
 ```
 
-
 > `compose.yaml`: Fichier de configuration pour Docker Compose, définissant les
->  services nécessaires pour le projet, avec :
+>   services nécessaires pour le projet, avec :
+>
 > - [Apache](https://httpd.apache.org/) : Serveur web pour exécuter les fichiers
->   PHP.
+>     PHP.
 > - [MariaDB](https://mariadb.org/) : Base de données relationnelle.
 > - [phpMyAdmin](https://www.phpmyadmin.net/) : Interface web pour gérer la base
->   de données MariaDB.
-> - [Mailpit](https://mailpit.axllent.org/) : Serveur SMTP pour tester l'envoi
->   d'e-mails.
-
+>     de données MariaDB.
+> - [Mailpit](https://mailpit.axllent.org/) : Serveur SMTP pour tester l'envoi  
+>   d'e-mails.
 
 # Développement
 
@@ -136,12 +138,79 @@ de commandes (<kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>P</kbd> sur Windows/Linux ou
 <kbd>Cmd</kbd>+<kbd>Shift</kbd>+<kbd>P</kbd> sur macOS).
 
 ## Paramétrer les informations de configuration
-Dans le dossier `project/config` se trouve différents documents de configuration qui représente des informations d'accès notamment à des bases de données ou serveur mail. 
 
-Dupliquer le fichier `database.ini.exemple` renommez le sans le .exemple (exemple `database.ini`).
-Copier les informations relatives à la base de données, si vous utiliser Docker vous trouverez ses informations dans le fichier `compose.yaml`.
-Faites de même pour tous les fichiers finissant par .exemple dans le dossier `project/config`.
+Dans le dossier `project/config` se trouve différents documents de configuration
+qui représente des informations d'accès notamment à des bases de données ou
+serveur mail.
 
+Dupliquer le fichier `database.ini.exemple` renommez le sans le .exemple
+(exemple `database.ini`). Copier les informations relatives à la base de
+données, si vous utiliser Docker vous trouverez ses informations dans le fichier
+`compose.yaml`. Faites de même pour tous les fichiers finissant par .exemple
+dans le dossier `project/config`.
+
+## Télécharger les dépendances
+
+### Qu'est-ce que Composer ?
+
+[Composer](https://getcomposer.org/) est un gestionnaire de dépendances pour
+PHP. Il permet d'installer, de gérer et de mettre à jour les bibliothèques
+externes utilisées par un projet PHP.
+
+Il automatise notamment :
+
+- L'installation des bibliothèques nécessaires au projet.
+- La gestion des versions des dépendances.
+- Le chargement automatique des classes PHP grâce à l'autoloader.
+- La gestion des dépendances, afin que tous les développeurs utilisent les mêmes
+  versions des bibliothèques.
+
+Composer utilise principalement deux fichiers :
+
+- **`composer.json`** : définit les dépendances et la configuration du projet.
+- **`composer.lock`** : enregistre les versions exactes des dépendances
+  installées afin de garantir une installation cohérente.
+
+### Installation de Composer
+
+Avant d'installer les dépendances du projet, Composer doit être installé sur
+votre machine.
+
+- **Windows :** téléchargez et exécutez l'installateur depuis
+  [Composer – Windows](https://getcomposer.org/download/).
+- **Linux / macOS :** suivez les instructions officielles disponibles sur
+  [Composer – Download](https://getcomposer.org/download/).
+
+PHP doit également être installé et accessible depuis le terminal.
+
+Pour vérifier que Composer est correctement installé, exécutez la commande
+suivante dans votre terminal :
+
+```bash
+composer --version
+```
+
+### Installation des dépendances du projet
+
+Après avoir cloné le dépôt Git, placez-vous à la racine du projet, dans le
+dossier contenant le fichier `composer.json`.
+
+```bash
+cd nom-du-projet
+```
+
+Installez ensuite les dépendances du projet avec la commande :
+
+```bash
+composer install
+```
+
+Cette commande :
+
+- Lit le fichier `composer.json`.
+- Installe les dépendances nécessaires dans le dossier `vendor/`.
+- Utilise les versions enregistrées dans `composer.lock`, lorsqu'il est présent.
+- Génère l'autoloader Composer.
 
 ## Démarrer les services Docker
 
@@ -234,16 +303,19 @@ redémarrés.
 
 # Production
 
-Cette partie explique de quel manière ajouter le projet dans un serveur web contenant la configuration près établie.
+Cette partie explique de quel manière ajouter le projet dans un serveur web
+contenant la configuration près établie.
 
 ## 1. Préparer les fichiers à déployer
 
-Commencez par vous connecter via l'interface de votre client FTP/SFTP sur votre serveur.
-Déplacez\-vous dans le dossier de votre serveur, par exemple `~/sites/HEIG-ProgServ.domaine.ch/`. 
-Créez un dossier au nom de votre projet.
-Importez dans ce dossier, le dossier `project/` et tout ce qui se trouve à l'intérieur de votre projet en local.
+Commencez par vous connecter via l'interface de votre client FTP/SFTP sur votre
+serveur. Déplacez\-vous dans le dossier de votre serveur, par exemple
+`~/sites/HEIG-ProgServ.domaine.ch/`. Créez un dossier au nom de votre projet.
+Importez dans ce dossier, le dossier `project/` et tout ce qui se trouve à
+l'intérieur de votre projet en local.
 
-> Attention à importer une version stable du projet de préférence la dernière version de votre branche main.
+> Attention à importer une version stable du projet de préférence la dernière
+> version de votre branche main.
 
 Exemple d'organisation côté serveur :
 
@@ -260,14 +332,15 @@ Exemple d'organisation côté serveur :
         │   ├── index.php
         └── src/    # Logique métier
             ├── constants.php
-            ├── db 
+            ├── db
             ├── functions.php
             └── init.php
 ```
 
 ## 2. Configurer les variables d'environnement
 
-Depuis votre service FTP/SFTP ouvrez le fichier `database.ini` et éditez les informations en fonction de ce que vous avez défini chez votre hébergeur.
+Depuis votre service FTP/SFTP ouvrez le fichier `database.ini` et éditez les
+informations en fonction de ce que vous avez défini chez votre hébergeur.
 
 ```shell
 host = "mariadb.infomaniak.com"
@@ -282,26 +355,29 @@ Les valeurs ci-dessus sont des exemples de noms de variables. Les valeurs
 réelles doivent être obtenues auprès de l'hébergeur ou du fournisseur SMTP.
 
 ## 3. Sécurisation
-*Database*
 
-Votre utilisateur de base de données ne doit avoir *uniquement* les doits suivants : 
+_Database_
+
+Votre utilisateur de base de données ne doit avoir _uniquement_ les doits
+suivants :
+
 - Lecture
 - Écriture
 
 Toute autre droit peut éventuellement permettre des modifications non voulues,
 
+_Emplacement du site_
 
+Dans les paramètres de votre site sur le site de votre hébergeur, changer le
+chemin ou l'emplacement du site pour qu'il pointe sur votre dossier public. Ce
+paramètre peut être caché dans les paramètres avancés. Exemple de chemin :
+`~/sites/HEIG-ProgServ.domaine.ch/mon-projet/projet/public`
 
-*Emplacement du site*
-
-Dans les paramètres de votre site sur le site de votre hébergeur, changer le chemin ou l'emplacement du site pour qu'il pointe sur votre dossier public. Ce paramètre peut être caché dans les paramètres avancés. 
-Exemple de chemin : `~/sites/HEIG-ProgServ.domaine.ch/mon-projet/projet/public`
-
-
-*Sessions*
+_Sessions_
 
 Dans le document `ini.php` décomentez la ligne `'secure' => true`.
- > // 'secure' => true,  // to be activated when switching to HTTPS
+
+> // 'secure' => true, // to be activated when switching to HTTPS
 
 # Contact
 
