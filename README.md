@@ -192,13 +192,6 @@ composer --version
 
 ### Installation des dépendances du projet
 
-Après avoir cloné le dépôt Git, placez-vous à la racine du projet, dans le
-dossier contenant le fichier `composer.json`.
-
-```bash
-cd nom-du-projet
-```
-
 Installez ensuite les dépendances du projet avec la commande :
 
 ```bash
