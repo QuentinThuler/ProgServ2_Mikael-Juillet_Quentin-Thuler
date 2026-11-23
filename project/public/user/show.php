@@ -9,6 +9,7 @@ use function App\services\escape;
 
 $errors = [];
 $user = null;
+$pageTitle = "Détails de mon compte";
 
 if (!isset($_SESSION['user_id'])) {
     header('Location: /account/login.php');
@@ -16,7 +17,6 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 try {
-
     $controller = new UserController(
         new UserRequests($pdo),
         new ParticipantRequests($pdo),
