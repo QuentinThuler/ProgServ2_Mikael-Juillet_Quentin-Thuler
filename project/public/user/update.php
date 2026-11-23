@@ -26,7 +26,7 @@ $pageTitle = "Mise à jour du compte";
 $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
 
 if (!$id) {
-    header('Location: index.php');
+    header('Location: /index.php');
     exit;
 }
 
@@ -58,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $userController->update($updatedUser);
 
-        header('Location: index.php?success=updated');
+        header('Location: /index.php');
         exit;
     } catch (Throwable $e) {
         error_log($e->getMessage());

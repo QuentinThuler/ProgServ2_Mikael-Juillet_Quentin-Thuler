@@ -26,7 +26,7 @@ try {
 
         $userController->connect($_POST['email'] ?? null, $_POST['password'] ?? null);
 
-        header('Location: /');
+        header('Location: /index.php');
         exit;
     }
 } catch (InvalidArgumentException | RuntimeException $e) {

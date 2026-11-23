@@ -25,7 +25,7 @@ try {
             $_POST['verification_token'] ?? null
         );
 
-        header('Location: index.php');
+        header('Location: /index.php');
         exit;
     }
 } catch (InvalidArgumentException | RuntimeException $e) {

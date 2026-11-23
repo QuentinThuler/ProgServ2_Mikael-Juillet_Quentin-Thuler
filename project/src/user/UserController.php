@@ -156,13 +156,14 @@ class UserController implements IVerificationHandler {
         );
         if (!$user) throw new InvalidArgumentException('La connexion a échoué, veuillez vérifier votre mot de passe ou email.');
 
-        if (password_verify($user->getPassword(), $password)) {
+        if (password_verify($password, $user->getPassword())) {
             $_SESSION['user_id'] = $user->getId();
             $_SESSION['email'] = $user->getEmail();
             $_SESSION['role'] = $user->getRole()->getName();
 
             // Rediriger vers la page d'accueil
-            header('Location: /');
+            header('Location: /index.php');
+            exit;
         }
 
         throw new InvalidArgumentException('La connection a échouée, veuillez vérifier votre mot de passe ou email.');
