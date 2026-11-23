@@ -161,7 +161,6 @@ class UserController implements IVerificationHandler {
             $_SESSION['email'] = $user->getEmail();
             $_SESSION['role'] = $user->getRole()->getName();
 
-            // Rediriger vers la page d'accueil
             header('Location: /index.php');
             exit;
         }
