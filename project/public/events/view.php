@@ -3,9 +3,10 @@ require_once __DIR__ . '/../../src/init.php';
 
 use App\event\EventRequests;
 use App\event\EventController;
+use function App\services\escape;
+use function App\services\translate;
 
 // TODO : missing try catch, can be cleaned and translated
-
 
 $eventId = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT, [
     'options' => ['min_range' => 1]
@@ -50,23 +51,23 @@ $hasValidImage = $imagePath !== null && str_starts_with($imagePath, '/uploads/ev
             <?php endif; ?>
 
             <section class="event-info">
-                <p><strong>Date et heure :</strong> <?= escape($event->getDateTime()->format('d.m.Y - H:i')) ?></p>
+                <p><strong><?= escape(translate('Date et heure : ')) ?></strong> <?= escape($event->getDateTime()->format('d.m.Y - H:i')) ?></p>
                 <p>
-                    <strong>Lieu :</strong>
+                    <strong><?= escape(translate('Lieu :')) ?></strong>
                     <?= escape($event->getAddress()) ?>, <?= escape($event->getCity()) ?>
                     <?php if ($event->getRoom()): ?>
-                        (Salle : <?= escape($event->getRoom()) ?>)
+                        <?= escape(translate('(Salle : ')) ?><?= escape($event->getRoom()) ?>)
                     <?php endif; ?>
                 </p>
             </section>
 
             <section class="event-description">
-                <h2>Description</h2>
-                <p><?= nl2br(e($event->getDescription())) ?></p>
+                <h2><?= escape(translate('Description')) ?></h2>
+                <p><?= nl2br(escape($event->getDescription())) ?></p>
             </section>
 
             <?php if ($event->getCreatedAt()): ?>
-                <p><small>Publié le <?= escape($event->getCreatedAt()->format('d.m.Y à H:i')) ?></small></p>
+                <p><small><?= escape(translate('Publié le ')) ?><?= escape($event->getCreatedAt()->format('d.m.Y à H:i')) ?></small></p>
             <?php endif; ?>
         </article>
     </main>

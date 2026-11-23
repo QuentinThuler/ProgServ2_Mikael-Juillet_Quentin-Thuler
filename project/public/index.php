@@ -3,15 +3,15 @@ require_once __DIR__ . '/../src/init.php';
 
 use App\event\EventRequests;
 use App\event\EventController;
-
 use function App\services\escape;
+use function App\services\translate;
 
 $eventRequests = new EventRequests($pdo);
 $eventController = new EventController($eventRequests);
 
 $events = $eventController->upcoming();
 
-$pageTitle = "Accueil";
+$pageTitle = escape(translate("Accueil"));
 ?>
 
 <!DOCTYPE html>
@@ -23,14 +23,14 @@ $pageTitle = "Accueil";
     <main>
         <?php require_once __DIR__ . '/../components/header.php' ?>
 
-        <h1>L'association</h1>
+        <h1><?= escape(translate('L\'association')) ?></h1>
 
-        <p>Cette association, basée à Yverdon-les-Bains, vise à faire la promotion de la photographie auprès de jeunes étudiants.</p>
+        <p><?= escape(translate('Cette association, basée à Yverdon-les-Bains, vise à faire la promotion de la photographie auprès de jeunes étudiants.')) ?></p>
 
-        <h2>Évènements à venir</h2>
+        <h2><?= escape(translate('Évènements à venir')) ?></h2>
 
         <?php if (empty($events)): ?>
-            <p>Aucun évènement à venir pour le moment.</p>
+            <p><?= escape(translate('Aucun évènement à venir pour le moment.')) ?></p>
         <?php else: ?>
             <ul id="events-list">
                 <?php foreach ($events as $index => $event): ?>
@@ -39,19 +39,19 @@ $pageTitle = "Accueil";
                             <h3><?= escape($event->getTitle()) ?> - <?= escape($event->getCity()) ?></h3>
                             <p><?= escape($event->getDateTime()->format('d.m.Y - H:i')) ?></p>
                             <p><?= escape($event->getTagline()) ?></p>
-                            <a href="./view.php?id=<?= (int) $event->getId() ?>">Détails de l'évènement</a>
+                            <a href="./view.php?id=<?= (int) $event->getId() ?>"><?= escape(translate('Détails de l\'évènement')) ?></a>
                         </article>
                     </li>
                 <?php endforeach; ?>
             </ul>
 
             <?php if (count($events) > 8): ?>
-                <button type="button" id="load-more-btn">Afficher plus</button>
+                <button type="button" id="load-more-btn"><?= escape(translate('Afficher plus')) ?></button>
             <?php endif; ?>
         <?php endif; ?>
 
         <p>
-            <a href="#top" id="back-to-top-btn">Haut de la page</a>
+            <a href="#top" id="back-to-top-btn"><?= escape(translate('Haut de la page')) ?></a>
         </p>
     </main>
 
