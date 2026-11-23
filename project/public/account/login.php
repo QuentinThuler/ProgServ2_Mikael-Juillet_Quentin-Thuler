@@ -2,8 +2,12 @@
 
 require_once __DIR__ . '/../../src/init.php';
 
+use App\participant\ParticipantRequests;
 use App\pendingVerifications\PendingVerificationController;
 use App\pendingVerifications\PendingVerificationRequests;
+use App\role\RoleRequests;
+use App\user\UserController;
+use App\user\UserRequests;
 
 use function App\services\escape;
 use function App\services\verifyCsrfToken;
@@ -11,26 +15,18 @@ use function App\services\verifyCsrfToken;
 $errors = [];
 $pageTitle = "Connection";
 
-// TODO : Implement a proper login controller and requests class to handle user authentication.
 try {
-    $pendingVerificationRequest = new PendingVerificationRequests($pdo);
-    $pendingVerificationController = new PendingVerificationController($pendingVerificationRequest);
+    $userRequests = new UserRequests($pdo);
+    $participantRequests = new ParticipantRequests($pdo);
+    $roleRequests = new RoleRequests($pdo);
+    $userController = new UserController($userRequests, $participantRequests, $roleRequests);
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         verifyCsrfToken();
 
-        $payload = [
-            'name' => $_POST['name'] ?? null,
-            'password' => $_POST['password'] ?? null
-        ];
+        $userController->connect($_POST['email'] ?? null, $_POST['password'] ?? null);
 
-        $pendingVerificationController->create(
-            email: $_POST['email'] ?? '',
-            purpose: 'account_creation',
-            payload: $payload
-        );
-
-        header('Location: validation.php');
+        header('Location: /');
         exit;
     }
 } catch (InvalidArgumentException | RuntimeException $e) {

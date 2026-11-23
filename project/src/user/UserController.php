@@ -134,14 +134,47 @@ class UserController implements IVerificationHandler {
         $this->userRequests->delete($user);
     }
 
+    public function connect(string $email, string $password) {
+        $email = trim($email);
+        $password = trim($password);
+
+        $this->userValidationPasswordEmail([
+            'email' => $email,
+            'password' => $password
+        ]);
+
+        // Get the participant by email
+        $participant = $this->participantRequests->getByEmail($email);
+
+        if (!$participant) {
+            throw new InvalidArgumentException('La connexion a échoué, veuillez vérifier votre mot de passe ou email.');
+        }
+
+        // Check if a user already exists for this participant
+        $user = $this->userRequests->getUserByParticipantId(
+            $participant->getId()
+        );
+        if (!$user) throw new InvalidArgumentException('La connexion a échoué, veuillez vérifier votre mot de passe ou email.');
+
+        if (password_verify($user->getPassword(), $password)) {
+            $_SESSION['user_id'] = $user->getId();
+            $_SESSION['email'] = $user->getEmail();
+            $_SESSION['role'] = $user->getRole()->getName();
+
+            // Rediriger vers la page d'accueil
+            header('Location: /');
+        }
+
+        throw new InvalidArgumentException('La connection a échouée, veuillez vérifier votre mot de passe ou email.');
+    }
+
     /**
      * Handle the creation of a new user after email verification
      * @param string $email The user's email
-     * @param string $payload The user data
+     * @param array $payload The user data
      * @return void
      */
-    public function handle(string $email, string $payload): void {
-        $payload = json_decode($payload, true);
+    public function handle(string $email, array $payload): void {
 
         $this->create(
             $email,
@@ -163,6 +196,18 @@ class UserController implements IVerificationHandler {
 
         if (!isset($data['name']) || trim($data['name']) === '') {
             throw new InvalidArgumentException('Le nom est obligatoire.');
+        }
+
+        if (!isset($data['password']) || strlen($data['password']) < 8) {
+            throw new InvalidArgumentException(
+                'Le mot de passe doit contenir au moins 8 caractères.'
+            );
+        }
+    }
+
+    private function userValidationPasswordEmail(array $data): void {
+        if (!isset($data['email']) || !filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
+            throw new InvalidArgumentException('Adresse e-mail invalide.');
         }
 
         if (!isset($data['password']) || strlen($data['password']) < 8) {

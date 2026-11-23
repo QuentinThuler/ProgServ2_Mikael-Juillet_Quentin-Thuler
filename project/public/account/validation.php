@@ -77,7 +77,7 @@ try {
 
         </form>
 
-        <p>Vous n’avez pas reçu de code ? <a href="/account/revalidate">Renvoyer le code.</a></p>
+        <p>Vous n’avez pas reçu de code ? <a href="/account/revalidate.php">Renvoyer le code.</a></p>
     </main>
     <?php require_once __DIR__ . '/../../components/footer.php' ?>
 </body>
