@@ -8,26 +8,26 @@
 <footer>
     <nav aria-label="Pied de page">
         <section class="explore">
-            <h2>Explorer</h2>
-            <a href="/index.php">Accueil</a>
+            <h2><?= e(t('')) ?><?= e(t('Explorer')) ?></h2>
+            <a href="/index.php"><?= e(t('Accueil')) ?></a>
             <?php if ($isConnected): ?>
-                <a href="/profile/my-registrations.php">Mes inscriptions</a>
+                <a href="/profile/my-registrations.php"><?= e(t('Mes inscriptions')) ?></a>
             <?php else: ?>
-                <a href="/index.php">Évènements à venir</a>
+                <a href="/index.php"><?= e(t('Évènements à venir')) ?></a>
             <?php endif; ?>
         </section>
 
         <section class="account">
-            <h2>Mon compte</h2>
+            <h2><?= e(t('Mon compte')) ?></h2>
             <?php if ($isConnected): ?>
-                <a href="/profile/profile.php">Détails du profil</a>
-                <a href="/profile/profile-edit.php">Modification du profil</a>
+                <a href="/profile/profile.php"><?= e(t('Détails du profil')) ?></a>
+                <a href="/profile/profile-edit.php"><?= e(t('Modification du profil')) ?></a>
                 <?php if ($isAdmin): ?>
-                    <a href="/admin/index.php">Espace administrateur</a>
+                    <a href="/admin/index.php"><?= e(t('Espace administrateur')) ?></a>
                 <?php endif; ?>
             <?php else: ?>
-                <a href="/account/login.php">Se connecter</a>
-                <a href="/account/signup.php">S'inscrire</a>
+                <a href="/account/login.php"><?= e(t('Se connecter')) ?></a>
+                <a href="/account/signup.php"><?= e(t('S\'inscrire')) ?></a>
             <?php endif; ?>
         </section>
     </nav>

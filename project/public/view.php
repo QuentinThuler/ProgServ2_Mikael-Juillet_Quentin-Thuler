@@ -46,23 +46,23 @@ $hasValidImage = $imagePath !== null && str_starts_with($imagePath, '/uploads/ev
             <?php endif; ?>
 
             <section class="event-info">
-                <p><strong>Date et heure :</strong> <?= e($event->getDateTime()->format('d.m.Y - H:i')) ?></p>
+                <p><strong><?= e(t('Date et heure : ')) ?></strong> <?= e($event->getDateTime()->format('d.m.Y - H:i')) ?></p>
                 <p>
-                    <strong>Lieu :</strong>
+                    <strong><?= e(t('Lieu :')) ?></strong>
                     <?= e($event->getAddress()) ?>, <?= e($event->getCity()) ?>
                     <?php if ($event->getRoom()): ?>
-                        (Salle : <?= e($event->getRoom()) ?>)
+                        <?= e(t('(Salle : ')) ?><?= e($event->getRoom()) ?>)
                     <?php endif; ?>
                 </p>
             </section>
 
             <section class="event-description">
-                <h2>Description</h2>
+                <h2><?= e(t('Description')) ?></h2>
                 <p><?= nl2br(e($event->getDescription())) ?></p>
             </section>
 
             <?php if ($event->getCreatedAt()): ?>
-                <p><small>Publié le <?= e($event->getCreatedAt()->format('d.m.Y à H:i')) ?></small></p>
+                <p><small><?= e(t('Publié le ')) ?><?= e($event->getCreatedAt()->format('d.m.Y à H:i')) ?></small></p>
             <?php endif; ?>
         </article>
     </main>

@@ -1,0 +1,28 @@
+<?php
+$translations = [
+    'fr' => [],
+    'en' => [
+        'L\'association' => 'The association',
+        'Cette association, basée à Yverdon-les-Bains, vise à faire la promotion de la photographie auprès de jeunes étudiants.' => 'This association, based in Yverdon-les-Bains, aims to promote photography amongst young students.',
+        'Évènements à venir' => 'Upcoming events',
+        'Aucun évènement à venir pour le moment.' => 'No upcoming events for now.',
+        'Détails de l\'évènement' => 'Event details',
+        'Afficher plus' => 'Show more',
+        'Haut de la page' => 'Back to the top',
+        'Explorer' => 'Explore',
+        'Accueil' => 'Home',
+        'Mes inscriptions' => 'My registrations',
+        'Mon compte' => 'My account',
+        'Détails du profil' => 'Profile details',
+        'Modification du profil' => 'Edit profile',
+        'Espace administrateur' => 'Admin dashboard',
+        'Se connecter' => 'Log In',
+        'S\'inscrire' => 'Register',
+        'Date et heure :' => 'Date and time:',
+        'Lieu :' => 'Location:',
+        '(Salle : ' => '(Room: ',
+        'Description' => 'Description',
+        'Publié le ' => 'Published on ',
+        '' => '',
+    ],
+];

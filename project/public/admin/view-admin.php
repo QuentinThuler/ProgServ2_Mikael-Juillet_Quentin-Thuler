@@ -52,23 +52,23 @@ $hasValidImage = $imagePath !== null && str_starts_with($imagePath, '/uploads/ev
             <?php endif; ?>
 
             <section class="event-info">
-                <p><strong>Date et heure :</strong> <?= htmlspecialchars($event->getDateTime()->format('d.m.Y - H:i'), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?></p>
+                <p><strong><?= e(t('Date et heure : ')) ?></strong> <?= htmlspecialchars($event->getDateTime()->format('d.m.Y - H:i'), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?></p>
                 <p>
-                    <strong>Lieu :</strong>
+                    <strong><?= e(t('Lieu :')) ?></strong>
                     <?= htmlspecialchars($event->getAddress(), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>, <?= htmlspecialchars($event->getCity(), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>
                     <?php if ($event->getRoom()): ?>
-                        (Salle : <?= htmlspecialchars($event->getRoom(), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>)
+                        <?= e(t('(Salle : ')) ?><?= htmlspecialchars($event->getRoom(), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>)
                     <?php endif; ?>
                 </p>
             </section>
 
             <section class="event-description">
-                <h2>Description</h2>
+                <h2><?= e(t('Description')) ?></h2>
                 <p><?= nl2br(htmlspecialchars($event->getDescription(), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8')) ?></p>
             </section>
 
             <?php if ($event->getCreatedAt()): ?>
-                <p><small>Publié le <?= htmlspecialchars($event->getCreatedAt()->format('d.m.Y à H:i'), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?></small></p>
+                <p><small><?= e(t('Publié le ')) ?><?= htmlspecialchars($event->getCreatedAt()->format('d.m.Y à H:i'), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?></small></p>
             <?php endif; ?>
         </article>
     </main>

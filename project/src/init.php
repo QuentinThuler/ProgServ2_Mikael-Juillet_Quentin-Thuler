@@ -1,5 +1,9 @@
 <?php
 
+require_once __DIR__ . '/functions.php';
+require_once __DIR__ . '/constants.php';
+require_once __DIR__ . '/translations.php';
+
 // --- Session ---------------------------------------------------------------
 if (session_status() === PHP_SESSION_NONE) {
     ini_set('session.use_strict_mode', '1');
@@ -57,6 +61,22 @@ try {
     exit('Service temporairement indisponible.');
 }
 
-require_once __DIR__ . '/functions.php';
-require_once __DIR__ . '/constants.php';
-require_once __DIR__ . '/translations.php';
+// --- i18n traductions -------------------------------------------------------
+
+const DEFAULT_LANGUAGE = 'fr';
+
+if (isset($_GET['lang']) && is_string($_GET['lang']) && array_key_exists($_GET['lang'], $translations)) {
+    setcookie('language', $_GET['lang'], [
+        'expires' => time() + 60 * 60 * 24 * 30,
+        'path' => '/',
+        'samesite' => 'Lax',
+    ]);
+    $_COOKIE['language'] = $_GET['lang'];
+}
+
+// Détermination de la langue active
+$language = DEFAULT_LANGUAGE;
+
+if (isset($_COOKIE['language']) && array_key_exists($_COOKIE['language'], $translations)) {
+    $language = $_COOKIE['language'];
+}
