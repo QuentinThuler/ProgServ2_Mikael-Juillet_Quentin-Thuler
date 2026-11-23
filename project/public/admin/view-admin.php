@@ -44,11 +44,11 @@ $hasValidImage = $imagePath !== null && str_starts_with($imagePath, '/uploads/ev
 
     <main>
         <article class="event-detail">
-            <h1><?= htmlspecialchars($event->getTitle(), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?></h1>
-            <p class="tagline"><strong><?= htmlspecialchars($event->getTagline(), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?></strong></p>
+            <h1><?= e($event->getTitle(), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?></h1>
+            <p class="tagline"><strong><?= e($event->getTagline(), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?></strong></p>
 
             <?php if ($hasValidImage): ?>
-                <img src="<?= htmlspecialchars($imagePath, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>" alt="<?= htmlspecialchars($event->getTitle(), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>" />
+                <img src="<?= e($imagePath, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>" alt="<?= e($event->getTitle(), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>" />
             <?php endif; ?>
 
             <section class="event-info">
