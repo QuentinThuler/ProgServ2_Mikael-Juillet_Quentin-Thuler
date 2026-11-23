@@ -7,8 +7,10 @@ use App\user\UserRequests;
 use App\user\UserController;
 
 use function App\services\escape;
+use function App\services\translate;
 
 $errors = [];
+$pageTitle = escape(translate('Liste des utilisateurs'));
 
 try {
     $requests = new UserRequests($pdo);
@@ -34,20 +36,19 @@ try {
     <main>
         <?php require_once __DIR__ . '/../../components/header.php' ?>
 
-        <h1>users</h1>
+        <h1><?= escape(translate('Liste des utilisateurs')) ?></h1>
 
         <?php if (!empty($errors)): ?>
 
             <?php foreach ($errors as $error): ?>
-                <p role="alert">
+                <p class="error">
                     <?= escape(translate($error)) ?>
-
                 </p>
             <?php endforeach; ?>
 
         <?php elseif (empty($users)): ?>
 
-            <p>Aucun user pour le moment.</p>
+            <p><?= escape(translate('Aucun utilisateur pour le moment.')) ?></p>
 
         <?php else: ?>
 

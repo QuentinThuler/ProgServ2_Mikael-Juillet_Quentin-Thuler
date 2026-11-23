@@ -7,10 +7,10 @@ use App\pendingVerifications\PendingVerificationRequests;
 
 use function App\services\verifyCsrfToken;
 use function App\services\escape;
+use function App\services\translate;
 
 $errors = [];
-$pageTitle = "Dashboard Admin";
-
+$pageTitle = escape(translate('Espace administrateur'));
 
 // TODO : Implement a proper dashbord admin
 try {
@@ -45,7 +45,7 @@ try {
     <main>
         <?php require_once __DIR__ . '/../../components/header.php' ?>
 
-        <h1>Dashboard Admin</h1>
+        <h1><?= escape(translate('Espace administrateur')) ?></h1>
 
         <?php foreach ($errors as $error): ?>
             <p class="error">

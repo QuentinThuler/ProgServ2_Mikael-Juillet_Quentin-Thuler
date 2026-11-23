@@ -3,8 +3,6 @@
 require_once __DIR__ . '/../../src/init.php';
 
 use App\participant\ParticipantRequests;
-use App\pendingVerifications\PendingVerificationController;
-use App\pendingVerifications\PendingVerificationRequests;
 use App\role\RoleRequests;
 use App\user\UserController;
 use App\user\UserRequests;

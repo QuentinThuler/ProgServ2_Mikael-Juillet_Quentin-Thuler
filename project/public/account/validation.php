@@ -45,12 +45,6 @@ try {
         <?php require_once __DIR__ . '/../../components/header.php' ?>
 
         <h1><?= escape(translate('Vérifiez votre email')) ?></h1>
-
-        <p><?= escape(translate('Inscrivez votre email pour que nous puissions vous envoyer votre code de validation.')) ?></p>
-
-
-        <h1></h1>
-
         <p>
             <?= escape(translate('Nous vous avons envoyé un lien de confirmation à l’adresse')) ?>
             <?= escape($_POST['email'] ?? '') ?>.
@@ -59,7 +53,6 @@ try {
         <?php foreach ($errors as $error): ?>
             <p class="error">
                 <?= escape(translate($error)) ?>
-
             </p>
         <?php endforeach; ?>
 
@@ -82,7 +75,7 @@ try {
                     placeholder="<?= escape(translate('Code à 6 charactères')) ?>">
             </div>
 
-            <button type="submit">Valider</button>
+            <button type="submit"><?= escape(translate('Valider')) ?></button>
 
         </form>
 

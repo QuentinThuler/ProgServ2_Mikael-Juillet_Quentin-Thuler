@@ -51,12 +51,12 @@ $hasValidImage = $imagePath !== null && str_starts_with($imagePath, '/uploads/ev
             <?php endif; ?>
 
             <section class="event-info">
-                <p><strong><?= escape(translate('Date et heure : ')) ?></strong> <?= escape($event->getDateTime()->format('d.m.Y - H:i')) ?></p>
+                <p><strong><?= escape(translate('Date et heure')) ?>:</strong> <?= escape($event->getDateTime()->format('d.m.Y - H:i')) ?></p>
                 <p>
-                    <strong><?= escape(translate('Lieu :')) ?></strong>
+                    <strong><?= escape(translate('Lieu')) ?> :</strong>
                     <?= escape($event->getAddress()) ?>, <?= escape($event->getCity()) ?>
                     <?php if ($event->getRoom()): ?>
-                        <?= escape(translate('(Salle : ')) ?><?= escape($event->getRoom()) ?>)
+                        (<?= escape(translate('Salle')) ?> :<?= escape($event->getRoom()) ?>)
                     <?php endif; ?>
                 </p>
             </section>
@@ -67,7 +67,7 @@ $hasValidImage = $imagePath !== null && str_starts_with($imagePath, '/uploads/ev
             </section>
 
             <?php if ($event->getCreatedAt()): ?>
-                <p><small><?= escape(translate('Publié le ')) ?><?= escape($event->getCreatedAt()->format('d.m.Y à H:i')) ?></small></p>
+                <p><small><?= escape(translate('Publié le')) ?><?= escape($event->getCreatedAt()->format('d.m.Y à H:i')) ?></small></p>
             <?php endif; ?>
         </article>
     </main>

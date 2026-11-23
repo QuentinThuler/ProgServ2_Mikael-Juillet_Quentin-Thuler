@@ -5,7 +5,10 @@ use App\participant\ParticipantRequests;
 use App\participant\ParticipantController;
 
 use function App\services\escape;
+use function App\services\translate;
 use function App\services\verifyCsrfToken;
+
+$pageTitle = escape(translate('Créer un participant'));
 
 $errors = [];
 
@@ -43,13 +46,13 @@ try {
     <main>
         <?php require_once __DIR__ . '/../../components/header.php' ?>
 
-        <h1>Participants</h1>
+        <h1><?= escape(translate('Participants')) ?></h1>
 
         <?php if (!empty($errors)): ?>
 
             <?php foreach ($errors as $error): ?>
-                <p role="alert">
-                    <?= htmlspecialchars($error) ?>
+                <p class="error">
+                    <?= escape(translate($error)) ?>
                 </p>
             <?php endforeach; ?>
 
@@ -75,7 +78,7 @@ try {
                         required>
                 </div>
 
-                <button type="submit">Participer</button>
+                <button type="submit"><?= escape(translate('Participer')) ?></button>
             </form>
 
         <?php endif; ?>

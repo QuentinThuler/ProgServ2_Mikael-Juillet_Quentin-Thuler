@@ -5,7 +5,11 @@ require_once __DIR__ . '/../../src/init.php';
 use App\participant\ParticipantRequests;
 use App\participant\ParticipantController;
 
+use function App\services\escape;
+use function App\services\translate;
+
 $errors = [];
+$pageTitle = escape(translate('Participants'));
 
 try {
     $requests = new ParticipantRequests($pdo);
@@ -31,26 +35,24 @@ try {
     <main>
         <?php require_once __DIR__ . '/../../components/header.php' ?>
 
-        <h1>Participants</h1>
+        <h1><?= escape(translate('Participants')) ?></h1>
 
         <?php if (!empty($errors)): ?>
 
             <?php foreach ($errors as $error): ?>
-                <p role="alert">
-                    <?= htmlspecialchars($error) ?>
+                <p class="error">
+                    <?= escape(translate($error)) ?>
                 </p>
             <?php endforeach; ?>
 
         <?php elseif (empty($participants)): ?>
-
-            <p>Aucun participant pour le moment.</p>
-
+            <p><?= escape(translate('Aucun participant pour le moment.')) ?></p>
         <?php else: ?>
 
             <ul>
                 <?php foreach ($participants as $participant): ?>
                     <li>
-                        <?= htmlspecialchars($participant->getEmail()) ?>
+                        <?= escape($participant->getEmail()) ?>
                     </li>
                 <?php endforeach; ?>
             </ul>

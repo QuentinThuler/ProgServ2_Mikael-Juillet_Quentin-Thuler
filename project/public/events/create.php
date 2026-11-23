@@ -5,9 +5,10 @@ use App\event\EventRequests;
 use App\event\EventController;
 
 use function App\services\escape;
+use function App\services\translate;
 use function App\services\verifyCsrfToken;
 
-$pageTitle = "Créer un Évènement";
+$pageTitle = escape(translate('Créer un Évènement'));
 
 $eventRequests = new EventRequests($pdo);
 $eventController = new EventController($eventRequests);
@@ -74,7 +75,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     <main>
         <?php if (!empty($errors)): ?>
-            <p style="color: red;">Le formulaire contient des erreurs :</p>
+            <p style="color: red;"><?= escape(translate('Le formulaire contient des erreurs')) ?> :</p>
             <ul>
                 <?php foreach ($errors as $error): ?>
                     <li><?= escape(translate($error)) ?>
@@ -86,33 +87,33 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         <form action="./create.php" method="POST" enctype="multipart/form-data">
             <input type="hidden" name="csrf_token" value="<?= escape($_SESSION['csrf_token']) ?>" />
 
-            <label for="title">Titre*</label>
+            <label for="title"><?= escape(translate('Titre')) ?>*</label>
             <input type="text" id="title" name="title" value="<?= escape($title) ?>" required maxlength="255" />
 
-            <label for="description">Description*</label>
+            <label for="description"><?= escape(translate('Description')) ?>*</label>
             <input type="text" id="description" name="description" value="<?= escape($description) ?>" required maxlength="500" />
 
-            <label for="tagline">Phrase d'accroche (max 80 caractères)*</label>
+            <label for="tagline"><?= escape(translate('Phrase d\'accroche ( 80 caractères)')) ?>*</label>
             <input type="text" id="tagline" name="tagline" value="<?= escape($tagline) ?>" required maxlength="80" />
 
-            <label for="address">Adresse*</label>
+            <label for="address"><?= escape(translate('Adresse')) ?>*</label>
             <input type="text" id="address" name="address" value="<?= escape($address) ?>" required minlength="5" maxlength="60" />
 
-            <label for="city">Ville*</label>
+            <label for="city"><?= escape(translate('Ville')) ?>*</label>
             <input type="text" id="city" name="city" value="<?= escape($city) ?>" required maxlength="40" />
 
-            <label for="room">Salle</label>
+            <label for="room"><?= escape(translate('Salle')) ?></label>
             <input type="text" id="room" name="room" value="<?= escape($room) ?>" maxlength="20" />
 
-            <label for="date_time">Date et heure*</label>
+            <label for="date_time"><?= escape(translate('Date et heure')) ?>*</label>
             <input type="datetime-local" id="date_time" name="date_time" value="<?= escape($date_time) ?>" required />
 
             <?php if (defined('IMAGE_UPLOAD_ENABLED') && IMAGE_UPLOAD_ENABLED): ?>
-                <label for="image">Image</label>
+                <label for="image"><?= escape(translate('Image')) ?></label>
                 <input type="file" id="image" name="image" accept="image/png, image/jpeg, image/webp" />
             <?php endif; ?>
 
-            <button type="submit">Ajouter l'évènement</button>
+            <button type="submit"><?= escape(translate('Ajouter l\'évènement')) ?></button>
         </form>
     </main>
 

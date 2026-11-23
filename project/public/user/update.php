@@ -9,9 +9,10 @@ use App\user\UserController;
 use App\user\User;
 
 use function App\services\escape;
+use function App\services\translate;
 use function App\services\verifyCsrfToken;
 
-$pageTitle = "Mise à jour du compte";
+$pageTitle = escape(translate('Mise à jour du compte'));
 
 if (!isset($_SESSION['user_id'])) {
     header('Location: /account/login.php');
@@ -85,15 +86,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <?php if (!empty($errors)): ?>
 
             <?php foreach ($errors as $error): ?>
-                <p role="alert">
+                <p class="error">
                     <?= escape(translate($error)) ?>
-
                 </p>
             <?php endforeach; ?>
 
         <?php elseif (empty($user)): ?>
 
-            <p>Utilisateur introuvable.</p>
+            <p><?= escape(translate('Utilisateur introuvable.')) ?></p>
 
         <?php else: ?>
 
@@ -102,7 +102,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <?php if ($user->getImage()): ?>
                     <img
                         src="<?= escape($user->getImage()) ?>"
-                        alt="Photo de profil"
+                        alt="<?= escape(translate('Photo de profil')) ?>"
                         width="150">
                 <?php endif; ?>
 
@@ -118,33 +118,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         name="csrf_token"
                         value="<?= escape($_SESSION['csrf_token']) ?>">
 
-                    <label for="description">Description :</label>
+                    <label for="description"><?= escape(translate('Description')) ?> :</label>
                     <textarea
                         name="description"
                         id="description"><?= escape($user->getDescription()) ?></textarea>
 
-                    <label for="image">Image :</label>
+                    <label for="image"><?= escape(translate('Image')) ?> :</label>
                     <input
                         type="text"
                         name="image"
                         id="image"
                         value="<?= escape($user->getImage()) ?>">
 
-                    <label for="linkedin">LinkedIn :</label>
+                    <label for="linkedin"><?= escape(translate('LinkedIn')) ?> :</label>
                     <input
                         type="url"
                         name="linkedin"
                         id="linkedin"
                         value="<?= escape($user->getLinkedin()) ?>">
 
-                    <label for="phone">Téléphone :</label>
+                    <label for="phone"><?= escape(translate('Numéro de téléphone')) ?> :</label>
                     <input
                         type="tel"
                         name="phone"
                         id="phone"
                         value="<?= escape($user->getPhone()) ?>">
 
-                    <button type="submit">Enregistrer les modifications</button>
+                    <button type="submit"><?= escape(translate('Enregistrer les modifications')) ?></button>
 
                 </form>
             <?php endif; ?>

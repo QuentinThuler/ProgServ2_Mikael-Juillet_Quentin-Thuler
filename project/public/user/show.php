@@ -6,10 +6,11 @@ use App\role\RoleRequests;
 use App\user\UserRequests;
 use App\user\UserController;
 use function App\services\escape;
+use function App\services\translate;
 
 $errors = [];
 $user = null;
-$pageTitle = "Détails de mon compte";
+$pageTitle = escape(translate('Mon compte'));
 
 if (!isset($_SESSION['user_id'])) {
     header('Location: /account/login.php');
@@ -48,15 +49,14 @@ try {
         <?php if (!empty($errors)): ?>
 
             <?php foreach ($errors as $error): ?>
-                <p role="alert">
+                <p class="error">
                     <?= escape(translate($error)) ?>
-
                 </p>
             <?php endforeach; ?>
 
         <?php elseif (empty($user)): ?>
 
-            <p>Utilisateur introuvable.</p>
+            <p><?= escape(translate('Utilisateur introuvable.')) ?></p>
 
         <?php else: ?>
 
@@ -65,7 +65,7 @@ try {
                 <?php if ($user->getImage()): ?>
                     <img
                         src="<?= escape($user->getImage()) ?>"
-                        alt="Photo de profil"
+                        alt="<?= escape(translate('Photo de profil')) ?>"
                         width="150">
                 <?php endif; ?>
 
@@ -74,26 +74,26 @@ try {
                     <p><?= escape($user->getEmail()) ?></p>
                 </div>
 
-                <button>Modifier le profil</button>
+                <button><?= escape(translate('Modification du profil')) ?></button>
 
 
                 <?php if ($user->getDescription()): ?>
                     <div>
-                        <h3>Description du profil</h3>
+                        <h3><?= escape(translate('Description')) ?></h3>
                         <p><?= escape($user->getDescription()) ?></p>
                     </div>
                 <?php endif; ?>
 
                 <?php if ($user->getPhone()): ?>
                     <div>
-                        <h3>Numéro de téléphone</strong>
+                        <h3><?= escape(translate('Numéro de téléphone')) ?></strong>
                             <p><?= escape($user->getPhone()) ?></p>
                     </div>
                 <?php endif; ?>
 
                 <?php if ($user->getLinkedin()): ?>
                     <div>
-                        <h3>LinkedIn</h3>
+                        <h3><?= escape(translate('LinkedIn')) ?></h3>
                         <a
                             href="<?= escape($user->getLinkedin()) ?>"
                             target="_blank"
@@ -104,9 +104,9 @@ try {
                 <?php endif; ?>
             </section>
 
-            <button>Se déconnecter</button>
+            <button><?= escape(translate('Se déconnecter')) ?></button>
 
-            <button>Effacer mes données</button>
+            <button><?= escape(translate('Effacer mes données')) ?></button>
 
         <?php endif; ?>
 
