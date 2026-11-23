@@ -10,7 +10,7 @@ require_once __DIR__ . '/../src/init.php';
 
 <header>
     <nav aria-label="Principale">
-        <a href="/index.php"><?= e(t('Accueil')) ?></a>
+        <a href="../public/index.php"><?= e(t('Accueil')) ?></a>
 
         <?php if ($isConnected): ?>
             <a href="/account/my-registrations.php"><?= e(t('Mes inscriptions')) ?></a>
